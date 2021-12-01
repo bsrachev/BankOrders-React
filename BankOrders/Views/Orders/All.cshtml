@@ -1,0 +1,99 @@
+﻿@model AllOrdersQueryModel
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+@inject IUserService userService
+@inject IOrderService orderService
+
+<head>
+    <style type="text/css">
+        .btn-circle.btn-md {
+            width: 50px;
+            height: 50px;
+            padding: 7px 10px;
+            border-radius: 125px;
+            font-size: 28px;
+            text-align: center;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+    </style>
+</head>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row" style="margin: 2%;">
+            <div style="margin-left: 43%;">
+                <h1>Orders</h1>
+            </div>
+            <div class="col-md-1">
+                <a href="/Orders/Create" class="btn btn-outline-info btn-circle btn-md">+</a>
+            </div>
+        </div>
+        <div style="padding: 5%;">
+            <div>
+                <partial name="_OrderSearchPartial" model="null" />
+            </div>
+            <br />
+
+            @if (Model.Orders.Count() == 0)
+            {
+                bool noOrders = this.orderService.GetAllOrders().Count() == 0;
+
+                @if (noOrders)
+                {
+                    <h5>There are no orders. Would you like to <a href="/Orders/Create">create</a> the first one?</h5>
+                }
+                else
+                {
+                    <h5>There are no orders with the above search criteria.</h5>
+                }
+            }
+            else
+            {
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" style="text-align:center;">Details</th>
+                            <th scope="col" style="text-align:center;">Reference №</th>
+                            <th scope="col" style="text-align:center;">Accounting Date</th>
+                            <th scope="col" style="text-align:center;">System</th>
+                            <th scope="col" style="text-align:center;">Created by</th>
+                            <th scope="col" style="text-align:center;">Approved by</th>
+                            <th scope="col" style="text-align:center;">Posting by</th>
+                            <th scope="col" style="text-align:center;">Posting approved<br />by</th>
+                            <th scope="col" style="text-align:center;">Posting number</th>
+                            <th class="col-md-2" scope="col" style="text-align:center;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.Orders)
+                        {
+                            var userCreate = this.userService.GetUserInfo(order.UserCreateId).EmployeeNumber;
+                            var userApprove = order.UserApproveId == null ? null : this.userService.GetUserInfo(order.UserApproveId).EmployeeNumber;
+                            var userPosting = order.UserPostingId == null ? null : this.userService.GetUserInfo(order.UserPostingId).EmployeeNumber;
+                            var userApprovePosting = order.UserApprovePostingId == null ? null : this.userService.GetUserInfo(order.UserApprovePostingId).EmployeeNumber;
+                            <tr>
+                                <td>
+                                    <div class="button-holder">
+                                        <a href="/Orders/Details?orderId=@order.Id" class="btn btn-info text-uppercase">View</a>
+                                    </div>
+                                </td>
+                                <th scope="row" style="text-align:center;">№@order.RefNumber</th>
+                                <td style="text-align:center;">@order.AccountingDate.ToShortDateString()</td>
+                                <td style="text-align:center;">@order.System</td>
+                                <td style="text-align:center;">@userCreate</td>
+                                <td style="text-align:center;">@userApprove</td>
+                                <td style="text-align:center;">@userPosting</td>
+                                <td style="text-align:center;">@userApprovePosting</td>
+                                <td style="text-align:center;">@(order.PostingNumber == 0 ? null : order.PostingNumber)</td>
+                                <th style="text-align:center;">@(order.Status.GetAttribute<DisplayAttribute>().Name)</th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</section>

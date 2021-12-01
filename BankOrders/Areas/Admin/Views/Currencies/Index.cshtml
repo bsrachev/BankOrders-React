@@ -1,0 +1,41 @@
+﻿@model IEnumerable<CurrencyServiceModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Manage currencies</h1>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <partial name="_AddCurrencyPartial" model="null" />
+    </div>
+    <div class="col-md-4">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Currency</th>
+                    <th>Exchange Rate</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            @string.Format("{0:n5}", item.ExchangeRate)
+                        </td>
+                        <td>
+                            <a class="nav-link text-danger" asp-area="Admin" asp-controller="Currencies" asp-action="Delete" asp-route-id="@item.Id">X</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

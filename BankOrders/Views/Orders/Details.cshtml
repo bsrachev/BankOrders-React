@@ -1,0 +1,354 @@
+﻿@model OrderDetailListingViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@inject ITemplateService templateService
+@inject IDetailService detailService
+@inject IUserService userService
+@{
+    var isUserCreate = this.userService.IsOrderUserCreate(Model.Id, this.User.Id());
+    var isUserApprove = this.userService.IsUserApprove(Model.Id, this.User.Id());
+    var isUserPosting = this.userService.IsUserPosting(Model.Id, this.User.Id());
+}
+
+<div>
+    <h4>Order №@Html.DisplayFor(model => model.RefNumber)</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AccountingDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.AccountingDate.ToShortDateString()
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.System)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.System)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserCreateId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => this.userService.GetUserInfo(model.UserCreateId).EmployeeNumber)
+        </dd>
+        @if (Model.PostingNumber != 0)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.PostingNumber)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PostingNumber)
+            </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status.GetAttribute<DisplayAttribute>().Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
+</div>
+
+@if (isUserCreate && (Model.Status == OrderStatus.Draft || Model.Status == OrderStatus.ForCorrection))
+{
+    @if (Model.EditDetailId == null)
+    {
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <hr />
+                <div class="row col-md-12">
+                    <h4>Copy details from template:</h4>
+                    <div class="col-md-6">
+                        <select id="templateId" asp-for="TemplateId" class="form-control col-md-12">
+                            @foreach (var template in Model.Templates)
+                            {
+                                <option value="@template.Id">@template.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <a class="btn btn-info" data-toggle="collapse" data-target="#collapseCard" aria-expanded="false" aria-controls="collapseCard" id="collapsable" style="color: whitesmoke;">Show Details ▽</a>
+                    </div>
+                    <div class="col-md-1">
+                        <a class="btn btn-primary" onclick="copyFromTemplate(this,'@Url.Action("CopyDetailsFromTemplate", "Orders")')" style="color: whitesmoke;">Copy</a>
+                    </div>
+                </div>
+                <div class="collapse" id="collapseCard">
+                    <div class="card card-body" style="margin-top: 1%;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Branch</th>
+                                    @if (Model.System == OrderSystem.Internal)
+                                    {
+                                        <th scope="col">Cost Center</th>
+                                    }
+                                    else
+                                    {
+                                        <th scope="col">Project</th>
+                                    }
+                                    <th scope="col">Reason</th>
+                                    <th scope="col">Account</th>
+                                    <th scope="col">Account Type</th>
+                                    <th scope="col">Sum</th>
+                                    <th scope="col">Currency</th>
+                                    <th scope="col">Sum in BGN</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailsTableAjaxLine">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <h4>@(Model.EditDetailId == null ? "or add a detail:" : "Edit the detail:")</h4>
+    <hr />
+    <div>
+        <partial name="_DetailFormPartial" model="@(Model.EditDetailId != null ? Model.Details.First(x => x.DetailId == Model.EditDetailId) : new DetailFormModel { CurrencyId = 1, Currencies = Model.Currencies, OrderSystem = Model.System } )" />
+    </div>
+
+    <br />
+}
+
+@if (!isUserApprove && (Model.Status == OrderStatus.ForPosting || Model.Status == OrderStatus.ForPostingCorrection))
+{
+    <div>
+        <partial name="_OrderPostingNumberFormPartial" model="new OrderPostingNumberFormModel { OrderId = Model.Id, PostingNumber = Model.PostingNumber }" />
+    </div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            @if (isUserCreate && (Model.Status == OrderStatus.Draft || Model.Status == OrderStatus.ForCorrection))
+            {
+                <th scope="col">Edit</th>
+            }
+            <th scope="col">Branch</th>
+            @if (Model.System == OrderSystem.Internal)
+            {
+                <th scope="col">Cost Center</th>
+            }
+            else
+            {
+                <th scope="col">Project</th>
+            }
+            <th scope="col">Reason</th>
+            <th scope="col">Account</th>
+            <th scope="col">Account Type</th>
+            <th scope="col">Sum</th>
+            <th scope="col">Currency</th>
+            <th scope="col">Sum in BGN</th>
+            @if (isUserCreate && (Model.Status == OrderStatus.Draft || Model.Status == OrderStatus.ForCorrection))
+            {
+                <th scope="col"></th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var detail in Model.Details)
+        {
+            if (Model.EditDetailId == detail.DetailId)
+            {
+                <tr>
+                    @if (isUserCreate && (Model.Status == OrderStatus.Draft || Model.Status == OrderStatus.ForCorrection))
+                    {
+                        <th class="thead-dark" scope="row">
+                            <div class="button-holder">
+                                <button type="submit" class="btn btn-info" disabled>Edit</button>
+                            </div>
+                        </th>
+                    }
+                    <td>@detail.Branch</td>
+                    @if (Model.System == OrderSystem.Internal)
+                    {
+                        <td>@detail.CostCenter</td>
+                    }
+                    else
+                    {
+                        <td>@detail.Project</td>
+                    }
+                    <td>@detail.Reason</td>
+                    <td>@detail.Account</td>
+                    <td>@detail.AccountType</td>
+                    <td>@detail.Sum</td>
+                    <td>@Model.Currencies.FirstOrDefault(c => c.Id == @detail.CurrencyId).Code</td>
+                    <td>@detail.SumBGN</td>
+                    <td></td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    @if (isUserCreate && (Model.Status == OrderStatus.Draft || Model.Status == OrderStatus.ForCorrection))
+                    {
+                        <th scope="row">
+                            <div class="button-holder">
+                                <a href="/Orders/Details?orderId=@Model.Id&editDetailId=@detail.DetailId" class="btn btn-info">Edit</a>
+                            </div>
+                        </th>
+                    }
+                    <td>@detail.Branch</td>
+                    @if (Model.System == OrderSystem.Internal)
+                    {
+                        <td>@detail.CostCenter</td>
+                    }
+                    else
+                    {
+                        <td>@detail.Project</td>
+                    }
+                    <td>@detail.Reason</td>
+                    <td>@detail.Account</td>
+                    <td>@detail.AccountType</td>
+                    <td>@detail.Sum</td>
+                    <td>@Model.Currencies.FirstOrDefault(c => c.Id == @detail.CurrencyId).Code</td>
+                    <td>@detail.SumBGN</td>
+                    @if (isUserCreate && (Model.Status == OrderStatus.Draft || Model.Status == OrderStatus.ForCorrection))
+                    {
+                        <td>
+                            <a class="nav-link text-danger" asp-controller="Orders" asp-action="DeleteDetail" asp-route-orderId="@Model.Id" asp-route-detailId="@detail.DetailId">X</a>
+                        </td>
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@if (Model.Details.Count() == 0)
+{
+    <h5>Order №@Model.RefNumber has no details.</h5>
+}
+
+@if (Model.Status != OrderStatus.Canceled && Model.Status != OrderStatus.Finished)
+{
+    <div>
+        <partial name="_ForwardOrderFormPartial" model="new EmailServiceModel { OrderId = Model.Id }" />
+    </div>
+}
+
+<div class="container-fluid border-top">
+    <div class="form-group">
+        <br />
+        @if ((Model.Status == OrderStatus.Draft || Model.Status == OrderStatus.ForCorrection) && isUserCreate)
+        {
+            <a asp-controller="Orders" asp-action="SendForApproval" asp-route-id="@Model.Id" class="btn btn-success">Send for approval</a>
+        }
+        else if (Model.Status == OrderStatus.ForApproval && !isUserCreate)
+        {
+            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-success">Approve order</a>
+            <a asp-controller="Orders" asp-action="ForCorrection" asp-route-id="@Model.Id" class="btn btn-warning">Send for correction</a>
+        }
+        else if ((Model.Status == OrderStatus.ForPosting || Model.Status == OrderStatus.ForPostingCorrection) && !isUserApprove)
+        {
+            <a asp-controller="Orders" asp-action="SendForPostingApproval" asp-route-id="@Model.Id" class="btn btn-success">Send for post approval</a>
+        }
+        else if (Model.Status == OrderStatus.ForPostingApproval && !isUserPosting)
+        {
+            <a asp-controller="Orders" asp-action="ApprovePosting" asp-route-id="@Model.Id" class="btn btn-success">Approve posting</a>
+            <a asp-controller="Orders" asp-action="ForPostingCorrection" asp-route-id="@Model.Id" class="btn btn-warning">Send for correction</a>
+        }
+        @if (isUserCreate && (Model.Status == OrderStatus.Draft || Model.Status == OrderStatus.ForCorrection || Model.Status == OrderStatus.ForApproval))
+        {
+            <a asp-controller="Orders" asp-action="CancelOrder" asp-route-orderId="@Model.Id" class="btn btn-danger">Cancel the order</a>
+        }
+        <a asp-controller="Orders" asp-action="All" class="btn btn-dark float-right" style="margin-bottom: 10%;">Back</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $('#collapsable').on('click', ev => {
+            let template = document.getElementById("templateId");
+            let templateId = template.options[template.selectedIndex].value;
+
+            $.get('/api/templates/?templateId=' + templateId, (data) => {
+                for (var i = 0; i < data.length; i++) {
+                    var node = document.createElement("tr");
+                    document.getElementById("detailsTableAjaxLine").appendChild(node);
+
+                    var branchNode = document.createElement("td");
+                    var branchTextNode = document.createTextNode(data[i].branch);
+                    branchNode.appendChild(branchTextNode);
+
+                    if (@(Model.System == OrderSystem.Internal ? "true" : "false")) {
+                        var costCenterNode = document.createElement("td");
+                        var costCenterTextNode = document.createTextNode(data[i].costCenter);
+                        costCenterNode.appendChild(costCenterTextNode);
+                    }
+                    else {
+                        var projectNode = document.createElement("td");
+                        var projectTextNode = document.createTextNode(data[i].project);
+                        projectNode.appendChild(projectTextNode);
+                    }
+
+                    var reasonNode = document.createElement("td");
+                    var reasonTextNode = document.createTextNode(data[i].reason);
+                    reasonNode.appendChild(reasonTextNode);
+
+                    var accountNode = document.createElement("td");
+                    var accountTextNode = document.createTextNode(data[i].account);
+                    accountNode.appendChild(accountTextNode);
+
+                    var accountTypeNode = document.createElement("td");
+                    var accountTypeTextNode = document.createTextNode(data[i].accountTypeName);
+                    accountTypeNode.appendChild(accountTypeTextNode);
+
+                    var sumNode = document.createElement("td");
+                    var sumTextNode = document.createTextNode(data[i].sum);
+                    sumNode.appendChild(sumTextNode);
+
+                    var currencyIdNode = document.createElement("td");
+                    var currencyIdTextNode = document.createTextNode(data[i].currencyName);
+                    currencyIdNode.appendChild(currencyIdTextNode);
+
+                    var sumBGNNode = document.createElement("td");
+                    var sumBGNTextNode = document.createTextNode(data[i].sumBGN);
+                    sumBGNNode.appendChild(sumBGNTextNode);
+
+                    node.appendChild(branchNode);
+                    if (@(Model.System == OrderSystem.Internal ? "true" : "false")) {
+                        node.appendChild(costCenterNode);
+                    }
+                    else {
+                        node.appendChild(projectNode);
+                    }
+                    node.appendChild(reasonNode);
+                    node.appendChild(accountNode);
+                    node.appendChild(accountTypeNode);
+                    node.appendChild(sumNode);
+                    node.appendChild(currencyIdNode);
+                    node.appendChild(sumBGNNode);
+                }
+            });
+
+            if ($('#collapseCard').is('.collapse:not(.show)')) {
+                document.getElementById("detailsTableAjaxLine").innerHTML = "";
+            }
+        });
+    </script>
+    <script>
+        $('#templateId').on('change', ev => {
+            $('#collapseCard').removeClass('show');
+
+            document.getElementById("detailsTableAjaxLine").innerHTML = "";
+        });
+    </script>
+}
+
+<script>
+    function copyFromTemplate(item, baseUrl) {
+        var templateId = document.getElementById("templateId");
+
+        window.location.href = baseUrl + '?orderId=' + @Model.Id + '&templateId=' + templateId.value;
+    }
+</script>
+

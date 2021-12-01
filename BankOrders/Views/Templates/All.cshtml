@@ -1,0 +1,97 @@
+﻿@model AllTemplatesQueryModel
+
+@{
+    ViewData["Title"] = "Templates";
+}
+
+@inject IUserService userService
+@inject ITemplateService templateService
+
+<head>
+    <style type="text/css">
+        .btn-circle.btn-md {
+            width: 50px;
+            height: 50px;
+            padding: 7px 10px;
+            border-radius: 125px;
+            font-size: 28px;
+            text-align: center;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+    </style>
+</head>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row" style="margin: 2%;">
+            <div style="margin-left: 40%;">
+                <h1>Templates</h1>
+            </div>
+            @if (this.User.IsAdmin())
+            {
+                <div class="col-md-1">
+                    <a href="/Admin/Templates/Create" class="btn btn-outline-info btn-circle btn-md">+</a>
+                </div>
+            }
+        </div>
+        <div style="padding: 5%;">
+            <div>
+                <partial name="_TemplateSearchPartial" model="null" />
+            </div>
+            <br />
+
+            @if (Model.Templates.Count() == 0)
+            {
+                bool noTemplates = this.templateService.GetAllTemplates().Count() == 0;
+
+                @if (noTemplates)
+                {
+                    <h5>There are no templates. Would you like to <a href="/Admin/Templates/Create">create</a> the first one?</h5>
+                }
+                else
+                {
+                    <h5>There are no templates with the above search criteria.</h5>
+                }
+            }
+            else
+            {
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" style="text-align:center;">Details</th>
+                            <th scope="col" style="text-align:center;">Reference №</th>
+                            <th scope="col" style="text-align:center;">Name</th>
+                            <th scope="col" style="text-align:center;">System</th>
+                            <th scope="col" style="text-align:center;">Created by</th>
+                            @if (this.User.IsAdmin())
+                            {
+                                <th scope="col" style="text-align:center;">Times Used</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var template in Model.Templates)
+                        {
+                            var userCreate = this.userService.GetUserInfo(template.UserCreateId).EmployeeNumber;
+                            <tr>
+                                <td>
+                                    <div class="button-holder">
+                                        <a href="/Templates/Details?templateId=@template.Id" class="btn btn-info text-uppercase">View</a>
+                                    </div>
+                                </td>
+                                <th scope="row" style="text-align:center;">№@template.RefNumber</th>
+                                <td>@template.Name</td>
+                                <td style="text-align:center;">@template.System</td>
+                                <td style="text-align:center;">@userCreate</td>
+                                @if (this.User.IsAdmin())
+                                {
+                                    <td style="text-align:center;">@template.TimesUsed</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</section>
