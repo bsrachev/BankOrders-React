@@ -103,14 +103,16 @@ namespace BankOrders
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
+            
+            //ASP.NET App
+            app.UseEndpoints(endpoints => 
                {
                    endpoints.MapDefaultAreaRoute();
-                   endpoints.MapDefaultControllerRoute();
-                   endpoints.MapRazorPages();
-                   /*endpoints.MapControllerRoute(
+                   endpoints.MapControllerRoute(
                        name: "default",
-                       pattern: "{controller=Home}/{action=Login}/{id?}");*/
+                       //To start SPA remove "=Home"
+                       pattern: "{controller=Home}/{action=Index}/{id?}");
+                   endpoints.MapRazorPages();
                });
 
             app.UseSpa(spa =>
