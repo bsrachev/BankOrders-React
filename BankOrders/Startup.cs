@@ -19,6 +19,7 @@ namespace BankOrders
     using BankOrders.Services.Email;
     using System.Text.Json;
     using System.IO;
+    using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 
     public class Startup
     {
@@ -73,6 +74,12 @@ namespace BankOrders
                 o.Sender_EMail = options.Sender_EMail;
                 o.Sender_Name = options.Sender_Name;
             });
+
+            //React
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -90,21 +97,30 @@ namespace BankOrders
                 app.UseHsts();
             }
 
-            app
-                .UseHttpsRedirection()
-                .UseStaticFiles()
-                .UseRouting()
-                .UseAuthentication()
-                .UseAuthorization()
-                .UseEndpoints(endpoints =>
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+               {
+                   endpoints.MapDefaultAreaRoute();
+                   endpoints.MapDefaultControllerRoute();
+                   endpoints.MapRazorPages();
+                   /*endpoints.MapControllerRoute(
+                       name: "default",
+                       pattern: "{controller=Home}/{action=Login}/{id?}");*/
+               });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+                if (env.IsDevelopment())
                 {
-                    endpoints.MapDefaultAreaRoute();
-                    endpoints.MapDefaultControllerRoute();
-                    endpoints.MapRazorPages();
-                    /*endpoints.MapControllerRoute(
-                        name: "default",
-                        pattern: "{controller=Home}/{action=Login}/{id?}");*/
-                });
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
         }
     }
 }
