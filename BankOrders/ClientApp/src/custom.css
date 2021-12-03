@@ -917,7 +917,6 @@ pre {
 }
 
 .container {
-    display: inline !important;
     margin-right: auto;
     margin-left: auto;
     padding-left: 15px;
@@ -933,6 +932,10 @@ pre {
     .container:after {
         clear: both
     }
+
+.container-header {
+    display: inline !important;
+}
 
 @media (min-width:768px) {
     .container {
