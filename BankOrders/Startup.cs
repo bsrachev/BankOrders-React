@@ -107,11 +107,11 @@ namespace BankOrders
             //ASP.NET App
             app.UseEndpoints(endpoints => 
                {
-                   endpoints.MapDefaultAreaRoute();
+                   endpoints.MapDefaultAreaRoute(); //?
                    endpoints.MapControllerRoute(
                        name: "default",
                        //To start SPA remove "=Home"
-                       pattern: "{controller=Home}/{action=Index}/{id?}");
+                       pattern: "{controller}/{action=Index}/{id?}");
                    endpoints.MapRazorPages();
                });
 

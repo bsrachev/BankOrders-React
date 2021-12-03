@@ -5694,7 +5694,7 @@ button.close {
 
 .background-image-container {
     text-align: center;
-    background-image: url(./svg/wave-hero-background.svg)
+    background-image: url(./assets/images/wave-hero-background.svg)
 }
 
 .background-image-container,
@@ -5705,7 +5705,7 @@ button.close {
 }
 
 .footer-container {
-    background-image: url(./svg/wave-footer.svg);
+    background-image: url(./assets/images/wave-footer.svg);
     padding: 60px 0;
     margin-top: 30px
 }
@@ -5767,7 +5767,7 @@ button.close {
     -webkit-transition: all .5s linear;
     -o-transition: all .5s linear;
     transition: all .5s linear;
-    background-image: url(./svg/wave-header.svg);
+    background-image: url(./assets/images/wave-header.svg);
     background-position: 0 90%;
     background-repeat: no-repeat;
     background-size: cover;
