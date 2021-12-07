@@ -22,11 +22,11 @@ export class Navbar extends Component {
 
                     <div className="collapse navbar-collapse" id="navbar-collapse">
                         <ul className="nav navbar-nav navbar-right">
-                            <li><a href="./index.html" title="">Home</a></li>
-                            <li><a href="./project.html" title="">Project</a></li>
+                            <li><a href="./index.html" title="">Orders</a></li>
+                            <li><a href="./project.html" title="">Templates</a></li>
                             <li>
                                 <p>
-                                    <a href="./components.html" className="btn btn-default navbar-btn" title="">Components</a>
+                                    <a href="./components.html" className="btn btn-default navbar-btn" title="">Sign In</a>
                                 </p>
                             </li>
 

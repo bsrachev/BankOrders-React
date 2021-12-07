@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { store } from "./actions/store";
+import { Provider } from "react-redux";
 
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
@@ -9,6 +11,7 @@ import { Orders } from './components/Orders';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 
+
 /* import './custom.css' */
 
 export default class App extends Component {
@@ -16,8 +19,12 @@ export default class App extends Component {
 
     render() {
         return (
-
             <>
+            <Provider store={store}>
+
+            </Provider>
+
+            
                 <header>
                     <Navbar />
                 </header>
@@ -28,9 +35,9 @@ export default class App extends Component {
                             <div className="col-xs-12">
                                 <img src="/assets/images/android-chrome-192x192.png" className="img-fluid centerImage"/>
                                 <h1>Bank Orders</h1>
-                                <p>Accounting made easy.</p>
+                                <p>Accounting made easy. Start using our application now by <a href="#" className="link link-primary">logging in</a>.</p>
                                 <br />
-                                <a href="./project.html" className="btn btn-default btn-lg" title="">Sign In</a>
+                                <a href="./project.html" className="btn btn-default btn-lg" title="">Register</a>
                             </div>
                         </div>
                     </div>
