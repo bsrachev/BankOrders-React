@@ -80,10 +80,16 @@ namespace BankOrders
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddCors();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options => options.WithOrigins("https://localhost:5001")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+
             app.PrepareDatabase();
 
             if (env.IsDevelopment())

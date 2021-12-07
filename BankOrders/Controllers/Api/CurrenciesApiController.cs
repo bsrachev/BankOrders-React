@@ -10,7 +10,7 @@ using BankOrders.Data.Models;
 
 namespace BankOrders.Controllers.Api
 {
-    [Route("api/[controller]")]
+    [Route("api/currencies")]
     [ApiController]
     public class CurrenciesApiController : ControllerBase
     {
