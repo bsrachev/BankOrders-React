@@ -13,7 +13,6 @@ export const fetchAll = () => {
             .fetchAll()
             .then(
                 response => {
-                    //console.log(response)
                     dispatch({
                         type: ACTION_TYPES.FETCH_ALL,
                         payload: response.data
