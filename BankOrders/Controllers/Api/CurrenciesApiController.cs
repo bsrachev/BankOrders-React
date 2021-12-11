@@ -21,14 +21,14 @@ namespace BankOrders.Controllers.Api
             _context = context;
         }
 
-        // GET: api/CurrenciesApi
+        // GET: api/Currencies
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Currency>>> GetCurrencies()
         {
             return await _context.Currencies.ToListAsync();
         }
 
-        // GET: api/CurrenciesApi/5
+        // GET: api/Currencies/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Currency>> GetCurrency(int id)
         {
@@ -42,7 +42,7 @@ namespace BankOrders.Controllers.Api
             return currency;
         }
 
-        // PUT: api/CurrenciesApi/5
+        // PUT: api/Currencies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCurrency(int id, Currency currency)
@@ -73,7 +73,7 @@ namespace BankOrders.Controllers.Api
             return NoContent();
         }
 
-        // POST: api/CurrenciesApi
+        // POST: api/Currencies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Currency>> PostCurrency(Currency currency)
