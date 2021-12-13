@@ -3,7 +3,7 @@
 const baseUrl = "https://localhost:5001/api/"
 
 export default {
-    currencies(url = baseUrl + 'currencies') {
+    currencies(url = baseUrl + 'currencies/') {
         return {
             fetchAll: () => axios.get(url),
             fetchById: id => axios.get(url + id),

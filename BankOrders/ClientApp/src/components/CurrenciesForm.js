@@ -1,6 +1,8 @@
 ﻿import React, { useState, useEffect } from "react";
-import { Grid, TextField, withStyles, FormControl, InputLabel, Select, MenuItem, OutlinedInput } from "@material-ui/core";
+import { Grid, TextField, withStyles, FormControl, InputLabel, Select, MenuItem, Button, FormHelperText } from "@material-ui/core";
 import useForm from "./useForm";
+import { connect } from "react-redux";
+import * as actions from "../actions/currenciesAction";
 
 const styles = theme => ({
     root: {
@@ -14,53 +16,125 @@ const styles = theme => ({
         margin: theme.spacing(1),
         minWidth: 230,
     },
+    smMargin: {
+        margin: theme.spacing(1)
+    }
 })
 
 const initialFieldValues = {
-    code: ''
+    code: '',
+    exchangeRate: ''
 }
 
 const CurrenciesForm = ({ classes, ...props }) => {
 
+    const validate = (fieldValues = values) => {
+        let temp = { ...errors }
+        if ('code' in fieldValues)
+            temp.code = fieldValues.code ? "" : "This field is required."
+        if ('exchangeRate' in fieldValues)
+            temp.exchangeRate = fieldValues.exchangeRate ? "" : "This field is required."
+        setErrors({
+            ...temp
+        })
+
+        if (fieldValues == values)
+            return Object.values(temp).every(x => x == "")
+    }
+
     const {
         values,
         setValues,
-        handleInputChange
-    } = useForm(initialFieldValues);
-
-    /* MUI TextField label
-    const inputLabel = React.useRef(null);
-    const [labelWidth, setLabelWidth] = React.useState(0);
-    React.useEffect(() => {
-        setLabelWidth(inputLabel.current.offsetWidth);
-    }, []) */
+        errors,
+        setErrors,
+        handleInputChange,
+        resetForm
+    } = useForm(initialFieldValues, validate, props.setCurrentId)
 
     const handleSubmit = e => {
-        e.preventDefault();
-        console.log(values);
+        e.preventDefault()
+        console.log(values)
+        if (validate()) {
+            // props.createCurrency(values, () => {window.alert('inserted.')})
+
+            const onSuccess = () => {
+                resetForm()
+                //addToast("Submitted successfully", { appearance: 'success' })
+            }
+            if (props.currentId == 0 || 1 === 1)
+                props.createCurrency(values, onSuccess)
+            else
+                props.updateCurrency(props.currentId, values, onSuccess)
+        }
     }
 
+    useEffect(() => {
+        if (props.currentId != 0) {
+            setValues({
+                ...props.dCandidateList.find(x => x.id == props.currentId)
+            })
+            setErrors({})
+        }
+    }, [props.currentId])
+
     return (
-        <>
-            <div className="row">
-                <div className="col-md-4">
-                    <form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                        <div asp-validation-summary="ModelOnly" className="text-danger"></div>
-                        <div className="form-group">
-                            <label>Currency code</label>
-                            <input name="code"
-                                   className="form-control"
-                                   placeholder="Currency Code"
-                                   value={values.code}/>
-                        </div>
-                        <div className="form-group">
-                            <input type="submit" value="Add" className="btn btn-primary" />
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </>
+        <form autoComplete="off" noValidate className={classes.root} onSubmit={handleSubmit}>
+            <Grid container>
+                <Grid item xs={6}>
+                    <div className="form-group">
+                        <label htmlFor="currencyCode">Currency Code</label>
+                        <input name="code"
+                               className="form-control"
+                               id="currencyCode"
+                               placeholder="XXX"
+                               value={values.code}
+                               onChange={handleInputChange}
+                               {...(errors.fullName && { error: true, helperText: errors.fullName })}
+                        />
+                    </div>
+                </Grid>
+                <Grid item xs={6}>
+                    <div className="form-group">
+                        <label htmlFor="currencyRate">Currency Rate</label>
+                        <input name="exchangeRate"
+                               className="form-control"
+                               id="currencyRate"
+                               placeholder="1.00000"
+                               value={values.exchangeRate}
+                               onChange={handleInputChange}
+                               {...(errors.fullName && { error: true, helperText: errors.fullName })}
+                        />
+                    </div>
+                    <div>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                            className={classes.smMargin}
+                        >
+                            Submit
+                        </Button>
+                        <Button
+                            variant="contained"
+                            className={classes.smMargin}
+                        >
+                            Reset
+                        </Button>
+                    </div>
+                </Grid>
+            </Grid>
+        </form>
     );
 }
 
-export default withStyles(styles)(CurrenciesForm);
+
+const mapStateToProps = state => ({
+    currenciesList: state.currenciesReducer.list
+})
+
+const mapActionToProps = {
+    createCurrency: actions.create,
+    updateCurrency: actions.update
+}
+
+export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(CurrenciesForm));

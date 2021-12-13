@@ -47,13 +47,12 @@ namespace BankOrders
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<BankOrdersDbContext>();
 
-            //services
-            //    .AddControllersWithViews();
+            services.AddControllersWithViews();
 
-            services.AddControllersWithViews(options =>
+            /*services.AddControllersWithViews(options =>
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
-            });
+            });*/
 
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IUserService, UserService>();
