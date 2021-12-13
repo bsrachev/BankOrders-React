@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from "react";
 
 const useForm = (initialFieldValues) => {
-    const { values, setValues } = useState(initialFieldValues);
+    const { values, setValues } = useState(initialFieldValues)
 
     const handleInputChange = e => {
         const { name, value } = e.target
