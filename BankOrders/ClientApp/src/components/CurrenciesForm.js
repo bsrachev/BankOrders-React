@@ -61,7 +61,7 @@ const CurrenciesForm = ({ classes, ...props }) => {
                 resetForm()
                 //addToast("Submitted successfully", { appearance: 'success' })
             }
-            if (props.currentId == 0 || 1 === 1)
+            if (props.currentId == 0)
                 props.createCurrency(values, onSuccess)
             else
                 props.updateCurrency(props.currentId, values, onSuccess)
@@ -71,7 +71,7 @@ const CurrenciesForm = ({ classes, ...props }) => {
     useEffect(() => {
         if (props.currentId != 0) {
             setValues({
-                ...props.dCandidateList.find(x => x.id == props.currentId)
+                ...props.currenciesList.find(x => x.id == props.currentId)
             })
             setErrors({})
         }

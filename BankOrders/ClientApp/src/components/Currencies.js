@@ -3,12 +3,14 @@ import { connect } from "react-redux";
 import * as actions from "../actions/currenciesAction";
 import CurrenciesForm from './CurrenciesForm';
 import CurrencyDetails from './CurrencyDetails';
-import { Grid, Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, withStyles} from "@material-ui/core";
+import { Grid, Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, withStyles, ButtonGroup, Button } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const styles = theme => ({
     root: {
         "& .MuiTableCell-root": {
-            fontSize:"1.5rem"
+            fontSize: "1.5rem"
         }
     },
     paper: {
@@ -37,6 +39,7 @@ const Currencies = ({ classes, ...props }) => {
                                     <TableRow>
                                         <TableCell>Currency</TableCell>
                                         <TableCell>Exchange Rate</TableCell>
+                                        <TableCell>Edit</TableCell>
                                         <TableCell>Remove</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -47,7 +50,16 @@ const Currencies = ({ classes, ...props }) => {
                                                 <TableRow key={currency.id} hover className={classes.root}>
                                                     <TableCell>{currency.code}</TableCell>
                                                     <TableCell>{currency.exchangeRate.toFixed(5)}</TableCell>
-                                                    <TableCell><a className="nav-link text-danger">X</a></TableCell>
+                                                    <TableCell>
+                                                        <ButtonGroup variant="text">
+                                                            <Button><EditIcon color="primary" /></Button>
+                                                        </ButtonGroup>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <ButtonGroup variant="text">
+                                                            <Button><DeleteIcon color="secondary" /></Button>
+                                                        </ButtonGroup>
+                                                    </TableCell>
                                                 </TableRow>
                                             );
                                         })
@@ -74,6 +86,7 @@ const Currencies = ({ classes, ...props }) => {
                                             <tr>
                                                 <th>Currency</th>
                                                 <th>Exchange Rate</th>
+                                                <th>Edit</th>
                                                 <th>Remove</th>
                                             </tr>
                                         </thead>
@@ -89,7 +102,14 @@ const Currencies = ({ classes, ...props }) => {
                                                                 {currency.exchangeRate}
                                                             </td>
                                                             <td>
-                                                                <a className="nav-link text-danger">X</a>
+                                                                <ButtonGroup variant="text">
+                                                                    <Button><EditIcon color="primary" /></Button>
+                                                                </ButtonGroup>
+                                                            </td>
+                                                            <td>
+                                                                <ButtonGroup variant="text">
+                                                                    <Button><DeleteIcon color="secondary" /></Button>
+                                                                </ButtonGroup>
                                                             </td>
                                                         </tr>
                                                     );
