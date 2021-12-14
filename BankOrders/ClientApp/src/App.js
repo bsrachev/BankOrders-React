@@ -3,9 +3,10 @@ import { store } from "./actions/store";
 import { Provider } from "react-redux";
 
 import { Route } from 'react-router';
-import { Footer } from './components/Footer'; 
+import { Footer } from './components/Footer';
 import Currencies from './components/Currencies';
-import { Container } from "@material-ui/core"; 
+import { Container } from "@material-ui/core";
+import { ToastProvider } from "react-toast-notifications";
 
 /* import './custom.css'
  * import { Home } from './components/Home';
@@ -22,12 +23,14 @@ export default class App extends Component {
         return (
             <>
                 <Provider store={store}>
-                    <Currencies />
+                    <ToastProvider autoDismiss={true}>
+                        <Currencies />
 
-                    <footer className="footer-container white-text-container">
-                        <Footer />
-                    </footer>
-                </Provider>  
+                        <footer className="footer-container white-text-container">
+                            <Footer />
+                        </footer>
+                    </ToastProvider>
+                </Provider>
             </>
         );
     }

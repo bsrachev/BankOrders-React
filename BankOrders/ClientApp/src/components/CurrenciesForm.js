@@ -3,6 +3,7 @@ import { Grid, TextField, withStyles, FormControl, InputLabel, Select, MenuItem,
 import useForm from "./useForm";
 import { connect } from "react-redux";
 import * as actions from "../actions/currenciesAction";
+import { useToasts } from "react-toast-notifications";
 
 const styles = theme => ({
     root: {
@@ -27,6 +28,7 @@ const initialFieldValues = {
 }
 
 const CurrenciesForm = ({ classes, ...props }) => {
+    const { addToast } = useToasts()
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -59,7 +61,7 @@ const CurrenciesForm = ({ classes, ...props }) => {
 
             const onSuccess = () => {
                 resetForm()
-                //addToast("Submitted successfully", { appearance: 'success' })
+                addToast("Submitted successfully", { appearance: 'success' })
             }
             if (props.currentId == 0)
                 props.createCurrency(values, onSuccess)
@@ -80,29 +82,27 @@ const CurrenciesForm = ({ classes, ...props }) => {
     return (
         <form autoComplete="off" noValidate className={classes.root} onSubmit={handleSubmit}>
             <Grid container>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <div className="form-group">
                         <label htmlFor="currencyCode">Currency Code</label>
                         <input name="code"
-                               className="form-control"
-                               id="currencyCode"
-                               placeholder="XXX"
-                               value={values.code}
-                               onChange={handleInputChange}
-                               {...(errors.fullName && { error: true, helperText: errors.fullName })}
+                            className="form-control"
+                            id="currencyCode"
+                            placeholder="XXX"
+                            value={values.code}
+                            onChange={handleInputChange}
+                            {...(errors.fullName && { error: true, helperText: errors.fullName })}
                         />
                     </div>
-                </Grid>
-                <Grid item xs={6}>
                     <div className="form-group">
                         <label htmlFor="currencyRate">Currency Rate</label>
                         <input name="exchangeRate"
-                               className="form-control"
-                               id="currencyRate"
-                               placeholder="1.00000"
-                               value={values.exchangeRate}
-                               onChange={handleInputChange}
-                               {...(errors.fullName && { error: true, helperText: errors.fullName })}
+                            className="form-control"
+                            id="currencyRate"
+                            placeholder="1.00000"
+                            value={values.exchangeRate}
+                            onChange={handleInputChange}
+                            {...(errors.fullName && { error: true, helperText: errors.fullName })}
                         />
                     </div>
                     <div>

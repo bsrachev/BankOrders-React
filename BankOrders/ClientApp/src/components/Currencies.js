@@ -6,6 +6,7 @@ import CurrencyDetails from './CurrencyDetails';
 import { Grid, Paper, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, withStyles, ButtonGroup, Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { useToasts } from "react-toast-notifications";
 
 const styles = theme => ({
     root: {
@@ -20,17 +21,25 @@ const styles = theme => ({
 })
 
 const Currencies = ({ classes, ...props }) => {
+    const [currentId, setCurrentId] = useState(0)
 
     useEffect(() => {
         props.fetchAllCurrencies()
     }, [])
+
+    const { addToast } = useToasts()
+
+    const onDelete = id => {
+        if (window.confirm('Delete the currency?'))
+            props.deleteDCandidate(id, () => addToast("Deleted successfully", { appearance: 'info' }))
+    }
 
     return (
         <>
             <Paper className={classes.paper} elevation={3}>
                 <Grid container>
                     <Grid item xs={6}>
-                        <CurrenciesForm />
+                        <CurrenciesForm {...({ currentId, setCurrentId })} />
                     </Grid>
                     <Grid item xs={6}>
                         <TableContainer>
@@ -49,16 +58,16 @@ const Currencies = ({ classes, ...props }) => {
                                             return (
                                                 <TableRow key={currency.id} hover className={classes.root}>
                                                     <TableCell>{currency.code}</TableCell>
-                                                    <TableCell>{currency.exchangeRate.toFixed(5)}</TableCell>
+                                                    <TableCell>{currency.exchangeRate}</TableCell>
                                                     <TableCell>
-                                                        <ButtonGroup variant="text">
-                                                            <Button><EditIcon color="primary" /></Button>
-                                                        </ButtonGroup>
+                                                        <Button>
+                                                            <EditIcon color="primary" onClick={() => { setCurrentId(currency.id) }} />
+                                                        </Button>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <ButtonGroup variant="text">
-                                                            <Button><DeleteIcon color="secondary" /></Button>
-                                                        </ButtonGroup>
+                                                        <Button>
+                                                            <DeleteIcon color="secondary" onClick={() => onDelete(currency.id)} />
+                                                        </Button>
                                                     </TableCell>
                                                 </TableRow>
                                             );
@@ -78,7 +87,7 @@ const Currencies = ({ classes, ...props }) => {
                             <h2 className="text-center">Currencies</h2>
                             <div className="row">
                                 <div className="col-md-8">
-                                    <CurrenciesForm />
+                                    <CurrenciesForm {...({ currentId, setCurrentId })} />
                                 </div>
                                 <div className="col-md-4">
                                     <table className="table">
@@ -94,7 +103,7 @@ const Currencies = ({ classes, ...props }) => {
                                             {
                                                 props.currenciesList.map(currency => {
                                                     return (
-                                                        <tr key={currency.id} hover>
+                                                        <tr key={currency.id}>
                                                             <td>
                                                                 {currency.code}
                                                             </td>
@@ -102,14 +111,14 @@ const Currencies = ({ classes, ...props }) => {
                                                                 {currency.exchangeRate}
                                                             </td>
                                                             <td>
-                                                                <ButtonGroup variant="text">
-                                                                    <Button><EditIcon color="primary" /></Button>
-                                                                </ButtonGroup>
+                                                                <Button>
+                                                                    <EditIcon color="primary" onClick={() => { setCurrentId(currency.id) }} />
+                                                                </Button>
                                                             </td>
                                                             <td>
-                                                                <ButtonGroup variant="text">
-                                                                    <Button><DeleteIcon color="secondary" /></Button>
-                                                                </ButtonGroup>
+                                                                <Button>
+                                                                    <DeleteIcon color="secondary" onClick={() => onDelete(currency.id)} />
+                                                                </Button>
                                                             </td>
                                                         </tr>
                                                     );
@@ -134,7 +143,8 @@ const mapStateToProps = state => {
 }
 
 const mapActionToProps = {
-    fetchAllCurrencies: actions.fetchAll
+    fetchAllCurrencies: actions.fetchAll,
+    deleteDCandidate: actions.Delete
 }
 
 export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(Currencies));
