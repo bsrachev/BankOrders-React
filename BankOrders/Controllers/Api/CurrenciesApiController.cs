@@ -50,7 +50,6 @@ namespace BankOrders.Controllers.Api
             if (id != currency.Id)
             {
                 return BadRequest();
-                Console.WriteLine("kor");
             }
 
             _context.Entry(currency).State = EntityState.Modified;

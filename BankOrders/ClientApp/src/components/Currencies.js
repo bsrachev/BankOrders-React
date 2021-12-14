@@ -30,7 +30,7 @@ const Currencies = ({ classes, ...props }) => {
 
     const onDelete = id => {
         if (window.confirm('Delete the currency?'))
-            props.deleteDCandidate(id, () => addToast("Deleted successfully", { appearance: 'error', placement: 'bottom-center' }))
+            props.deleteCurrency(id, () => addToast("Deleted successfully", { appearance: 'error', placement: 'bottom-center' }))
     }
 
     return (
@@ -47,10 +47,10 @@ const Currencies = ({ classes, ...props }) => {
                                 <table className="table">
                                     <thead className="thead-light table-head-standart">
                                         <tr>
-                                            <th>Currency</th>
-                                            <th>Exchange Rate</th>
-                                            <th>Edit</th>
-                                            <th>Remove</th>
+                                            <th scope="col" style={{ textAlign: "center" }}>Currency</th>
+                                            <th scope="col" style={{ textAlign: "center" }}>Exchange Rate</th>
+                                            <th scope="col" style={{ textAlign: "center" }}>Edit</th>
+                                            <th scope="col" style={{ textAlign: "center" }}>Remove</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -97,7 +97,7 @@ const mapStateToProps = state => {
 
 const mapActionToProps = {
     fetchAllCurrencies: actions.fetchAll,
-    deleteDCandidate: actions.Delete
+    deleteCurrency: actions.Delete
 }
 
 export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(Currencies));

@@ -2,6 +2,7 @@
 {
     using BankOrders.Data.Models.Enums;
     using BankOrders.Models.Details;
+    using BankOrders.Models.Templates;
     using BankOrders.Services.Currencies;
     using BankOrders.Services.Details;
     using BankOrders.Services.Templates;
@@ -29,7 +30,32 @@
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
+        public IEnumerable<TemplateApiModel> GetAllTemplates()
+        {
+            var templates = this.templateService.GetAllTemplates();
+
+            var templatesToReturn = new List<TemplateApiModel>();
+
+            foreach (var t in templates)
+            {
+                var template = new TemplateApiModel
+                {
+                    Id = t.Id,
+                    RefNumber = t.RefNumber,
+                    UserCreate = t.UserCreateId,
+                    Name = t.Name,
+                    TimesUsed = t.TimesUsed,
+                    System = Enum.GetName(typeof(OrderSystem), t.System)
+                };
+
+                templatesToReturn.Add(template);
+            }
+
+            return templatesToReturn;
+        }
+
+        [HttpGet("{id}")]
         public IEnumerable<DetailApiModel> GetDetails(int templateId)
         {
             var template = this.templateService.GetTemplateInfo(templateId);

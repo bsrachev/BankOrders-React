@@ -1,65 +1,105 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, Suspense } from "react";
+import { connect } from "react-redux";
+import * as actions from "../actions/ordersAction";
+import OrdersForm from './OrdersForm';
+import { withStyles, Button } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+import { useToasts } from "react-toast-notifications";
 
-export class Orders extends Component {
-    static displayName = Orders.name;
+const styles = theme => ({
+    root: {
+        "& .MuiTableCell-root": {
+            fontSize: "1.5rem"
+        }
+    },
+    paper: {
+        margin: theme.spacing(2),
+        padding: theme.spacing(2)
+    }
+})
 
-    constructor(props) {
-        super(props);
-        this.state = { orders: [], loading: true };
+const Orders = ({ classes, ...props }) => {
+    const [currentId, setCurrentId] = useState(0)
+
+    useEffect(() => {
+        props.fetchAllOrders()
+    }, [])
+
+    const { addToast } = useToasts()
+
+    const onDelete = id => {
+        if (window.confirm('Delete the order?'))
+            props.deleteOrder(id, () => addToast("Deleted successfully", { appearance: 'error', placement: 'bottom-center' }))
     }
 
-    componentDidMount() {
-        this.getOrdersData();
-    }
-
-    static renderordersTable(orders) {
-        return (
-            <table className='table table-striped' aria-labelledby="tabelLabel">
-                <thead>
-                    <tr>
-                        <th>Ref ¹</th>
-                        <th>System</th>
-                        <th>Created by</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {orders.map(order =>
-                        <tr key={order.id}>
-                            <td>{order.refNumber}</td>
-                            <td>{order.system}</td>
-                            <td>{order.userCreate}</td>
-                            <td>{order.status}</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
-        );
-    }
-
-    render() {
-        let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
-            : Orders.renderordersTable(this.state.orders);
-
-        return (
-            <div className="section-container">
-                <div className="container text-center">
-                    <div className="row section-container-spacer">
-                        <div className="col-xs-12 col-md-12">
-                            <h2 className="text-center">Orders</h2>
-                            <p>Praesent at feugiat est, at faucibus ipsum. Aenean condimentum mauris vel malesuada pulvinar. <br />Vestibulum sit amet hendrerit leo, quis vehicula mi.</p>
-                            {contents}
+    return (
+        <div className="section-container">
+            <div className="container text-center">
+                <div className="row section-container-spacer">
+                    <div className="col-xs-12 col-md-12">
+                        <h2 className="text-center">Orders</h2>
+                        <div className="row col-md-offset-2">
+                            <OrdersForm {...({ currentId, setCurrentId })} />
+                        </div>
+                        <div className="col-md-5">
+                            <table className="table">
+                                <thead className="thead-light table-head-standart">
+                                    <tr>
+                                        <th scope="col" style={{ textAlign: "center" }}>Ref. Number</th>
+                                        <th scope="col" style={{ textAlign: "center" }}>Accounting Date</th>
+                                        <th scope="col" style={{ textAlign: "center" }}>System</th>
+                                        <th scope="col" style={{ textAlign: "center" }}>Created by</th>
+                                        <th scope="col" style={{ textAlign: "center" }}>Approved by</th>
+                                        <th scope="col" style={{ textAlign: "center" }}>Posting by</th>
+                                        <th scope="col" style={{ textAlign: "center" }}>Posting approved<br />by</th>
+                                        <th scope="col" style={{ textAlign: "center" }}>Posting number</th>
+                                        <th scope="col" style={{ textAlign: "center" }}>Status</th>
+                                        <th scope="col" style={{ textAlign: "center" }}>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        props.ordersList.map(order => {
+                                            console.log(order)
+                                            return (
+                                                <tr key={order.id} className="table-row-standart">
+                                                    <td>{order.refNumber}</td>
+                                                    <td>{order.accountingDate}</td>
+                                                    <td>{order.system}</td>
+                                                    <td>{order.userCreate}</td>
+                                                    <td>{order.userApprove}</td>
+                                                    <td>{order.userPosting}</td>
+                                                    <td>{order.userApprovePosting}</td>
+                                                    <td>{order.postingNumber}</td>
+                                                    <td>{order.status}</td>
+                                                    <td>
+                                                        <Button>
+                                                            <EditIcon color="primary" onClick={() => { setCurrentId(order.id) }} />
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
+}
 
-    async getOrdersData() {
-        const response = await fetch('api/orders');
-        const data = await response.json();
-        this.setState({ orders: data, loading: false });
+const mapStateToProps = state => {
+    return {
+        ordersList: state.ordersReducer.list
     }
 }
+
+const mapActionToProps = {
+    fetchAllOrders: actions.fetchAll,
+    deleteOrder: actions.Delete
+}
+
+export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(Orders));
