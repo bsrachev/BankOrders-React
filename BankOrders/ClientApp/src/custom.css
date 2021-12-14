@@ -671,7 +671,7 @@ a.bg-primary:hover {
 }
 
 .bg-success {
-    background-color: #08005f
+    background-color: #005d5f
 }
 
 a.bg-success:focus,
@@ -1941,7 +1941,8 @@ th {
 .table {
     width: 100%;
     max-width: 100%;
-    margin-bottom: 25px
+    margin-bottom: 25px; 
+    border: 1px solid #838383;
 }
 
     .table > tbody > tr > td,
@@ -2058,7 +2059,7 @@ table th[class*=col-] {
 .table > thead > tr.success > th,
 .table > thead > tr > td.success,
 .table > thead > tr > th.success {
-    background-color: #08005f
+    background-color: #005d5f
 }
 
 .table-hover > tbody > tr.success:hover > td,
@@ -2654,7 +2655,7 @@ textarea.input-lg {
 .has-success .input-group-addon {
     color: #fff;
     border-color: #fff;
-    background-color: #08005f
+    background-color: #005d5f
 }
 
 .has-success .form-control-feedback {
@@ -2880,7 +2881,8 @@ textarea.input-lg {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none
+    user-select: none;
+    margin: 1rem;
 }
 
     .btn.active.focus,
@@ -3104,13 +3106,13 @@ fieldset[disabled] a.btn {
     }
 
 .btn-info {
-    border-color: #08005f
+    border-color: #005d5f
 }
 
     .btn-info,
     .btn-info.focus,
     .btn-info:focus {
-        color: #08005f;
+        color: #005d5f;
         background-color: transparent
     }
 
@@ -3123,7 +3125,7 @@ fieldset[disabled] a.btn {
         .btn-info:active,
         .btn-info:hover,
         .open > .btn-info.dropdown-toggle {
-            color: #08005f;
+            color: #005d5f;
             background-color: transparent;
             border-color: #030022
         }
@@ -3137,7 +3139,7 @@ fieldset[disabled] a.btn {
             .open > .btn-info.dropdown-toggle.focus,
             .open > .btn-info.dropdown-toggle:focus,
             .open > .btn-info.dropdown-toggle:hover {
-                color: #08005f;
+                color: #005d5f;
                 background-color: transparent;
                 border-color: #000
             }
@@ -3158,12 +3160,12 @@ fieldset[disabled] a.btn {
         fieldset[disabled] .btn-info:focus,
         fieldset[disabled] .btn-info:hover {
             background-color: transparent;
-            border-color: #08005f
+            border-color: #005d5f
         }
 
         .btn-info .badge {
             color: transparent;
-            background-color: #08005f
+            background-color: #005d5f
         }
 
 .btn-warning {
@@ -4846,7 +4848,7 @@ a.label:hover {
     }
 
 .label-info {
-    background-color: #08005f
+    background-color: #005d5f
 }
 
     .label-info[href]:focus,
@@ -4966,8 +4968,8 @@ a.badge:hover {
     }
 
 .alert-success {
-    background-color: #08005f;
-    border-color: #08005f;
+    background-color: #005d5f;
+    border-color: #005d5f;
     color: #fff
 }
 
@@ -5728,9 +5730,9 @@ button.close {
 
 .btn-info:focus,
 .btn-info:hover {
-    background-color: #08005f;
+    background-color: #005d5f;
     color: #fff;
-    border-color: #08005f
+    border-color: #005d5f
 }
 
 .btn-success:focus,
@@ -5880,12 +5882,19 @@ img.zoom-img {
     cursor: default
 }
 
+    .table-row-standart:hover {
+        background-color: #39c7ca;
+        color: #fff;
+        border-color: #39c7ca
+    }
+
 .social-round-icon {
     border: 1px solid #838383;
     border-radius: 50px;
     -webkit-transition: all .2s linear;
     -o-transition: all .2s linear;
-    transition: all .2s linear
+    transition: all .2s linear;
+    margin: 0.5rem;
 }
 
     .social-round-icon:hover {

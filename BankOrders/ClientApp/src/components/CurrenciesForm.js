@@ -1,5 +1,5 @@
-﻿import React, { useState, useEffect } from "react";
-import { Grid, TextField, withStyles, FormControl, InputLabel, Select, MenuItem, Button, FormHelperText } from "@material-ui/core";
+﻿import React, { useEffect } from "react";
+import { Grid, withStyles } from "@material-ui/core";
 import useForm from "./useForm";
 import { connect } from "react-redux";
 import * as actions from "../actions/currenciesAction";
@@ -106,20 +106,8 @@ const CurrenciesForm = ({ classes, ...props }) => {
                         />
                     </div>
                     <div>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            type="submit"
-                            className={classes.smMargin}
-                        >
-                            Submit
-                        </Button>
-                        <Button
-                            variant="contained"
-                            className={classes.smMargin}
-                        >
-                            Reset
-                        </Button>
+                        <button type="submit" className="btn btn-primary">Submit</button>
+                        <button className="btn btn-info" onClick={resetForm}>Reset</button>
                     </div>
                 </Grid>
             </Grid>

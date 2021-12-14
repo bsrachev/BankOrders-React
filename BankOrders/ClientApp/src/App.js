@@ -4,6 +4,8 @@ import { Provider } from "react-redux";
 
 import { Route } from 'react-router';
 import { Footer } from './components/Footer';
+import Navbar from './components/Navbar';
+import Home from './components/Home';
 import Currencies from './components/Currencies';
 import { Container } from "@material-ui/core";
 import { ToastProvider } from "react-toast-notifications";
@@ -24,6 +26,12 @@ export default class App extends Component {
             <>
                 <Provider store={store}>
                     <ToastProvider autoDismiss={true}>
+                        <header>
+                            <Navbar />
+                        </header>
+
+                        <Home />
+
                         <Currencies />
 
                         <footer className="footer-container white-text-container">

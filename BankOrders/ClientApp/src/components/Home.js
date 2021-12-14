@@ -1,13 +1,10 @@
 import React from 'react';
-import { Orders } from './components/Orders';
-import { Navbar } from './components/Navbar';
-import { Footer } from './components/Footer';
 
 const Home = () => {
     return (
         <>
             <header>
-                <Navbar />
+
             </header>
 
             <div className="hero-full-container background-image-container white-text-container">
@@ -180,8 +177,6 @@ const Home = () => {
                 </div>
             </div>
 
-            <Orders />
-
             <div className="section-container">
                 <div className="container text-center">
                     <div className="row section-container-spacer">
@@ -258,12 +253,6 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-
-
-
-            <footer className="footer-container white-text-container">
-                <Footer />
-            </footer>
         </>
     );
 }
