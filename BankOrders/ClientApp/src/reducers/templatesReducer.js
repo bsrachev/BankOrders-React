@@ -1,7 +1,8 @@
 ﻿import { ACTION_TYPES } from "../actions/templatesAction";
 
 const initialState = {
-    list: []
+    list: [],
+    singleRecord: {}
 }
 
 export const templatesReducer = (state = initialState, action) => {
@@ -10,6 +11,13 @@ export const templatesReducer = (state = initialState, action) => {
             return {
                 ...state,
                 list: [...action.payload]
+            }
+
+        case ACTION_TYPES.FETCH_BY_ID:
+            return {
+                ...state,
+                //list: [...action.payload]
+                singleRecord: { ...action.payload }
             }
 
         case ACTION_TYPES.CREATE:

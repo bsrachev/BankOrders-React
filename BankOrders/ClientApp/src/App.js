@@ -10,6 +10,7 @@ import Home from './components/Home';
 import Currencies from './components/Currencies';
 import Orders from './components/Orders';
 import Templates from './components/Templates';
+import TemplateListing from './components/TemplateListing';
 import { Container } from "@material-ui/core";
 import { ToastProvider } from "react-toast-notifications";
 
@@ -38,7 +39,8 @@ export default class App extends Component {
                             <Route path="/" exact component={Home} />
                             <Route path="/currencies" exact component={Currencies} />
                             <Route path="/orders" component={Orders} />
-                            <Route path="/templates" component={Templates} />
+                            <Route path="/templates/:id" component={TemplateListing} />
+                            <Route path="/gosho" component={TemplateListing} />
                         </Switch>
 
                         <footer className="footer-container white-text-container">

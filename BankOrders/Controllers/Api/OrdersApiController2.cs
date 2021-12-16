@@ -13,7 +13,7 @@
     using System.Collections.Generic;
 
     [ApiController]
-    [Route("api/orders")]
+    [Route("api/orders2")]
     public class OrdersApiController : ControllerBase
     {
         private readonly IOrderService orderService;

@@ -12,14 +12,14 @@
     using System.Collections.Generic;
 
     [ApiController]
-    [Route("api/templates")]
-    public class TemplatesApiController : ControllerBase
+    [Route("api/templates2")]
+    public class TemplatesApiController2 : ControllerBase
     {
         private readonly ITemplateService templateService;
         private readonly IDetailService detailService;
         private readonly ICurrencyService currencyService;
 
-        public TemplatesApiController(
+        public TemplatesApiController2(
             ITemplateService templateService, 
             IDetailService detailService,
             ICurrencyService currencyService)
