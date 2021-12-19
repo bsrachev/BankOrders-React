@@ -1,6 +1,18 @@
-﻿import React, { Component } from 'react';
+﻿import React, { useEffect } from 'react';
+import { connect } from "react-redux";
+import * as actions from "../actions/usersAction";
 
-const Navbar = () => {
+//const { user: currentUser } = this.props;
+
+const Navbar = ({ ...props }) => {
+
+    useEffect(() => {
+        props.getUser()
+    }, [])
+
+    console.log(props)
+    console.log('logged in: ' + props.currentUser.isLoggedIn)
+
     return (
         <nav className="navbar navbar-default active">
             <div className="container container-header">
@@ -21,13 +33,24 @@ const Navbar = () => {
                     <ul className="nav navbar-nav navbar-right">
                         <li><a href="./orders" title="">Orders</a></li>
                         <li><a href="./templates" title="">Templates</a></li>
-                        <li><a href="./currencies" title="">Currencies</a></li>
-                        <li>
-                            <p>
-                                <a href="./components.html" className="btn btn-default navbar-btn" title="">Sign In</a>
-                            </p>
-                        </li>
-
+                        {props.currentUser.isLoggedIn ? (
+                            <>
+                                {props.currentUser.user.isAdmin &&
+                                    <li><a href="./currencies" title="">Currencies</a></li>
+                                }
+                                <li>
+                                    <p>
+                                        <a href="/" onClick={props.logOut} className="btn btn-default navbar-btn" title="">Log Out</a>
+                                    </p>
+                                </li>
+                            </>
+                        ) : (
+                            <li>
+                                <p>
+                                    <a href="./login" className="btn btn-default navbar-btn" title="">Sign In</a>
+                                </p>
+                            </li>
+                        )}
                     </ul>
                 </div>
             </div>
@@ -35,4 +58,14 @@ const Navbar = () => {
     );
 }
 
-export default Navbar;
+const mapStateToProps = state => {
+    return {
+        currentUser: state.usersReducer
+    }
+}
+
+const mapActionToProps = {
+    getUser: actions.getCurrentUser
+}
+
+export default connect(mapStateToProps, mapActionToProps)(Navbar);
