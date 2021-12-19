@@ -20,6 +20,9 @@ namespace BankOrders
     using System.Text.Json;
     using System.IO;
     using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.IdentityModel.Tokens;
+    using System.Text;
 
     public class Startup
     {
@@ -45,7 +48,31 @@ namespace BankOrders
                     options.Password.RequireUppercase = false;
                 })
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<BankOrdersDbContext>();
+                .AddEntityFrameworkStores<BankOrdersDbContext>()
+                .AddDefaultTokenProviders();
+
+            // Adding Authentication  
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+
+            // Adding Jwt Bearer  
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["JWT:ValidAudience"],
+                    ValidIssuer = Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                };
+            });
 
             services.AddControllersWithViews();
 
