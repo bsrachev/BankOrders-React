@@ -1,6 +1,8 @@
 ﻿namespace BankOrders.Controllers.Api
 {
+    using BankOrders.Data;
     using BankOrders.Data.Models;
+    using BankOrders.Infrastructure;
     using BankOrders.Models.Users;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
@@ -21,12 +23,52 @@
         private readonly UserManager<User> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IConfiguration _configuration;
+        private readonly BankOrdersDbContext _context;
 
-        public AuthenticateController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public AuthenticateController(
+            UserManager<User> userManager, 
+            RoleManager<IdentityRole> roleManager, 
+            IConfiguration configuration, 
+            BankOrdersDbContext context)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             _configuration = configuration;
+            _context = context;
+        }
+
+        [HttpGet]
+        [Route("get-user")]
+        public async Task<ActionResult<User>> GetUser()
+        {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                return NotFound();
+            }
+
+            //var user = await _context.Users.FindAsync(this.User.Id());
+
+            var user = await userManager.FindByNameAsync(this.User.Identity.Name);
+
+            return user;
+        }
+
+        [HttpGet]
+        [Route("get-user-roles")]
+        public async Task<ActionResult<string>> GetUserRoles()
+        {
+            if (!this.User.Identity.IsAuthenticated)
+            {
+                return NotFound();
+            }
+
+            //var user = await _context.Users.FindAsync(this.User.Id());
+
+            var user = await userManager.FindByNameAsync(this.User.Identity.Name);
+
+            var roles = await userManager.GetRolesAsync(user);
+
+            return roles[0];
         }
 
         [HttpPost]
