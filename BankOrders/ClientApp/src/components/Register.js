@@ -1,4 +1,6 @@
 ﻿import React, { Component } from "react";
+import { Redirect } from 'react-router-dom';
+
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
@@ -125,7 +127,11 @@ class Register extends Component {
     }
 
     render() {
-        const { message } = this.props;
+        const { isLoggedIn, message } = this.props;
+
+        if (isLoggedIn) {
+            return <Redirect to="/profile" />;
+        }
 
         return (
             <div className="col-md-12">
@@ -230,9 +236,11 @@ class Register extends Component {
 }
 
 function mapStateToProps(state) {
+    const { isLoggedIn } = state.usersReducer;
     const { message } = state.usersReducer;
     return {
-        message,
+        isLoggedIn,
+        message
     };
 }
 

@@ -1,4 +1,5 @@
 ﻿import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
 import * as actions from "../actions/usersAction";
 
@@ -23,31 +24,31 @@ const Navbar = ({ ...props }) => {
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
                     </button>
-                    <a className="navbar-brand" href="./index.html" title="">
+                    <Link className="navbar-brand" to="/" title="">
                         <img src="assets/images/mashup-icon.svg" className="navbar-logo-img" alt="" />
                         Bank Orders
-                    </a>
+                    </Link>
                 </div>
 
                 <div className="collapse navbar-collapse" id="navbar-collapse">
                     <ul className="nav navbar-nav navbar-right">
-                        <li><a href="./orders" title="">Orders</a></li>
-                        <li><a href="./templates" title="">Templates</a></li>
+                        <li><Link to="/orders" title="">Orders</Link></li>
+                        <li><Link to="/templates" title="">Templates</Link></li>
                         {props.currentUser.isLoggedIn ? (
                             <>
                                 {props.currentUser.user.isAdmin &&
-                                    <li><a href="./currencies" title="">Currencies</a></li>
+                                    <li><Link href="/currencies" to="/currencies">Currencies</Link></li>
                                 }
                                 <li>
                                     <p>
-                                        <a href="/" onClick={props.logOut} className="btn btn-default navbar-btn" title="">Log Out</a>
+                                        <Link onClick={props.logOut} to="/logout" className="btn btn-default navbar-btn">Log Out</Link>
                                     </p>
                                 </li>
                             </>
                         ) : (
                             <li>
                                 <p>
-                                    <a href="./login" className="btn btn-default navbar-btn" title="">Sign In</a>
+                                    <Link className="btn btn-default navbar-btn" to="/login">Sign In</Link>
                                 </p>
                             </li>
                         )}

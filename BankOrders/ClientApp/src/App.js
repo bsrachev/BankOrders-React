@@ -73,7 +73,7 @@ class App extends Component {
                 <ToastProvider autoDismiss={true}>
                     <header>
                         <Navbar logOut={this.logOut} />
-                        <Header />
+                        <Header currentUser={currentUser} />
                     </header>
 
                     <Switch>
