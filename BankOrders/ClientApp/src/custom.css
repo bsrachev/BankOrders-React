@@ -2985,6 +2985,11 @@ fieldset[disabled] a.btn {
         background-color: #fff
     }
 
+.btn-no-margin {
+    margin-left: 0px;
+    margin-right: 0px
+}
+
 .btn-primary {
     color: #39c7ca;
     background-color: transparent;

@@ -11,9 +11,6 @@ const Navbar = ({ ...props }) => {
         props.getUser()
     }, [])
 
-    console.log(props)
-    console.log('logged in: ' + props.currentUser.isLoggedIn)
-
     return (
         <nav className="navbar navbar-default active">
             <div className="container container-header">

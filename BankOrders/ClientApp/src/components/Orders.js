@@ -70,7 +70,7 @@ const Orders = ({ classes, ...props }) => {
                                                     <td>{order.userApprove}</td>
                                                     <td>{order.userPosting}</td>
                                                     <td>{order.userApprovePosting}</td>
-                                                    <td>{order.postingNumber}</td>
+                                                    <td>{order.postingNumber.toString().replace(0, '-')}</td>
                                                     <td>{order.status}</td>
                                                     <td>
                                                         <Button>
