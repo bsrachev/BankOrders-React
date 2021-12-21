@@ -1,8 +1,8 @@
 ﻿import React, { useEffect } from "react";
 import { Grid, withStyles } from "@material-ui/core";
-import useForm from "./useForm";
+import useForm from "../common/useForm";
 import { connect } from "react-redux";
-import * as actions from "../actions/currenciesAction";
+import * as actions from "../../actions/ordersAction";
 import { useToasts } from "react-toast-notifications";
 
 const styles = theme => ({

@@ -1,7 +1,8 @@
 ﻿import React, { useState, useEffect, Suspense } from "react";
 import { connect } from "react-redux";
-import * as actions from "../actions/templatesAction";
+import * as actions from "../../actions/templatesAction";
 import TemplatesForm from './TemplatesForm';
+import PageHeader from '../shared/PageHeader';
 import { withStyles, Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { useToasts } from "react-toast-notifications";
@@ -33,15 +34,13 @@ const Templates = ({ classes, ...props }) => {
     }
 
     return (
-        <div className="section-container">
-            <div className="container text-center">
-                <div className="row section-container-spacer">
-                    <div className="col-xs-12 col-md-12">
-                        <h2 className="text-center">Templates</h2>
-                        <div className="row col-md-offset-2">
-                            <TemplatesForm {...({ currentId, setCurrentId })} />
-                        </div>
-                        <div className="col-md-5">
+        <>
+            <PageHeader title="Templates" subtitle="Bank Orders" />
+
+            <div className="section-container">
+                <div className="container text-center">
+                    <div className="row section-container-spacer">
+                        <div className="col-xs-12 col-md-12">
                             <table className="table">
                                 <thead className="thead-light table-head-standart">
                                     <tr>
@@ -79,7 +78,7 @@ const Templates = ({ classes, ...props }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 

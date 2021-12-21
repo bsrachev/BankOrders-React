@@ -1,8 +1,11 @@
 import React from 'react';
+import Header from './Header';
 
 const Home = () => {
     return (
         <>
+            <Header />
+
             <div className="section-container">
                 <div className="container">
                     <div className="row">

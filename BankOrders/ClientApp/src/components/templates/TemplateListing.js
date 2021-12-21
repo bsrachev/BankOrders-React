@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from "react-redux";
-import * as actions from "../actions/templatesAction";
+import * as actions from "../../actions/templatesAction";
 
 const TemplateListing = ({ ...props }) => {
     const params = useParams();

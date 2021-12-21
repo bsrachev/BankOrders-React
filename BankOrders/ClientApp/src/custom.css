@@ -5707,6 +5707,11 @@ button.close {
     background-image: url(./svg/wave-hero-background.svg)
 }
 
+.background-image-container-alt {
+    text-align: center;
+    background-image: url(./svg/wave-hero-background-2.svg)
+}
+
 .background-image-container,
 .footer-container {
     background-size: cover;

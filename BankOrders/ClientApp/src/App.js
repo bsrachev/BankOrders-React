@@ -4,17 +4,17 @@ import { Route, Switch, Redirect, Link } from 'react-router-dom';
 import { store } from "./actions/store";
 import { Provider } from "react-redux";
 
-import { Footer } from './components/Footer';
-import Navbar from './components/Navbar';
-import Header from './components/Header';
-import Home from './components/Home';
-import Currencies from './components/Currencies';
-import Orders from './components/Orders';
-import Templates from './components/Templates';
-import Login from "./components/Login";
-import Profile from "./components/Profile";
-import Register from "./components/Register";
-import TemplateListing from './components/TemplateListing';
+import { Footer } from './components/shared/Footer';
+import Navbar from './components/shared/Navbar';
+import Header from './components/home/Header';
+import Home from './components/home/Home';
+import Currencies from './components/currencies/Currencies';
+import Orders from './components/orders/Orders';
+import Templates from './components/templates/Templates';
+import TemplateListing from './components/templates/TemplateListing';
+import Login from "./components/users/Login";
+import Profile from "./components/users/Profile";
+import Register from "./components/users/Register";
 import { ToastProvider } from "react-toast-notifications";
 
 import EventBus from "./common/EventBus";
@@ -73,15 +73,15 @@ class App extends Component {
                 <ToastProvider autoDismiss={true}>
                     <header>
                         <Navbar logOut={this.logOut} />
-                        <Header currentUser={this.currentUser} />
                     </header>
 
                     <Switch>
                         <Route path="/" exact component={Home} />
                         <Route path="/currencies" exact component={Currencies} />
                         <Route path="/orders" component={Orders} />
+
+                        <Route path="/templates" component={Templates} />
                         <Route path="/templates/:id" component={TemplateListing} />
-                        <Route path="/gosho" component={TemplateListing} />
                         <Route path="/login" component={Login} />
                         <Route path="/register" component={Register} />
                         <Route path="/profile" component={Profile} />

@@ -1,10 +1,11 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { connect } from "react-redux";
-import * as actions from "../actions/ordersAction";
+import * as actions from "../../actions/ordersAction";
 import OrdersForm from './OrdersForm';
 import { withStyles, Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import { useToasts } from "react-toast-notifications";
+import PageHeader from '../shared/PageHeader';
 
 const styles = theme => ({
     root: {
@@ -33,15 +34,13 @@ const Orders = ({ classes, ...props }) => {
     }
 
     return (
-        <div className="section-container">
-            <div className="container text-center">
-                <div className="row section-container-spacer">
-                    <div className="col-xs-12 col-md-12">
-                        <h2 className="text-center">Orders</h2>
-                        <div className="row col-md-offset-2">
-                            <OrdersForm {...({ currentId, setCurrentId })} />
-                        </div>
-                        <div className="col-md-5">
+        <>
+            <PageHeader title="Orders" subtitle="Bank Orders" />
+
+            <div className="section-container">
+                <div className="container text-center">
+                    <div className="row section-container-spacer">
+                        <div className="col-xs-12 col-md-12">
                             <table className="table">
                                 <thead className="thead-light table-head-standart">
                                     <tr>
@@ -87,7 +86,7 @@ const Orders = ({ classes, ...props }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 

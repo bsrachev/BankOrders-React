@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
-import * as actions from "../actions/usersAction";
+import * as actions from "../../actions/usersAction";
 
 const Header = ({ ...props }) => {
 

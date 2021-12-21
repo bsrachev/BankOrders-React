@@ -645,6 +645,9 @@
     NHig: function (t, e, n) {
         t.exports = n.p + "assets/images/wave-header.svg"
     },
+    NpHig: function (t, e, n) {
+        t.exports = n.p + "assets/images/wave-pageheader.svg"
+    },
     NjbO: function (t, e, n) {
         t.exports = n.p + "assets/images/img-06.jpg"
     },
@@ -4154,6 +4157,9 @@
     l3CI: function (t, e, n) {
         t.exports = n.p + "assets/images/wave-hero-background.svg"
     },
+    l3CI2: function (t, e, n) {
+        t.exports = n.p + "assets/images/wave-hero-background-2.svg"
+    },
     lIgk: function (t, e, n) {
         t.exports = n.p + "assets/images/img-05.jpg"
     },
@@ -4489,6 +4495,7 @@
             "./images/wave-footer.svg": "QGaO",
             "./images/wave-header.svg": "NHig",
             "./images/wave-hero-background.svg": "l3CI",
+            "./images/wave-hero-background-2.svg": "l3CI2",
             "./images/wave-left.svg": "slZu"
         };
         i.keys = function () {
