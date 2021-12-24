@@ -1,0 +1,73 @@
+.custom-table {
+    min-width: 500px;
+}
+
+    .custom-table thead tr th {
+        text-align: center;
+    }
+
+    .custom-table thead tr, .custom-table thead th {
+        border-top: none;
+        border-bottom: none !important;
+    }
+
+    .custom-table tbody th, .custom-table tbody td {
+        color: #777;
+        font-weight: 400;
+        padding-bottom: 20px;
+        padding-top: 20px;
+        font-weight: 300;
+    }
+
+        .custom-table tbody th small, .custom-table tbody td small {
+            color: #b3b3b3;
+            font-weight: 300;
+        }
+
+    .custom-table tbody tr th, .custom-table tbody tr td {
+        position: relative;
+        -webkit-transition: .3s all ease;
+        -o-transition: .3s all ease;
+        transition: .3s all ease;
+    }
+
+        .custom-table tbody tr th:before, .custom-table tbody tr th:after, .custom-table tbody tr td:before, .custom-table tbody tr td:after {
+            -webkit-transition: .3s all ease;
+            -o-transition: .3s all ease;
+            transition: .3s all ease;
+            content: "";
+            left: 0;
+            right: 0;
+            position: absolute;
+            height: 1px;
+            background: #05a680;
+            width: 100%;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .custom-table tbody tr th:before, .custom-table tbody tr td:before {
+            top: -1px;
+        }
+
+        .custom-table tbody tr th:after, .custom-table tbody tr td:after {
+            bottom: -1px;
+        }
+
+    .custom-table tbody tr:hover th, .custom-table tbody tr:hover td {
+        background: rgba(0, 255, 255, 0.03);
+    }
+
+        .custom-table tbody tr:hover th:before, .custom-table tbody tr:hover th:after, .custom-table tbody tr:hover td:before, .custom-table tbody tr:hover td:after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+    .custom-table tbody tr.active th, .custom-table tbody tr.active td {
+        background: rgba(0, 255, 255, 0.03);
+    }
+
+        .custom-table tbody tr.active th:before, .custom-table tbody tr.active th:after, .custom-table tbody tr.active td:before, .custom-table tbody tr.active td:after {
+            opacity: 1;
+            visibility: visible;
+        }

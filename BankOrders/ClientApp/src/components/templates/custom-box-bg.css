@@ -1,0 +1,12 @@
+﻿.custom-box-bg {
+    display: block;
+    position: relative;
+    margin-bottom: 40px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 4px 4px 25px hsla(0,1.9%,42%,0.15);
+}
+
+.custom-box-bg-body {
+    padding: 30px 30px 23px;
+}

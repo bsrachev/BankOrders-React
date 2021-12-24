@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BankOrders.Data;
 using BankOrders.Data.Models;
+using BankOrders.Models.Orders;
+using BankOrders.Models.Templates;
+using BankOrders.Services.Users;
+using BankOrders.Data.Models.Enums;
 
 namespace BankOrders.Controllers.Api
 {
@@ -15,17 +19,38 @@ namespace BankOrders.Controllers.Api
     public class TemplatesController : ControllerBase
     {
         private readonly BankOrdersDbContext _context;
+        private readonly IUserService _users;
 
-        public TemplatesController(BankOrdersDbContext context)
+        public TemplatesController(BankOrdersDbContext context, IUserService userService)
         {
             _context = context;
+            _users = userService;
+
         }
 
         // GET: api/Templates
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Template>>> GetTemplates()
+        public async Task<ActionResult<IEnumerable<TemplateApiModel>>> GetTemplates()
         {
-            return await _context.Templates.ToListAsync();
+            var templates = new List<TemplateApiModel>();
+
+            foreach (var t in await _context.Templates.ToListAsync())
+            {
+                var userCreate = _users.GetUserInfo(t.UserCreateId).EmployeeNumber;
+
+                templates.Add(new TemplateApiModel
+                {
+                    Id = t.Id,
+                    RefNumber = t.RefNumber,
+                    Name = t.Name,
+                    System = Enum.GetName(typeof(OrderSystem), t.System),
+                    UserCreate = userCreate,
+                    TimesUsed = t.TimesUsed,
+                });
+            }
+                
+
+            return templates;
         }
 
         // GET: api/Templates/5

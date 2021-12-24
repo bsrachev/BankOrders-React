@@ -8,15 +8,29 @@ const initialState = {
 export const templatesReducer = (state = initialState, action) => {
     switch (action.type) {
         case ACTION_TYPES.FETCH_ALL:
+            let listWithFilter = [...action.payload];
+
+            if (action.name != "") {
+                listWithFilter = listWithFilter.filter(x => x.name.includes(action.name));
+            }
+            if (action.refNumber != "") {
+                listWithFilter = listWithFilter.filter(x => x.refNumber == action.refNumber);
+            }
+            if (action.createdBy != "") {
+                listWithFilter = listWithFilter.filter(x => x.createdBy == action.createdBy);
+            }
+            if (action.system != "") {
+                listWithFilter = listWithFilter.filter(x => x.system == action.system);
+            }
+
             return {
                 ...state,
-                list: [...action.payload]
+                list: listWithFilter
             }
 
         case ACTION_TYPES.FETCH_BY_ID:
             return {
                 ...state,
-                //list: [...action.payload]
                 singleRecord: { ...action.payload }
             }
 

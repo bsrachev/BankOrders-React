@@ -13,14 +13,18 @@ export const ACTION_TYPES = {
     age: parseInt(data.age ? data.age : 0)
 })*/
 
-export const fetchAll = () => dispatch => {
+export const fetchAll = (criteria) => dispatch => {
     api.templates()
-        .fetchAll()
+        .fetchAll(criteria)
         .then(
             response => {
                 dispatch({
                     type: ACTION_TYPES.FETCH_ALL,
-                    payload: response.data
+                    payload: response.data,
+                    name: criteria.name,
+                    refNumber: criteria.refNumber,
+                    createdBy: criteria.createdBy,
+                    system: criteria.system
                 })
             })
         .catch(err => console.log(err))

@@ -17,6 +17,7 @@ html {
 }
 
 body {
+    background-color: #fafafa;
     margin: 0
 }
 
@@ -1941,8 +1942,6 @@ th {
 .table {
     width: 100%;
     max-width: 100%;
-    margin-bottom: 25px; 
-    border: 1px solid #838383;
 }
 
     .table > tbody > tr > td,
@@ -3291,6 +3290,66 @@ fieldset[disabled] a.btn {
     .btn-danger .badge {
         color: transparent;
         background-color: #d9534f
+    }
+
+.btn-cancel {
+    color: #414141;
+    background-color: transparent;
+    border-color: #414141
+}
+
+    .btn-cancel.focus,
+    .btn-cancel:focus {
+        color: #414141;
+        background-color: transparent;
+        border-color: #8b211e
+    }
+
+    .btn-cancel.active,
+    .btn-cancel:active,
+    .btn-cancel:hover,
+    .open > .btn-cancel.dropdown-toggle {
+        color: #414141;
+        background-color: transparent;
+        border-color: #c12e2a
+    }
+
+        .btn-cancel.active.focus,
+        .btn-cancel.active:focus,
+        .btn-cancel.active:hover,
+        .btn-cancel:active.focus,
+        .btn-cancel:active:focus,
+        .btn-cancel:active:hover,
+        .open > .btn-cancel.dropdown-toggle.focus,
+        .open > .btn-cancel.dropdown-toggle:focus,
+        .open > .btn-cancel.dropdown-toggle:hover {
+            color: #414141;
+            background-color: transparent;
+            border-color: #8b211e
+        }
+
+    .btn-cancel.active,
+    .btn-cancel:active,
+    .open > .btn-cancel.dropdown-toggle {
+        background-image: none
+    }
+
+    .btn-cancel.disabled.focus,
+    .btn-cancel.disabled:focus,
+    .btn-cancel.disabled:hover,
+    .btn-cancel[disabled].focus,
+    .btn-cancel[disabled]:focus,
+    .btn-cancel[disabled]:hover,
+    fieldset[disabled] .btn-cancel.focus,
+    fieldset[disabled] .btn-cancel:focus,
+    fieldset[disabled] .btn-cancel:hover {
+        background-color: transparent;
+        border-color: #414141
+    }
+
+    .btn-cancel .badge {
+        color: transparent;
+        background-color: #414141
     }
 
 .btn-link {
@@ -5766,6 +5825,13 @@ button.close {
     border-color: #f0ad4e
 }
 
+.btn-cancel:focus,
+.btn-cancel:hover {
+    background-color: #414141;
+    color: #fff;
+    border-color: #414141
+}
+
 .navbar-btn {
     float: left
 }
@@ -6129,3 +6195,5 @@ label {
 
 
 /*# sourceMappingURL=main.0cf8b554.map*/
+
+

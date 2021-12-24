@@ -90,7 +90,6 @@ class Login extends Component {
                         <div className="row section-container-spacer">
                             <div className="col-xs-12 col-md-12">
                                 <div className="col-md-12">
-                                    <h2 className="text-center">Sign In</h2>
                                     <div className="card card-container">
                                         <Form
                                             onSubmit={this.handleLogin}
