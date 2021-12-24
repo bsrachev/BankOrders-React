@@ -11,7 +11,7 @@ export const templatesReducer = (state = initialState, action) => {
             let listWithFilter = [...action.payload];
 
             if (action.name != "") {
-                listWithFilter = listWithFilter.filter(x => x.name.includes(action.name));
+                listWithFilter = listWithFilter.filter(x => x.name && x.name.includes(action.name));
             }
             if (action.refNumber != "") {
                 listWithFilter = listWithFilter.filter(x => x.refNumber == action.refNumber);

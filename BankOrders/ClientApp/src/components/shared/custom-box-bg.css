@@ -9,4 +9,5 @@
 
 .custom-box-bg-body {
     padding: 30px 30px 23px;
+    overflow-x: auto;
 }

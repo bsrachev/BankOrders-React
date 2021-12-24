@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as actions from "../../actions/templatesAction";
 import TemplatesForm from './TemplatesForm';
 import PageHeader from '../shared/PageHeader';
@@ -8,8 +8,9 @@ import { withStyles, Button } from "@material-ui/core";
 import PreviewIcon from "@material-ui/icons/PageviewTwoTone";
 import { useToasts } from "react-toast-notifications";
 
-import './custom-table.css';
-import './custom-box-bg.css';
+import '../shared/custom-box-bg.css';
+import '../shared/custom-table.css';
+import './custom-table-templates.css';
 
 const initialFieldValues = {
     name: '',
@@ -127,8 +128,8 @@ const Templates = ({ ...props }) => {
                                 <div className="col-lg-9">
                                     <section className="custom-box-bg">
                                         <div className="custom-box-bg-body">
-                                            <table className="table custom-table">
-                                                <thead >
+                                            <table className="table custom-table custom-table-templates">
+                                                <thead>
                                                     <tr>
                                                         <th scope="col">Reference &#8470;</th>
                                                         <th scope="col">Name</th>

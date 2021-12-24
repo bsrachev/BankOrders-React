@@ -1,5 +1,5 @@
 .custom-table {
-    min-width: 500px;
+    table-layout: fixed;
 }
 
     .custom-table thead tr th {
