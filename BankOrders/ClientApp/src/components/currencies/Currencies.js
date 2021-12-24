@@ -53,7 +53,7 @@ const Currencies = ({ classes, ...props }) => {
                                                                         {currency.code}
                                                                     </td>
                                                                     <td>
-                                                                        {currency.exchangeRate}
+                                                                        {currency.exchangeRate && currency.exchangeRate.toFixed(5)}
                                                                     </td>
                                                                     <td>
                                                                         <Button>

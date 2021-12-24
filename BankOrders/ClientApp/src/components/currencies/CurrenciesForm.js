@@ -11,17 +11,20 @@ const initialFieldValues = {
 
 const CurrenciesForm = ({ ...props }) => {
     const validate = (fieldValues = values) => {
-        let temp = { ...errors }
-        if ('code' in fieldValues)
-            temp.code = fieldValues.code ? "" : "This field is required."
-        if ('exchangeRate' in fieldValues)
-            temp.exchangeRate = fieldValues.exchangeRate ? "" : "This field is required."
+        let err = { ...errors }
+        if ('code' in fieldValues) {
+            err.code = fieldValues.code ? "" : "Code field is required."
+        }
+        if ('exchangeRate' in fieldValues) {
+            err.exchangeRate = fieldValues.exchangeRate ? "" : "Exchange Rate field is required."
+        }
         setErrors({
-            ...temp
+            ...err
         })
 
-        if (fieldValues == values)
-            return Object.values(temp).every(x => x == "")
+        if (fieldValues == values) {
+            return Object.values(err).every(x => x == "")
+        }
     }
 
     const {
@@ -32,6 +35,8 @@ const CurrenciesForm = ({ ...props }) => {
         handleInputChange,
         resetForm
     } = useForm(initialFieldValues, validate, props.setCurrentId)
+
+    console.log(errors)
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -58,8 +63,16 @@ const CurrenciesForm = ({ ...props }) => {
         }
     }, [props.currentId])
 
+    const displayErrors = Object.values(errors).map(err =>
+        <div key={err} className="alert alert-danger" role="alert">{err}</div>
+    )
+    console.log(errors)
+
     return (
         <form autoComplete="off" noValidate onSubmit={handleSubmit}>
+
+            {displayErrors}
+
             <Grid container>
                 <Grid item xs={12}>
                     <div className="form-group">
@@ -70,7 +83,7 @@ const CurrenciesForm = ({ ...props }) => {
                             placeholder="Currency Code"
                             value={values.code}
                             onChange={handleInputChange}
-                            {...(errors.fullName && { error: true, helperText: errors.fullName })}
+                            {...(errors.code && { error: true, helperText: errors.code })}
                         />
                     </div>
                     <div className="form-group">
@@ -80,7 +93,7 @@ const CurrenciesForm = ({ ...props }) => {
                             placeholder="Exchange Rate"
                             value={values.exchangeRate}
                             onChange={handleInputChange}
-                            {...(errors.fullName && { error: true, helperText: errors.fullName })}
+                            {...(errors.exchangeRate && { error: true, helperText: errors.exchangeRate })}
                         />
                     </div>
                     <div>

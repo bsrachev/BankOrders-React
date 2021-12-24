@@ -3,32 +3,13 @@ import { Grid, withStyles } from "@material-ui/core";
 import useForm from "../common/useForm";
 import { connect } from "react-redux";
 import * as actions from "../../actions/ordersAction";
-import { useToasts } from "react-toast-notifications";
-
-const styles = theme => ({
-    root: {
-        '& .MuiTextField-root': {
-            margin: theme.spacing(1),
-            minWidth: 230,
-            fontSize: "1.5rem"
-        }
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 230,
-    },
-    smMargin: {
-        margin: theme.spacing(1)
-    }
-})
 
 const initialFieldValues = {
     code: '',
     exchangeRate: ''
 }
 
-const CurrenciesForm = ({ classes, ...props }) => {
-    const { addToast } = useToasts()
+const TemplatesForm = ({ ...props }) => {
 
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
@@ -61,7 +42,6 @@ const CurrenciesForm = ({ classes, ...props }) => {
 
             const onSuccess = () => {
                 resetForm()
-                addToast("Submitted successfully", { appearance: 'success' })
             }
             if (props.currentId == 0)
                 props.createCurrency(values, onSuccess)
@@ -80,7 +60,7 @@ const CurrenciesForm = ({ classes, ...props }) => {
     }, [props.currentId])
 
     return (
-        <form autoComplete="off" noValidate className={classes.root} onSubmit={handleSubmit}>
+        <form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={12}>
                     <div className="form-group">
@@ -125,4 +105,4 @@ const mapActionToProps = {
     updateCurrency: actions.update
 }
 
-export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(CurrenciesForm));
+export default connect(mapStateToProps, mapActionToProps)(TemplatesForm);
