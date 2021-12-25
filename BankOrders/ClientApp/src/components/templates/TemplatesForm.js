@@ -1,5 +1,5 @@
 ﻿import React, { useEffect } from "react";
-import { Grid, withStyles } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import useForm from "../common/useForm";
 import { connect } from "react-redux";
 import * as actions from "../../actions/ordersAction";
@@ -87,7 +87,7 @@ const TemplatesForm = ({ ...props }) => {
                     </div>
                     <div>
                         <button type="submit" className="btn btn-primary">Submit</button>
-                        <button className="btn btn-info" onClick={resetForm}>Reset</button>
+                        <a className="btn btn-info" onClick={resetForm}>Reset</a>
                     </div>
                 </Grid>
             </Grid>

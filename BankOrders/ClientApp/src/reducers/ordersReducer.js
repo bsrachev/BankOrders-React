@@ -7,9 +7,42 @@ const initialState = {
 export const ordersReducer = (state = initialState, action) => {
     switch (action.type) {
         case ACTION_TYPES.FETCH_ALL:
+            let listWithFilter = [...action.payload];
+
+            if (action.refNumber != "") {
+                listWithFilter = listWithFilter.filter(x => x.refNumber == action.refNumber);
+            }
+            if (action.accountingDateFrom != "") {
+                listWithFilter = listWithFilter.filter(x => x.accountingDate >= action.accountingDateFrom);
+            }
+            if (action.accountingDateTo != "") {
+                listWithFilter = listWithFilter.filter(x => x.accountingDate <= action.accountingDateTo);
+            }
+            if (action.system != "") {
+                listWithFilter = listWithFilter.filter(x => x.system == action.system);
+            }
+            if (action.userCreate != "") {
+                listWithFilter = listWithFilter.filter(x => x.userCreate == action.userCreate);
+            }
+            if (action.userApprove != "") {
+                listWithFilter = listWithFilter.filter(x => x.userApprove == action.userApprove);
+            }
+            if (action.userPosting != "") {
+                listWithFilter = listWithFilter.filter(x => x.userPosting == action.userPosting);
+            }
+            if (action.userApprovePosting != "") {
+                listWithFilter = listWithFilter.filter(x => x.userApprovePosting == action.userApprovePosting);
+            }
+            if (action.postingNumber != "") {
+                listWithFilter = listWithFilter.filter(x => x.postingNumber == action.postingNumber);
+            }
+            if (action.status != "") {
+                listWithFilter = listWithFilter.filter(x => x.status == action.status);
+            }
+
             return {
                 ...state,
-                list: [...action.payload]
+                list: listWithFilter
             }
 
         case ACTION_TYPES.CREATE:

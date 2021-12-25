@@ -29,7 +29,7 @@ const Navbar = ({ ...props }) => {
 
                 <div className="collapse navbar-collapse" id="navbar-collapse">
                     <ul className="nav navbar-nav navbar-right">
-                        <li><Link to="/orders" title="">OrdKORers</Link></li>
+                        <li><Link to="/orders" title="">Orders</Link></li>
                         <li><Link to="/templates" title="">Templates</Link></li>
                         {props.currentUser.isLoggedIn ? (
                             <>

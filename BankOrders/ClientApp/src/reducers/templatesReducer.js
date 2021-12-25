@@ -17,7 +17,7 @@ export const templatesReducer = (state = initialState, action) => {
                 listWithFilter = listWithFilter.filter(x => x.refNumber == action.refNumber);
             }
             if (action.createdBy != "") {
-                listWithFilter = listWithFilter.filter(x => x.createdBy == action.createdBy);
+                listWithFilter = listWithFilter.filter(x => x.userCreate == action.createdBy);
             }
             if (action.system != "") {
                 listWithFilter = listWithFilter.filter(x => x.system == action.system);

@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BankOrders.Data;
 using BankOrders.Data.Models;
+using BankOrders.Services.Users;
+using BankOrders.Models.Orders;
+using BankOrders.Data.Models.Enums;
 
 namespace BankOrders.Controllers.Api
 {
@@ -15,17 +18,44 @@ namespace BankOrders.Controllers.Api
     public class OrdersController : ControllerBase
     {
         private readonly BankOrdersDbContext _context;
+        private readonly IUserService _users;
 
-        public OrdersController(BankOrdersDbContext context)
+        public OrdersController(BankOrdersDbContext context, IUserService userService)
         {
             _context = context;
+            _users = userService;
+
         }
 
         // GET: api/Orders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<OrderApiModel>>> GetOrders()
         {
-            return await _context.Orders.ToListAsync();
+            var orders = new List<OrderApiModel>();
+
+            foreach (var t in await _context.Orders.ToListAsync())
+            {
+                var userCreate = _users.GetUserInfo(t.UserCreateId).EmployeeNumber;
+                var userApprove = t.UserApproveId == null ? null : _users.GetUserInfo(t.UserApproveId).EmployeeNumber;
+                var userPosting = t.UserPostingId == null ? null : _users.GetUserInfo(t.UserPostingId).EmployeeNumber;
+                var userApprovePosting = t.UserApprovePostingId == null ? null : _users.GetUserInfo(t.UserApprovePostingId).EmployeeNumber;
+
+                orders.Add(new OrderApiModel
+                {
+                    Id = t.Id,
+                    RefNumber = t.RefNumber,
+                    System = Enum.GetName(typeof(OrderSystem), t.System),
+                    UserCreate = userCreate,
+                    UserApprove = userApprove,
+                    UserPosting = userPosting,
+                    UserApprovePosting = userApprovePosting,
+                    AccountingDate = t.AccountingDate,
+                    PostingNumber = t.PostingNumber,
+                    Status = Enum.GetName(typeof(OrderStatus), t.Status)
+                });
+            }
+
+            return orders;
         }
 
         // GET: api/Orders/5

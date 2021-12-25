@@ -6,11 +6,11 @@ import { Provider } from "react-redux";
 
 import { Footer } from './components/shared/Footer';
 import Navbar from './components/shared/Navbar';
-import Header from './components/home/Header';
-import Home from './components/home/Home';
-import Currencies from './components/currencies/Currencies';
-import Orders from './components/orders/Orders';
-import Templates from './components/templates/Templates';
+import Header from './components/home/HomeHeader';
+import { HomePage } from './components/HomePage';
+import { CurrenciesPage } from './components/CurrenciesPage';
+import { OrdersPage } from './components/OrdersPage';
+import { TemplatesPage } from './components/TemplatesPage';
 import TemplateListing from './components/templates/TemplateListing';
 import Login from "./components/users/Login";
 import Profile from "./components/users/Profile";
@@ -76,11 +76,10 @@ class App extends Component {
                     </header>
 
                     <Switch>
-                        <Route path="/" exact component={Home} />
-                        <Route path="/currencies" exact component={Currencies} />
-                        <Route path="/orders" component={Orders} />
-
-                        <Route path="/templates" component={Templates} />
+                        <Route path="/" exact component={HomePage} />
+                        <Route path="/currencies" exact component={CurrenciesPage} />
+                        <Route path="/orders" component={OrdersPage} />
+                        <Route path="/templates" component={TemplatesPage} />
                         <Route path="/templates/:id" component={TemplateListing} />
                         <Route path="/login" component={Login} />
                         <Route path="/register" component={Register} />

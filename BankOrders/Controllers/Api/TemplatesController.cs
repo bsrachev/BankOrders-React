@@ -45,10 +45,9 @@ namespace BankOrders.Controllers.Api
                     Name = t.Name,
                     System = Enum.GetName(typeof(OrderSystem), t.System),
                     UserCreate = userCreate,
-                    TimesUsed = t.TimesUsed,
+                    TimesUsed = t.TimesUsed
                 });
             }
-                
 
             return templates;
         }

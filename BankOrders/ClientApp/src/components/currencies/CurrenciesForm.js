@@ -1,5 +1,5 @@
 ﻿import React, { useEffect } from "react";
-import { Grid, withStyles } from "@material-ui/core";
+import { Grid, FormHelperText } from "@material-ui/core";
 import useForm from "../common/useForm";
 import { connect } from "react-redux";
 import * as actions from "../../actions/currenciesAction";
@@ -36,11 +36,9 @@ const CurrenciesForm = ({ ...props }) => {
         resetForm
     } = useForm(initialFieldValues, validate, props.setCurrentId)
 
-    console.log(errors)
-
     const handleSubmit = e => {
         e.preventDefault()
-
+        console.log(e)
         if (validate()) {
             const onSuccess = () => {
                 resetForm()
@@ -63,16 +61,10 @@ const CurrenciesForm = ({ ...props }) => {
         }
     }, [props.currentId])
 
-    const displayErrors = Object.values(errors).map(err =>
-        <div key={err} className="alert alert-danger" role="alert">{err}</div>
-    )
     console.log(errors)
 
     return (
         <form autoComplete="off" noValidate onSubmit={handleSubmit}>
-
-            {displayErrors}
-
             <Grid container>
                 <Grid item xs={12}>
                     <div className="form-group">
@@ -83,8 +75,10 @@ const CurrenciesForm = ({ ...props }) => {
                             placeholder="Currency Code"
                             value={values.code}
                             onChange={handleInputChange}
-                            {...(errors.code && { error: true, helperText: errors.code })}
                         />
+                        {
+                            errors.code && <div className="alert alert-danger" role="alert">{errors.code}</div>
+                        }
                     </div>
                     <div className="form-group">
                         <input name="exchangeRate"
@@ -93,12 +87,14 @@ const CurrenciesForm = ({ ...props }) => {
                             placeholder="Exchange Rate"
                             value={values.exchangeRate}
                             onChange={handleInputChange}
-                            {...(errors.exchangeRate && { error: true, helperText: errors.exchangeRate })}
                         />
+                        {
+                            errors.exchangeRate && <div className="alert alert-danger" role="alert">{errors.exchangeRate}</div>
+                        }
                     </div>
                     <div>
                         <button type="submit" className="btn btn-primary">Submit</button>
-                        <button className="btn btn-cancel btn-sm" onClick={resetForm}>Reset</button>
+                        <a className="btn btn-cancel btn-sm" onClick={resetForm}>Reset</a>
                     </div>
                 </Grid>
             </Grid>

@@ -4,6 +4,7 @@
 
     .custom-table thead tr th {
         text-align: center;
+        vertical-align: middle;
     }
 
     .custom-table thead tr, .custom-table thead th {

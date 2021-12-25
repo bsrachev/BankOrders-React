@@ -24,70 +24,65 @@ const Currencies = ({ classes, ...props }) => {
     }
 
     return (
-        <>
-            <PageHeader title="Currencies" subtitle="Bank Orders" />
 
-            <div className="section-container">
-                <div className="container text-center">
-                    <div className="row section-container-spacer">
-                        <div className="col-xs-12 col-md-12">
-                            <div className="row">
-                                <div className="col-lg-7 ml-1">
-                                    <section className="custom-box-bg">
-                                        <div className="custom-box-bg-body">
-                                            <table className="table custom-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Currency</th>
-                                                        <th scope="col">Exchange Rate</th>
-                                                        <th scope="col">Edit</th>
-                                                        <th scope="col">Remove</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {
-                                                        props.currenciesList.map(currency => {
-                                                            return (
-                                                                <tr key={currency.id}>
-                                                                    <td>
-                                                                        {currency.code}
-                                                                    </td>
-                                                                    <td>
-                                                                        {currency.exchangeRate && currency.exchangeRate.toFixed(5)}
-                                                                    </td>
-                                                                    <td>
-                                                                        <Button>
-                                                                            <EditIcon onClick={() => { setCurrentId(currency.id) }} />
-                                                                        </Button>
-                                                                    </td>
-                                                                    <td>
-                                                                        <Button>
-                                                                            <DeleteIcon color="secondary" onClick={() => onDelete(currency.id)} />
-                                                                        </Button>
-                                                                    </td>
-                                                                </tr>
-                                                            );
-                                                        })
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </section>
+        <div className="container text-center">
+            <div className="row section-container-spacer">
+                <div className="col-xs-12 col-md-12">
+                    <div className="row">
+                        <div className="col-lg-7 ml-auto">
+                            <section className="custom-box-bg">
+                                <div className="custom-box-bg-body">
+                                    <table className="table custom-table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Currency</th>
+                                                <th scope="col">Exchange Rate</th>
+                                                <th scope="col">Edit</th>
+                                                <th scope="col">Remove</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                props.currenciesList.map(currency => {
+                                                    return (
+                                                        <tr key={currency.id}>
+                                                            <td>
+                                                                {currency.code}
+                                                            </td>
+                                                            <td>
+                                                                {currency.exchangeRate && currency.exchangeRate.toFixed(5)}
+                                                            </td>
+                                                            <td>
+                                                                <Button>
+                                                                    <EditIcon onClick={() => { setCurrentId(currency.id) }} />
+                                                                </Button>
+                                                            </td>
+                                                            <td>
+                                                                <Button>
+                                                                    <DeleteIcon color="secondary" onClick={() => onDelete(currency.id)} />
+                                                                </Button>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })
+                                            }
+                                        </tbody>
+                                    </table>
                                 </div>
+                            </section>
+                        </div>
 
-                                <div className="col-lg-3">
-                                    <section className="custom-box-bg">
-                                        <div className="custom-box-bg-body">
-                                            <CurrenciesForm {...({ currentId, setCurrentId })} />
-                                        </div>
-                                    </section>
+                        <div className="col-lg-3 mr-auto">
+                            <section className="custom-box-bg">
+                                <div className="custom-box-bg-body">
+                                    <CurrenciesForm {...({ currentId, setCurrentId })} />
                                 </div>
-                            </div>
+                            </section>
                         </div>
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
