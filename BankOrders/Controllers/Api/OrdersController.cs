@@ -10,6 +10,7 @@ using BankOrders.Data.Models;
 using BankOrders.Services.Users;
 using BankOrders.Models.Orders;
 using BankOrders.Data.Models.Enums;
+using BankOrders.Services.Orders;
 
 namespace BankOrders.Controllers.Api
 {
@@ -19,11 +20,13 @@ namespace BankOrders.Controllers.Api
     {
         private readonly BankOrdersDbContext _context;
         private readonly IUserService _users;
+        private readonly IOrderService _orders;
 
-        public OrdersController(BankOrdersDbContext context, IUserService userService)
+        public OrdersController(BankOrdersDbContext context, IUserService userService, IOrderService orderService)
         {
             _context = context;
             _users = userService;
+            _orders = orderService;
 
         }
 
@@ -60,14 +63,33 @@ namespace BankOrders.Controllers.Api
 
         // GET: api/Orders/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Order>> GetOrder(int id)
+        public async Task<ActionResult<OrderApiModel>> GetOrder(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var orderData = await _context.Orders.FindAsync(id);
 
-            if (order == null)
+            if (orderData == null)
             {
                 return NotFound();
             }
+
+            var userCreate = _users.GetUserInfo(orderData.UserCreateId).EmployeeNumber;
+            var userApprove = orderData.UserApproveId == null ? null : _users.GetUserInfo(orderData.UserApproveId).EmployeeNumber;
+            var userPosting = orderData.UserPostingId == null ? null : _users.GetUserInfo(orderData.UserPostingId).EmployeeNumber;
+            var userApprovePosting = orderData.UserApprovePostingId == null ? null : _users.GetUserInfo(orderData.UserApprovePostingId).EmployeeNumber;
+
+            var order = new OrderApiModel
+            {
+                Id = orderData.Id,
+                RefNumber = orderData.RefNumber,
+                System = Enum.GetName(typeof(OrderSystem), orderData.System),
+                UserCreate = userCreate,
+                UserApprove = userApprove,
+                UserPosting = userPosting,
+                UserApprovePosting = userApprovePosting,
+                AccountingDate = orderData.AccountingDate,
+                PostingNumber = orderData.PostingNumber,
+                Status = Enum.GetName(typeof(OrderStatus), orderData.Status)
+            };
 
             return order;
         }
@@ -75,7 +97,7 @@ namespace BankOrders.Controllers.Api
         // PUT: api/Orders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrder(int id, Order order)
+        public async Task<IActionResult> ChangeOrderStatus(int id, Order order)
         {
             if (id != order.Id)
             {
@@ -106,10 +128,13 @@ namespace BankOrders.Controllers.Api
         // POST: api/Orders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(Order order)
+        public async Task<ActionResult<Order>> PostOrder(CreateOrderApiModel orderModel)
         {
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
+            var userCreateId = _users.GetUserIdByEmployeeNumber(orderModel.UserCreate);
+
+            int orderId = _orders.Create(orderModel.AccountingDate, orderModel.System, userCreateId);
+
+            var order = await _context.Orders.FindAsync(orderId);
 
             return CreatedAtAction("GetOrder", new { id = order.Id }, order);
         }

@@ -4,13 +4,9 @@ export const ACTION_TYPES = {
     CREATE: 'CREATE',
     UPDATE: 'UPDATE',
     DELETE: 'DELETE',
-    FETCH_ALL: 'FETCH_ALL'
+    FETCH_ALL: 'FETCH_ALL',
+    FETCH_BY_ID: 'FETCH_BY_ID'
 }
-
-/*const formateData = data => ({
-    ...data,
-    age: parseInt(data.age ? data.age : 0)
-})*/
 
 export const fetchAll = (criteria) => dispatch => {
     api.orders()
@@ -35,9 +31,26 @@ export const fetchAll = (criteria) => dispatch => {
         .catch(err => console.log(err))
 }
 
+export const fetchById = (id) => dispatch => {
+    return new Promise((resolve, reject) => {
+        api.orders()
+            .fetchById(id)
+            .then(
+                response => {
+                    dispatch({
+                        type: ACTION_TYPES.FETCH_BY_ID,
+                        payload: response.data
+                    });
+                    resolve(response);
+                })
+            .catch(err => {
+                console.log(err);
+                reject(err);
+            });
+    });
+}
 
-export const create = (data, onSuccess) => dispatch => {
-    //data = formateData(data)
+export const create = (data) => dispatch => {
     console.log(data)
     api.orders()
         .create(data)
@@ -47,13 +60,11 @@ export const create = (data, onSuccess) => dispatch => {
                     type: ACTION_TYPES.CREATE,
                     payload: response.data
             })
-            onSuccess()
         })
         .catch(err => console.log(err))
 }
 
-export const update = (id, data, onSuccess) => dispatch => {
-    //data = formateData(data)
+export const update = (id, data) => dispatch => {
     api.orders().update(id, data)
         .then(
             response => {
@@ -61,12 +72,11 @@ export const update = (id, data, onSuccess) => dispatch => {
                 type: ACTION_TYPES.UPDATE,
                 payload: { id, ...data }
             })
-            onSuccess()
         })
         .catch(err => console.log(err))
 }
 
-export const Delete = (id, onSuccess) => dispatch => {
+export const Delete = (id) => dispatch => {
     api.orders().delete(id)
         .then(
             response => {
@@ -74,7 +84,6 @@ export const Delete = (id, onSuccess) => dispatch => {
                 type: ACTION_TYPES.DELETE,
                 payload: id
             })
-            onSuccess()
         })
         .catch(err => console.log(err))
 }

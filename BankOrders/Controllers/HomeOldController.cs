@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace BankOrders.Controllers
 {
-    public class HomeController : Controller
+    public class HomeOldController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeOldController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeOldController(ILogger<HomeOldController> logger)
         {
             _logger = logger;
         }

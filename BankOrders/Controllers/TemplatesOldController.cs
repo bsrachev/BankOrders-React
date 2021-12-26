@@ -12,12 +12,12 @@
     
     using System;
 
-    public class TemplatesController : Controller
+    public class TemplatesOldController : Controller
     {
         private readonly ITemplateService templateService;
         private readonly IDetailService detailService;
 
-        public TemplatesController(
+        public TemplatesOldController(
             ITemplateService templateService,
             IDetailService detailService)
         {

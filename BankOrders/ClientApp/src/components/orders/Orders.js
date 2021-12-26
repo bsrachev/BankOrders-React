@@ -1,16 +1,9 @@
 ﻿import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Link } from 'react-router-dom';
+import { OrdersTable } from "./OrdersTable";
 import * as actions from "../../actions/ordersAction";
-import OrdersForm from './OrdersForm';
-import PageHeader from '../shared/PageHeader';
-import { withStyles, Button } from "@material-ui/core";
-import PreviewIcon from "@material-ui/icons/PageviewTwoTone";
-import { useToasts } from "react-toast-notifications";
 
 import '../shared/custom-box-bg.css';
-import '../shared/custom-table.css';
-import './custom-table-orders.css';
 
 const initialFieldValues = {
     refNumber: '',
@@ -52,8 +45,6 @@ const Orders = ({ ...props }) => {
         });
     }
 
-    console.log(values)
-
     const searchOrders = (e) => {
         e.preventDefault();
         let formData = new FormData(e.currentTarget);
@@ -77,6 +68,8 @@ const Orders = ({ ...props }) => {
     useEffect(() => {
         props.fetchAllOrders(values)
     }, [])
+
+    console.log(props.ordersList)
 
     return (
         <div className="container text-center">
@@ -203,48 +196,7 @@ const Orders = ({ ...props }) => {
                         </section>
                     </div>
                     <div className="col-lg-12">
-                        <section className="custom-box-bg">
-                            <div className="custom-box-bg-body">
-                                <table className="table custom-table custom-table-orders">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Reference &#8470;</th>
-                                            <th scope="col">Accounting Date</th>
-                                            <th scope="col">System</th>
-                                            <th scope="col">Created<br />by</th>
-                                            <th scope="col">Approved<br />by</th>
-                                            <th scope="col">Posting<br />by</th>
-                                            <th scope="col" className="px-0">Posting approved by</th>
-                                            <th scope="col">Posting number</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Details</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            props.ordersList.map(order => {
-                                                return (
-                                                    <tr key={order.id}>
-                                                        <td>&#8470;{order.refNumber}</td>
-                                                        <td>{new Date(order.accountingDate).toLocaleDateString()}</td>
-                                                        <td>{order.system}</td>
-                                                        <td>{order.userCreate}</td>
-                                                        <td>{order.userApprove == null ? '-' : order.userApprove}</td>
-                                                        <td>{order.userPosting == null ? '-' : order.userPosting}</td>
-                                                        <td>{order.userApprovePosting == null ? '-' : order.userApprovePosting}</td>
-                                                        <td>{order.postingNumber == 0 ? '-' : order.postingNumber}</td>
-                                                        <td>{order.status}</td>
-                                                        <td>
-                                                            <Link to={"/orders/" + order.id}><PreviewIcon fontSize="large" /></Link>
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
+                        <OrdersTable ordersList={props.ordersList} />
                     </div>
                 </div>
             </div>

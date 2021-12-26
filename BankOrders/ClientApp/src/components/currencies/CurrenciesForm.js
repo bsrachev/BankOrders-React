@@ -1,7 +1,7 @@
 ﻿import React, { useEffect } from "react";
 import { Grid, FormHelperText } from "@material-ui/core";
-import useForm from "../common/useForm";
 import { connect } from "react-redux";
+import useForm from "../common/useForm";
 import * as actions from "../../actions/currenciesAction";
 
 const initialFieldValues = {
@@ -38,7 +38,6 @@ const CurrenciesForm = ({ ...props }) => {
 
     const handleSubmit = e => {
         e.preventDefault()
-        console.log(e)
         if (validate()) {
             const onSuccess = () => {
                 resetForm()

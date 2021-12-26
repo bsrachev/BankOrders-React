@@ -10,6 +10,8 @@ import Header from './components/home/HomeHeader';
 import { HomePage } from './components/HomePage';
 import { CurrenciesPage } from './components/CurrenciesPage';
 import { OrdersPage } from './components/OrdersPage';
+import { OrderDetailsPage } from './components/OrderDetailsPage';
+import { OrderCreatePage } from './components/OrderCreatePage';
 import { TemplatesPage } from './components/TemplatesPage';
 import TemplateListing from './components/templates/TemplateListing';
 import Login from "./components/users/Login";
@@ -78,12 +80,15 @@ class App extends Component {
                     <Switch>
                         <Route path="/" exact component={HomePage} />
                         <Route path="/currencies" exact component={CurrenciesPage} />
-                        <Route path="/orders" component={OrdersPage} />
-                        <Route path="/templates" component={TemplatesPage} />
-                        <Route path="/templates/:id" component={TemplateListing} />
-                        <Route path="/login" component={Login} />
-                        <Route path="/register" component={Register} />
-                        <Route path="/profile" component={Profile} />
+                        <Route path="/orders" exact component={OrdersPage} />
+                        <Route path="/orders/create" exact component={OrderCreatePage} />
+                        <Route path="/orders/:id" exact component={OrderDetailsPage} />
+                        <Route path="/templates" exact component={TemplatesPage} />
+
+                        <Route path="/templates/:id" exact component={TemplateListing} />
+                        <Route path="/login" exact component={Login} />
+                        <Route path="/register" exact component={Register} />
+                        <Route path="/profile" exact component={Profile} />
                     </Switch>
 
                     <footer className="footer-container white-text-container">

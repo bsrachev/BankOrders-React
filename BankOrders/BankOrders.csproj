@@ -40,7 +40,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Models\Enums\" />
-    <Folder Include="Views\Templates\" />
+    <Folder Include="Views\TemplatesOld\" />
   </ItemGroup>
 
   <ItemGroup>

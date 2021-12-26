@@ -1,7 +1,8 @@
 ﻿import { ACTION_TYPES } from "../actions/ordersAction";
 
 const initialState = {
-    list: []
+    list: [],
+    singleRecord: {}
 }
 
 export const ordersReducer = (state = initialState, action) => {
@@ -43,6 +44,12 @@ export const ordersReducer = (state = initialState, action) => {
             return {
                 ...state,
                 list: listWithFilter
+            }
+
+        case ACTION_TYPES.FETCH_BY_ID:
+            return {
+                ...state,
+                singleRecord: { ...action.payload }
             }
 
         case ACTION_TYPES.CREATE:

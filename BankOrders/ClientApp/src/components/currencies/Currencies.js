@@ -4,8 +4,7 @@ import * as actions from "../../actions/currenciesAction";
 import CurrenciesForm from './CurrenciesForm';
 import { Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import PageHeader from '../shared/PageHeader';
+import DeleteIcon from "@material-ui/icons/DeleteForever";
 
 import '../shared/custom-box-bg.css';
 import '../shared/custom-table.css';
@@ -24,7 +23,6 @@ const Currencies = ({ classes, ...props }) => {
     }
 
     return (
-
         <div className="container text-center">
             <div className="row section-container-spacer">
                 <div className="col-xs-12 col-md-12">

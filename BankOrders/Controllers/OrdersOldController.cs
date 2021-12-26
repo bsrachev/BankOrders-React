@@ -21,7 +21,7 @@
     using static Data.DataConstants.SuccessMessages;
     using static WebConstants;
 
-    public class OrdersController : Controller
+    public class OrdersOldController : Controller
     {
         private readonly ICurrencyService currencyService;
         private readonly ITemplateService templateService;
@@ -30,7 +30,7 @@
         private readonly IUserService userService;
         private readonly IEmailService emailService;
 
-        public OrdersController(
+        public OrdersOldController(
             ICurrencyService currencyService,
             ITemplateService templateService,
             IOrderService orderService,

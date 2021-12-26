@@ -4,26 +4,45 @@ export const ACTION_TYPES = {
     CREATE: 'CREATE',
     UPDATE: 'UPDATE',
     DELETE: 'DELETE',
-    FETCH_ALL: 'FETCH_ALL'
+    FETCH_ALL: 'FETCH_ALL',
+    FETCH_BY_ID: 'FETCH_BY_ID'
 }
 
 export const fetchAll = () => dispatch => {
-    api.currencies()
+    api.details()
         .fetchAll()
         .then(
             response => {
                 dispatch({
                     type: ACTION_TYPES.FETCH_ALL,
-                    payload: response.data
+                    payload: response.data,
                 })
             })
         .catch(err => console.log(err))
 }
 
+export const fetchById = (id) => dispatch => {
+    return new Promise((resolve, reject) => {
+        api.details()
+            .fetchById(id)
+            .then(
+                response => {
+                    dispatch({
+                        type: ACTION_TYPES.FETCH_BY_ID,
+                        payload: response.data
+                    });
+                    resolve(response);
+                })
+            .catch(err => {
+                console.log(err);
+                reject(err);
+            });
+    });
+}
 
-export const create = (data, onSuccess) => dispatch => {
+export const create = (data) => dispatch => {
     console.log(data)
-    api.currencies()
+    api.details()
         .create(data)
         .then(
             response => {
@@ -31,33 +50,30 @@ export const create = (data, onSuccess) => dispatch => {
                     type: ACTION_TYPES.CREATE,
                     payload: response.data
             })
-            onSuccess()
         })
         .catch(err => console.log(err))
 }
 
-export const update = (id, data, onSuccess) => dispatch => {
-    api.currencies().update(id, data)
+export const update = (id, data) => dispatch => {
+    api.details().update(id, data)
         .then(
             response => {
             dispatch({
                 type: ACTION_TYPES.UPDATE,
                 payload: { id, ...data }
             })
-            onSuccess()
         })
         .catch(err => console.log(err))
 }
 
-export const Delete = (id, onSuccess) => dispatch => {
-    api.currencies().delete(id)
+export const Delete = (id) => dispatch => {
+    api.details().delete(id)
         .then(
             response => {
             dispatch({
                 type: ACTION_TYPES.DELETE,
                 payload: id
             })
-            onSuccess()
         })
         .catch(err => console.log(err))
 }
