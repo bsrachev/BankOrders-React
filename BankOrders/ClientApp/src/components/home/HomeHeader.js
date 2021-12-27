@@ -9,7 +9,7 @@ const Header = ({ ...props }) => {
         props.getUser()
     }, [])
 
-    console.log(props.currentUser);
+    //console.log(props.currentUser);
 
     return (
         <div className="hero-full-container background-image-container white-text-container">

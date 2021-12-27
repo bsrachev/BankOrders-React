@@ -10,13 +10,13 @@ using BankOrders.Data.Models;
 
 namespace BankOrders.Controllers.Api
 {
-    [Route("api/currencies")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class CurrenciesApiController : ControllerBase
+    public class CurrenciesController : ControllerBase
     {
         private readonly BankOrdersDbContext _context;
 
-        public CurrenciesApiController(BankOrdersDbContext context)
+        public CurrenciesController(BankOrdersDbContext context)
         {
             _context = context;
         }
@@ -84,7 +84,7 @@ namespace BankOrders.Controllers.Api
             return CreatedAtAction("GetCurrency", new { id = currency.Id }, currency);
         }
 
-        // DELETE: api/CurrenciesApi/5
+        // DELETE: api/Currencies/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCurrency(int id)
         {

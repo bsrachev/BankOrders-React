@@ -60,8 +60,6 @@ const CurrenciesForm = ({ ...props }) => {
         }
     }, [props.currentId])
 
-    console.log(errors)
-
     return (
         <form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <Grid container>

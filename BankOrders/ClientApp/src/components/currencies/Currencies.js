@@ -9,7 +9,7 @@ import DeleteIcon from "@material-ui/icons/DeleteForever";
 import '../shared/custom-box-bg.css';
 import '../shared/custom-table.css';
 
-const Currencies = ({ classes, ...props }) => {
+const Currencies = ({ ...props }) => {
     const [currentId, setCurrentId] = useState(0)
 
     useEffect(() => {

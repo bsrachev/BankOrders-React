@@ -69,7 +69,7 @@ const Orders = ({ ...props }) => {
         props.fetchAllOrders(values)
     }, [])
 
-    console.log(props.ordersList)
+    //console.log(props.ordersList)
 
     return (
         <div className="container text-center">

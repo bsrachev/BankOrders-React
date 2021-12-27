@@ -1,8 +1,8 @@
 ﻿import { ACTION_TYPES } from "../actions/ordersAction";
 
 const initialState = {
-    list: [],
-    singleRecord: {}
+    orderslist: [],
+    singleOrder: {}
 }
 
 export const ordersReducer = (state = initialState, action) => {

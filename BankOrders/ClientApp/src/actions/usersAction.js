@@ -15,7 +15,6 @@ export const ACTION_TYPES = {
 }
 
 export const register = (newUser) => (dispatch) => {
-    console.log(newUser);
     return AuthService.register(newUser).then(
         (response) => {
             dispatch({

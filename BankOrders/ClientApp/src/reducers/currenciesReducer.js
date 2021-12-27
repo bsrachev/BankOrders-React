@@ -1,12 +1,13 @@
 ﻿import { ACTION_TYPES } from "../actions/currenciesAction";
 
 const initialState = {
-    list: []
+    currenciesList: []
 }
 
 export const currenciesReducer = (state = initialState, action) => {
     switch (action.type) {
         case ACTION_TYPES.FETCH_ALL:
+            console.log(action)
             return {
                 ...state,
                 list: [...action.payload]

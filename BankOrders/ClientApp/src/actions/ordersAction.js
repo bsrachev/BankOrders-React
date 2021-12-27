@@ -51,7 +51,6 @@ export const fetchById = (id) => dispatch => {
 }
 
 export const create = (data) => dispatch => {
-    console.log(data)
     api.orders()
         .create(data)
         .then(

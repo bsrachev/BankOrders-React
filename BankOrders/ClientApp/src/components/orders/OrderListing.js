@@ -3,15 +3,12 @@ import { connect } from "react-redux";
 import { useParams, Link } from 'react-router-dom';
 import * as orderActions from "../../actions/ordersAction";
 import * as detailActions from "../../actions/detailsAction";
-import useForm from "../common/useForm";
-import PageHeader from '../shared/PageHeader';
-import { withStyles, Button } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/EditTwoTone";
-import DeleteIcon from "@material-ui/icons/DeleteForeverTwoTone";
+import * as currencyActions from "../../actions/currenciesAction";
+
+import DetailsTable from "../details/DetailsTable";
 
 import '../shared/custom-box-bg.css';
 import '../shared/custom-table.css';
-import '../details/custom-table-details.css';
 import './custom-table-orders.css';
 
 const initialFieldValues = {
@@ -96,11 +93,11 @@ const OrdersDetails = ({ ...props }) => {
                                 <div className="custom-box-bg-body text-center">
                                     <form autoComplete="off" noValidate onSubmit={onCreateOrder}>
                                         <div className="form-row mr-auto">
-                                            <div className="form-group col-md-4">
+                                            <div className={id ? "form-group col-md-3" : "form-group col-md-4"}>
                                                 <label className="control-label">Accounting Date:</label>
                                                 <input
                                                     type={id ? "text" : "date"}
-                                                    className="form-control"
+                                                    className="form-control text-center"
                                                     readOnly={id ? true : false}
                                                     id="accountingDate"
                                                     name="accountingDate"
@@ -111,20 +108,19 @@ const OrdersDetails = ({ ...props }) => {
                                                     errors.accountingDate && <div className="alert alert-danger" role="alert">{errors.accountingDate}</div>
                                                 }
                                             </div>
-                                            <div className="form-group col-md-4">
+                                            <div className={id ? "form-group col-md-3" : "form-group col-md-4"}>
                                                 <label className="control-label">Created by:</label>
                                                 <input
-                                                    className="form-control"
+                                                    className="form-control text-center"
                                                     readOnly
                                                     id="userCreate"
-                                                    name="userCreate"
-                                                    value={values.userCreate}
+                                                    value={values.userCreate === undefined ? "" : values.userCreate}
                                                 />
                                             </div>
-                                            <div className="form-group col-md-4">
+                                            <div className={id ? "form-group col-md-3" : "form-group col-md-4"}>
                                                 <label className="control-label">System:</label>
                                                 <select
-                                                    className="form-control"
+                                                    className="form-control text-center"
                                                     disabled={id ? true : false}
                                                     id="system"
                                                     name="system"
@@ -138,6 +134,19 @@ const OrdersDetails = ({ ...props }) => {
                                                     errors.system && <div className="alert alert-danger" role="alert">{errors.system}</div>
                                                 }
                                             </div>
+                                            {
+                                                id &&
+                                                props.currentOrder &&
+                                                <div className="form-group col-md-3">
+                                                    <label className="control-label">Status:</label>
+                                                    <input
+                                                        className="form-control text-center"
+                                                        readOnly
+                                                        id="status"
+                                                        value={props.currentOrder.status === undefined ? "" : props.currentOrder.status}
+                                                    />
+                                                </div>
+                                            }
                                         </div>
                                         <div className="form-group">
                                             {
@@ -151,72 +160,28 @@ const OrdersDetails = ({ ...props }) => {
                                 </div>
                             </section>
                         </div>
-                        <div className="text-center">
-                            <h2>Details</h2>
+                        {
+                            id &&
+                            <>
+                                <div className="text-center">
+                                    <h2>Details</h2>
 
-                        </div>
-                        <div className="col-lg-12">
-                            <section className="custom-box-bg">
-                                <div className="custom-box-bg-body">
-                                    <table className="table custom-table custom-table-details">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col"></th>
-                                                <th scope="col" className="col-md-1">Branch</th>
-                                                {
-                                                    <th scope="col" className="col-md-1">Cost Center</th>
-                                                }
-                                                {
-                                                    1 == 2 &&
-                                                    <th scope="col" className="col-md-1">Project</th>
-                                                }
-                                                <th scope="col" className="col-md-2">Reason</th>
-                                                <th scope="col" className="col-md-2">Account</th>
-                                                <th scope="col" className="col-md-1">Account Type</th>
-                                                <th scope="col" className="col-md-1">Sum</th>
-                                                <th scope="col" className="col-md-1">Currency</th>
-                                                <th scope="col" className="col-md-1">Sum in BGN</th>
-                                                <th scope="col"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                props.detailsList &&
-                                                props.currentOrder &&
-                                                props.detailsList
-                                                    .filter(x => x.orderOrTemplateRefNum === props.currentOrder.refNumber)
-                                                    .map(detail => {
-                                                    return (
-                                                        <tr key={detail.id}>
-                                                            <td>
-                                                                <a><EditIcon fontSize="large" /></a>
-                                                            </td>
-                                                            <td>{detail.branch}</td>
-                                                            {
-                                                                <td>{detail.costCenter}</td>
-                                                            }
-                                                            {
-                                                                1 == 2 &&
-                                                                <td>{detail.project}</td>
-                                                            }
-                                                            <td>{detail.reason}</td>
-                                                            <td>{detail.account}</td>
-                                                            <td>{detail.accountType}</td>
-                                                            <td>{detail.sum && detail.sum.toFixed(2)}</td>
-                                                            <td>{detail.currencyId}</td>
-                                                            <td>{detail.sumBGN && detail.sumBGN.toFixed(2)}</td>
-                                                            <td>
-                                                                <a><DeleteIcon color="secondary" fontSize="large" /></a>
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                })
-                                            }
-                                        </tbody>
-                                    </table>
                                 </div>
-                            </section>
-                        </div>
+                                <div className="col-lg-12">
+                                    <DetailsTable
+                                        detailsList={
+                                            props.detailsList
+                                        }
+                                        currenciesList={
+                                            props.currenciesList
+                                        }
+                                        orderOrTemplateRefNum={
+                                            props.currentOrder.refNumber
+                                        }
+                                    />
+                                </div>
+                            </>
+                        }
                     </div>
                 </div>
             </div >
@@ -228,14 +193,16 @@ const mapStateToProps = state => {
     return {
         user: state.usersReducer.user,
         currentOrder: state.ordersReducer.singleRecord,
-        detailsList: state.detailsReducer.list
+        detailsList: state.detailsReducer.list,
+        currenciesList: state.currenciesReducer.list
     }
 }
 
 const mapActionToProps = {
     fetchCurrentOrder: orderActions.fetchById,
     createOrder: orderActions.create,
-    fetchAllDetails: detailActions.fetchAll
+    fetchAllDetails: detailActions.fetchAll,
+    fetchAllCurrencies: currencyActions.fetchAll
 }
 
 export default connect(mapStateToProps, mapActionToProps)(OrdersDetails);

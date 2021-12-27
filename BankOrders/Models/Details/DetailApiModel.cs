@@ -18,8 +18,12 @@
 
         public decimal Sum { get; set; }
 
+        public int CurrencyId { get; set; }
+
         public string CurrencyName { get; set; }
 
         public decimal SumBGN { get; set; }
+
+        public int OrderOrTemplateRefNum { get; set; }
     }
 }

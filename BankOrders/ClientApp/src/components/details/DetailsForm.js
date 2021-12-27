@@ -2,40 +2,29 @@
 import { Grid, withStyles } from "@material-ui/core";
 import useForm from "../common/useForm";
 import { connect } from "react-redux";
-import * as actions from "../../actions/ordersAction";
-import { useToasts } from "react-toast-notifications";
-
-const styles = theme => ({
-    root: {
-        '& .MuiTextField-root': {
-            margin: theme.spacing(1),
-            minWidth: 230,
-            fontSize: "1.5rem"
-        }
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 230,
-    },
-    smMargin: {
-        margin: theme.spacing(1)
-    }
-})
+import * as detailActions from "../../actions/detailsAction";
+import * as currencyActions from "../../actions/currenciesAction";
 
 const initialFieldValues = {
-    code: '',
-    exchangeRate: ''
+    branch: '',
+    costCenter: '',
+    project: '',
+    reason: '',
+    account: '',
+    accountType: '',
+    sum: '',
+    currencyId: '',
+    sumBGN: '',
+    orderOrTemplateRefNum: ''
 }
 
-const CurrenciesForm = ({ classes, ...props }) => {
-    const { addToast } = useToasts()
-
+const DetailsForm = ({ ...props }) => {
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
-        if ('code' in fieldValues)
-            temp.code = fieldValues.code ? "" : "This field is required."
-        if ('exchangeRate' in fieldValues)
-            temp.exchangeRate = fieldValues.exchangeRate ? "" : "This field is required."
+        if ('reason' in fieldValues)
+            temp.reason = fieldValues.reason ? "" : "This field is required."
+        if ('account' in fieldValues)
+            temp.account = fieldValues.account ? "" : "This field is required."
         setErrors({
             ...temp
         })
@@ -53,76 +42,145 @@ const CurrenciesForm = ({ classes, ...props }) => {
         resetForm
     } = useForm(initialFieldValues, validate, props.setCurrentId)
 
+    //console.log(props)
+
     const handleSubmit = e => {
         e.preventDefault()
-        console.log(values)
+
         if (validate()) {
             // props.createCurrency(values, () => {window.alert('inserted.')})
 
             const onSuccess = () => {
                 resetForm()
-                addToast("Submitted successfully", { appearance: 'success' })
             }
-            if (props.currentId == 0)
-                props.createCurrency(values, onSuccess)
-            else
-                props.updateCurrency(props.currentId, values, onSuccess)
+            if (props.currentId == 0) {
+                props.createDetail(values, onSuccess)
+            }
+            else {
+                props.updateDetail(props.currentId, values, onSuccess)
+            }
         }
     }
 
     useEffect(() => {
+        //props.fetchAllCurrencies()
         if (props.currentId != 0) {
             setValues({
-                ...props.currenciesList.find(x => x.id == props.currentId)
+                ...props.detailsList.find(x => x.id == props.currentId)
             })
             setErrors({})
         }
     }, [props.currentId])
 
     return (
-        <form autoComplete="off" noValidate className={classes.root} onSubmit={handleSubmit}>
-            <Grid container>
-                <Grid item xs={12}>
-                    <div className="form-group">
-                        <label htmlFor="currencyCode">Currency Code</label>
-                        <input name="code"
-                            className="form-control"
-                            id="currencyCode"
-                            placeholder="XXX"
-                            value={values.code}
-                            onChange={handleInputChange}
-                            {...(errors.fullName && { error: true, helperText: errors.fullName })}
-                        />
+        <section className="custom-box-bg">
+            <div className="custom-box-bg-body">
+                <form id="search-form" onSubmit={handleSubmit}>
+                    <label className="control-label"><strong>{props.currentId != 0 ? "Edit" : "Add"} a detail:</strong></label>
+                    <div className="form-row mr-auto">
+                        <div className="form-group col-md-2">
+                            <input
+                                className="form-control"
+                                id="branch"
+                                name="branch"
+                                value={values.branch}
+                                onChange={handleInputChange}
+                                placeholder="branch" />
+                            <br />
+                            <input
+                                className="form-control"
+                                id="costCenter"
+                                name="costCenter"
+                                value={values.costCenter}
+                                onChange={handleInputChange}
+                                placeholder="costCenter" />
+                        </div>
+                        <div className="form-group col-md-3">
+                            <textarea
+                                className="form-control h-100"
+                                id="reason"
+                                name="reason"
+                                value={values.reason}
+                                onChange={handleInputChange}
+                                placeholder="reason" />
+                        </div>
+                        <div className="form-group col-md-3">
+                            <select
+                                className="form-control"
+                                id="accountType"
+                                name="accountType"
+                                value={values.accountType}
+                                onChange={handleInputChange}>
+                                <option>Debit (DT)</option>
+                                <option>Credit (KT)</option>
+                            </select>
+                            <br />
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="account"
+                                name="account"
+                                value={values.account}
+                                onChange={handleInputChange}
+                                placeholder="account" />
+                        </div>
+                        <div className="form-group col-md-2">
+                            <input
+                                className="form-control"
+                                id="currencyId"
+                                name="currencyId"
+                                value={values.currencyId}
+                                onChange={handleInputChange}
+                                placeholder="currencyId" />
+                            <br />
+                            <input
+                                className="form-control"
+                                id="sum"
+                                name="sum"
+                                value={values.sum}
+                                onChange={handleInputChange}
+                                placeholder="sum" />
+                        </div>
+                        <div className="form-group col-md-2">
+                            <input
+                                className="form-control"
+                                id="currencyId"
+                                name="currencyId"
+                                value={values.currencyId}
+                                onChange={handleInputChange}
+                                placeholder="currencyId" />
+                            <br />
+                            <input
+                                className="form-control"
+                                id="sumBGN"
+                                name="sumBGN"
+                                value={values.sumBGN}
+                                onChange={handleInputChange}
+                                placeholder="sumBGN" />
+                        </div>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="currencyRate">Currency Rate</label>
-                        <input name="exchangeRate"
-                            className="form-control"
-                            id="currencyRate"
-                            placeholder="1.00000"
-                            value={values.exchangeRate}
-                            onChange={handleInputChange}
-                            {...(errors.fullName && { error: true, helperText: errors.fullName })}
-                        />
+                        <div className="form-group">
+                            <button type="submit" className="btn btn-primary">Submit</button>
+                            <button onClick={resetForm} className="btn btn-cancel btn-sm">{props.currentId != 0 ? "Cancel" : "Clear"}</button>
+                        </div>
                     </div>
-                    <div>
-                        <button type="submit" className="btn btn-primary">Submit</button>
-                        <button className="btn btn-info" onClick={resetForm}>Reset</button>
-                    </div>
-                </Grid>
-            </Grid>
-        </form>
+                </form>
+            </div>
+        </section>
     );
 }
 
 
 const mapStateToProps = state => ({
-    currenciesList: state.currenciesReducer.list
+    detailsList: state.detailsReducer.list,
+    //currenciesList: state.currenciesReducer.list
 })
 
 const mapActionToProps = {
-    createCurrency: actions.create,
-    updateCurrency: actions.update
+    createDetail: detailActions.create,
+    updateDetail: detailActions.update,
+    //fetchAllCurrencies: currencyActions.fetchAll
 }
 
-export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(CurrenciesForm));
+export default connect(mapStateToProps, mapActionToProps)(DetailsForm);

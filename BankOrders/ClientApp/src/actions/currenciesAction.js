@@ -12,6 +12,7 @@ export const fetchAll = () => dispatch => {
         .fetchAll()
         .then(
             response => {
+                console.log(response.data)
                 dispatch({
                     type: ACTION_TYPES.FETCH_ALL,
                     payload: response.data
@@ -22,7 +23,6 @@ export const fetchAll = () => dispatch => {
 
 
 export const create = (data, onSuccess) => dispatch => {
-    console.log(data)
     api.currencies()
         .create(data)
         .then(

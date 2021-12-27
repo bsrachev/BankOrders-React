@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BankOrders.Data;
 using BankOrders.Data.Models;
+using BankOrders.Services.Details;
+using BankOrders.Models.Details;
+using BankOrders.Data.Models.Enums;
+using BankOrders.Services.Currencies;
 
 namespace BankOrders.Controllers.Api
 {
@@ -15,17 +19,41 @@ namespace BankOrders.Controllers.Api
     public class DetailsController : ControllerBase
     {
         private readonly BankOrdersDbContext _context;
+        private readonly IDetailService _details;
+        private readonly ICurrencyService _currencies;
 
-        public DetailsController(BankOrdersDbContext context)
+        public DetailsController(BankOrdersDbContext context, IDetailService detailService, ICurrencyService currencyService)
         {
             _context = context;
+            _details = detailService;
+            _currencies = currencyService;
         }
 
         // GET: api/Details
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Detail>>> GetDetails()
+        public async Task<ActionResult<IEnumerable<DetailApiModel>>> GetDetails()
         {
-            return await _context.Details.ToListAsync();
+            var detailData = await _context.Details.ToListAsync();
+
+            var details = detailData
+                .Select(d => new DetailApiModel
+                {
+                    Id = d.Id,
+                    Account = d.Account,
+                    AccountTypeName = Enum.GetName(typeof(AccountType), d.AccountType),
+                    Branch = d.Branch,
+                    CostCenter = d.CostCenter,
+                    CurrencyId = d.CurrencyId,
+                    CurrencyName = _currencies.GetCurrencyInfo(d.CurrencyId).Code,
+                    Project = d.Project,
+                    Reason = d.Reason,
+                    Sum = d.Sum,
+                    SumBGN = d.SumBGN,
+                    OrderOrTemplateRefNum = d.OrderOrTemplateRefNum
+                })
+                .ToList();
+
+            return details;
         }
 
         // GET: api/Details/5
