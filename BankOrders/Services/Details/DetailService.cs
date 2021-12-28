@@ -15,7 +15,7 @@
         public DetailService(BankOrdersDbContext data)
             => this.data = data;
 
-        public void AddDetail(string account, AccountType accountType, int branch, int costCenter, int currencyId, int orderOrTemplateRefNum, int project, string reason, decimal sum, decimal sumBGN)
+        public int AddDetail(string account, AccountType accountType, int branch, int costCenter, int currencyId, int orderOrTemplateRefNum, int project, string reason, decimal sum, decimal sumBGN)
         {
             var detail = new Detail
             {
@@ -33,6 +33,8 @@
 
             this.data.Details.Add(detail);
             this.data.SaveChanges();
+
+            return detail.Id;
         }
 
         public void EditDetail(int detailId, string account, AccountType accountType, int branch, int costCenter, int currencyId, int project, string reason, decimal sum, decimal sumBGN)

@@ -1,20 +1,20 @@
 ﻿import api from "./api";
 
 export const ACTION_TYPES = {
-    CREATE: 'CREATE',
-    UPDATE: 'UPDATE',
-    DELETE: 'DELETE',
-    FETCH_ALL: 'FETCH_ALL'
+    CREATE_C: 'CREATE_C',
+    UPDATE_C: 'UPDATE_C',
+    DELETE_C: 'DELETE_C',
+    FETCH_ALL_C: 'FETCH_ALL_C'
 }
 
 export const fetchAll = () => dispatch => {
     api.currencies()
-        .fetchAll()
+        .fetchAllC()
         .then(
             response => {
                 //console.log(response.data)
                 dispatch({
-                    type: ACTION_TYPES.FETCH_ALL,
+                    type: ACTION_TYPES.FETCH_ALL_C,
                     payload: response.data
                 })
             })
@@ -24,11 +24,11 @@ export const fetchAll = () => dispatch => {
 
 export const create = (data, onSuccess) => dispatch => {
     api.currencies()
-        .create(data)
+        .createC(data)
         .then(
             response => {
                 dispatch({
-                    type: ACTION_TYPES.CREATE,
+                    type: ACTION_TYPES.CREATE_C,
                     payload: response.data
             })
             onSuccess()
@@ -37,11 +37,12 @@ export const create = (data, onSuccess) => dispatch => {
 }
 
 export const update = (id, data, onSuccess) => dispatch => {
-    api.currencies().update(id, data)
+    api.currencies()
+        .updateC(id, data)
         .then(
             response => {
             dispatch({
-                type: ACTION_TYPES.UPDATE,
+                type: ACTION_TYPES.UPDATE_C,
                 payload: { id, ...data }
             })
             onSuccess()
@@ -50,11 +51,12 @@ export const update = (id, data, onSuccess) => dispatch => {
 }
 
 export const Delete = (id, onSuccess) => dispatch => {
-    api.currencies().delete(id)
+    api.currencies()
+        .deleteC(id)
         .then(
             response => {
             dispatch({
-                type: ACTION_TYPES.DELETE,
+                type: ACTION_TYPES.DELETE_C,
                 payload: id
             })
             onSuccess()

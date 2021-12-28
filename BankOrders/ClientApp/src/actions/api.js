@@ -4,12 +4,13 @@ const baseUrl = "https://localhost:5001/api/"
 
 export default {
     currencies(url = baseUrl + 'currencies/') {
+        console.log(axios.get(url))
         return {
-            fetchAll: () => axios.get(url),
-            fetchById: id => axios.get(url + id),
-            create: newRecord => axios.post(url, newRecord),
-            update: (id, updateRecord) => axios.put(url + id, updateRecord),
-            delete: id => axios.delete(url + id)
+            fetchAllC: () => axios.get(url),
+            fetchByIdC: id => axios.get(url + id),
+            createC: newRecord => axios.post(url, newRecord),
+            updateC: (id, updateRecord) => axios.put(url + id, updateRecord),
+            deleteC: id => axios.delete(url + id)
         }
     },
 
@@ -35,11 +36,11 @@ export default {
 
     details(url = baseUrl + 'details/') {
         return {
-            fetchAll: () => axios.get(url),
-            fetchById: id => axios.get(url + id),
-            create: newRecord => axios.post(url, newRecord),
-            update: (id, updateRecord) => axios.put(url + id, updateRecord),
-            delete: id => axios.delete(url + id)
+            fetchAllD: () => axios.get(url),
+            fetchByIdD: id => axios.get(url + id),
+            createD: newRecord => axios.post(url, newRecord),
+            updateD: (id, updateRecord) => axios.put(url + id, updateRecord),
+            deleteD: id => axios.delete(url + id)
         }
     },
 

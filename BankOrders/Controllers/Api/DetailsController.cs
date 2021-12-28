@@ -73,18 +73,27 @@ namespace BankOrders.Controllers.Api
         // PUT: api/Details/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDetail(int id, Detail detail)
+        public async Task<IActionResult> PutDetail(int id, DetailEditApiModel detailModel)
         {
-            if (id != detail.Id)
+            var detail = await _context.Details.FindAsync(id);
+
+            if (detail == null)
             {
                 return BadRequest();
             }
 
-            _context.Entry(detail).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                _details.EditDetail(id,
+                                    detailModel.Account,
+                                    (AccountType)Enum.Parse(typeof(AccountType), detailModel.AccountTypeName),
+                                    detailModel.Branch,
+                                    detailModel.CostCenter,
+                                    detailModel.CurrencyId,
+                                    detailModel.Project,
+                                    detailModel.Reason,
+                                    detailModel.Sum,
+                                    detailModel.SumBGN);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -104,10 +113,20 @@ namespace BankOrders.Controllers.Api
         // POST: api/Details
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Detail>> PostDetail(Detail detail)
+        public async Task<ActionResult<Detail>> PostDetail(DetailFormApiModel detailModel)
         {
-            _context.Details.Add(detail);
-            await _context.SaveChangesAsync();
+            var detailId = _details.AddDetail(detailModel.Account,
+                               (AccountType)Enum.Parse(typeof(AccountType), detailModel.AccountTypeName),
+                               int.Parse(detailModel.Branch),
+                               int.Parse(detailModel.CostCenter == "" ? "0" : detailModel.CostCenter),
+                               detailModel.CurrencyId,
+                               detailModel.OrderOrTemplateRefNum,
+                               int.Parse(detailModel.Project == "" ? "0" : detailModel.Project),
+                               detailModel.Reason,
+                               detailModel.Sum,
+                               detailModel.SumBGN);
+
+            var detail = await _context.Details.FindAsync(detailId);
 
             return CreatedAtAction("GetDetail", new { id = detail.Id }, detail);
         }

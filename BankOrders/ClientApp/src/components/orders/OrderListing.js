@@ -17,7 +17,7 @@ const initialFieldValues = {
     userCreate: '',
 }
 
-const OrdersDetails = ({ ...props }) => {
+const OrderListing = ({ ...props }) => {
     const [values, setValues] = useState(initialFieldValues);
     const [errors, setErrors] = useState({});
     const params = useParams();
@@ -83,6 +83,8 @@ const OrdersDetails = ({ ...props }) => {
         }
         setErrors({});
     }, [props.currentOrder.id])
+
+    //console.log(props.currenciesList)
 
     return (
         <>
@@ -176,6 +178,9 @@ const OrdersDetails = ({ ...props }) => {
                                         currenciesList={
                                             props.currenciesList
                                         }
+                                        system={
+                                            props.currentOrder.system
+                                        }
                                         orderOrTemplateRefNum={
                                             props.currentOrder.refNumber
                                         }
@@ -190,14 +195,12 @@ const OrdersDetails = ({ ...props }) => {
     );
 }
 
-const mapStateToProps = state => {
-    return {
-        user: state.usersReducer.user,
-        currentOrder: state.ordersReducer.singleOrder,
-        detailsList: state.detailsReducer.detailsList,
-        currenciesList: state.currenciesReducer.currenciesList
-    }
-}
+const mapStateToProps = state => ({
+    user: state.usersReducer.user,
+    currentOrder: state.ordersReducer.singleOrder,
+    detailsList: state.detailsReducer.detailsList,
+    currenciesList: state.currenciesReducer.currenciesList
+})
 
 const mapActionToProps = {
     fetchCurrentOrder: orderActions.fetchById,
@@ -206,4 +209,4 @@ const mapActionToProps = {
     fetchAllCurrencies: currencyActions.fetchAll
 }
 
-export default connect(mapStateToProps, mapActionToProps)(OrdersDetails);
+export default connect(mapStateToProps, mapActionToProps)(OrderListing);

@@ -13,7 +13,7 @@
 
         IEnumerable<DetailsServiceModel> GetDetails(int refNum);
 
-        void AddDetail(string account,
+        int AddDetail(string account,
                        AccountType accountType,
                        int branch,
                        int costCenter,

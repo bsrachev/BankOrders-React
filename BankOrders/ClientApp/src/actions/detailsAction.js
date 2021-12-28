@@ -1,20 +1,20 @@
 ﻿import api from "./api";
 
 export const ACTION_TYPES = {
-    CREATE: 'CREATE',
-    UPDATE: 'UPDATE',
-    DELETE: 'DELETE',
-    FETCH_ALL: 'FETCH_ALL',
-    FETCH_BY_ID: 'FETCH_BY_ID'
+    CREATE_D: 'CREATE_D',
+    UPDATE_D: 'UPDATE_D',
+    DELETE_D: 'DELETE_D',
+    FETCH_ALL_D: 'FETCH_ALL_D',
+    FETCH_BY_ID_D: 'FETCH_BY_ID_D'
 }
 
 export const fetchAll = () => dispatch => {
     api.details()
-        .fetchAll()
+        .fetchAllD()
         .then(
             response => {
                 dispatch({
-                    type: ACTION_TYPES.FETCH_ALL,
+                    type: ACTION_TYPES.FETCH_ALL_D,
                     payload: response.data,
                 })
             })
@@ -24,11 +24,11 @@ export const fetchAll = () => dispatch => {
 export const fetchById = (id) => dispatch => {
     return new Promise((resolve, reject) => {
         api.details()
-            .fetchById(id)
+            .fetchByIdD(id)
             .then(
                 response => {
                     dispatch({
-                        type: ACTION_TYPES.FETCH_BY_ID,
+                        type: ACTION_TYPES.FETCH_BY_ID_D,
                         payload: response.data
                     });
                     resolve(response);
@@ -42,11 +42,11 @@ export const fetchById = (id) => dispatch => {
 
 export const create = (data) => dispatch => {
     api.details()
-        .create(data)
+        .createD(data)
         .then(
             response => {
                 dispatch({
-                    type: ACTION_TYPES.CREATE,
+                    type: ACTION_TYPES.CREATE_D,
                     payload: response.data
             })
         })
@@ -54,11 +54,12 @@ export const create = (data) => dispatch => {
 }
 
 export const update = (id, data) => dispatch => {
-    api.details().update(id, data)
+    api.details()
+        .updateD(id, data)
         .then(
             response => {
             dispatch({
-                type: ACTION_TYPES.UPDATE,
+                type: ACTION_TYPES.UPDATE_D,
                 payload: { id, ...data }
             })
         })
@@ -66,11 +67,12 @@ export const update = (id, data) => dispatch => {
 }
 
 export const Delete = (id) => dispatch => {
-    api.details().delete(id)
+    api.details()
+        .deleteD(id)
         .then(
             response => {
             dispatch({
-                type: ACTION_TYPES.DELETE,
+                type: ACTION_TYPES.DELETE_D,
                 payload: id
             })
         })

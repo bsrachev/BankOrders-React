@@ -204,11 +204,9 @@ const Orders = ({ ...props }) => {
     );
 }
 
-const mapStateToProps = state => {
-    return {
-        ordersList: state.ordersReducer.ordersList
-    }
-}
+const mapStateToProps = state => ({
+    ordersList: state.ordersReducer.ordersList
+})
 
 const mapActionToProps = {
     fetchAllOrders: actions.fetchAll

@@ -10,16 +10,16 @@ const useForm = (initialFieldValues, validate, setCurrentId) => {
         setValues({
             ...values,
             ...fieldValue
-        })
-        validate(fieldValue)
+        });
+        //validate(fieldValue);
     }
 
     const resetForm = () => {
         setValues({
             ...initialFieldValues
-        })
-        setErrors({})
-        setCurrentId(0)
+        });
+        setCurrentId(0);
+        setErrors({ 'formReset': true});
     }
 
     return {

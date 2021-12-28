@@ -11,24 +11,27 @@ import '../shared/bg-custom-row-highlight.css';
 import './custom-table-details.css';
 import DetailsForm from "./DetailsForm";
 
-const DetailsTable = ({ detailsList, currenciesList, orderOrTemplateRefNum, ...props }) => {
+const DetailsTable = ({ detailsList, currenciesList, system, orderOrTemplateRefNum, ...props }) => {
     const [currentId, setCurrentId] = useState(0)
 
     const onDelete = id => {
         if (window.confirm('Delete the detail?')) {
             props.deleteDetail(id);
         }
-    }
 
-    console.log(currenciesList)
+        return (
+            <div className="alert alert-warning" role="alert">Detail deleted</div>
+        );
+    }
 
     return (
         <>
             <DetailsForm
                 detailsList={detailsList}
                 currenciesList={currenciesList}
+                system={system}
                 orderOrTemplateRefNum={orderOrTemplateRefNum}
-                props={({ currentId, setCurrentId })}
+                {...({ currentId, setCurrentId })}
             />
 
             <section className="custom-box-bg">
@@ -39,10 +42,11 @@ const DetailsTable = ({ detailsList, currenciesList, orderOrTemplateRefNum, ...p
                                 <th scope="col"></th>
                                 <th scope="col" className="col-md-1">Branch</th>
                                 {
+                                    system === "Internal" &&
                                     <th scope="col" className="col-md-1">Cost Center</th>
                                 }
                                 {
-                                    1 == 2 &&
+                                    system === "External" &&
                                     <th scope="col" className="col-md-1">Project</th>
                                 }
                                 <th scope="col" className="col-md-2">Reason</th>
@@ -61,30 +65,30 @@ const DetailsTable = ({ detailsList, currenciesList, orderOrTemplateRefNum, ...p
                                     .map(detail => {
                                         return (
                                             <tr key={detail.id} className={detail.id === currentId ? "bg-custom-row-highlight" : ""}>
-                                            <td>
-                                                <Button><EditIcon onClick={() => { setCurrentId(detail.id) }} /></Button>
-                                            </td>
-                                            <td>{detail.branch}</td>
-                                            {
-                                                <td>{detail.costCenter}</td>
-                                            }
-                                            {
-                                                1 == 2 &&
-                                                <td>{detail.project}</td>
-                                            }
-                                            <td>{detail.reason}</td>
-                                            <td>{detail.account}</td>
-                                            <td>{detail.accountTypeName}</td>
-                                            <td>{detail.sum && detail.sum.toFixed(2)}</td>
-                                            <td>{detail.currencyName}</td>
-                                            <td>{detail.sumBGN && detail.sumBGN.toFixed(2)}</td>
-                                            <td>
-                                                <Button><DeleteIcon color="secondary" onClick={() => onDelete(detail.id)} /></Button>
-                                            </td>
-
-                                        </tr>
-                                    );
-                                })
+                                                <td>
+                                                    <Button><EditIcon onClick={() => { setCurrentId(detail.id) }} /></Button>
+                                                </td>
+                                                <td>{detail.branch}</td>
+                                                {
+                                                    system === "Internal" &&
+                                                    <td>{detail.costCenter}</td>
+                                                }
+                                                {
+                                                    system === "External" &&
+                                                    <td>{detail.project}</td>
+                                                }
+                                                <td>{detail.reason}</td>
+                                                <td>{detail.account}</td>
+                                                <td>{detail.accountTypeName}</td>
+                                                <td>{detail.sum && Number(detail.sum).toFixed(2)}</td>
+                                                <td>{detail.currencyName}</td>
+                                                <td>{detail.sumBGN && Number(detail.sumBGN).toFixed(2)}</td>
+                                                <td>
+                                                    <Button><DeleteIcon color="secondary" onClick={() => onDelete(detail.id)} /></Button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
                             }
                         </tbody>
                     </table>
@@ -94,8 +98,7 @@ const DetailsTable = ({ detailsList, currenciesList, orderOrTemplateRefNum, ...p
     );
 }
 
-const mapStateToProps = state => {
-}
+const mapStateToProps = state => ({})
 
 const mapActionToProps = {
     deleteDetail: actions.Delete

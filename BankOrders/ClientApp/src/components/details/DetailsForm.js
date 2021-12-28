@@ -1,9 +1,8 @@
 ﻿import React, { useEffect } from "react";
-import { Grid, withStyles } from "@material-ui/core";
 import useForm from "../common/useForm";
 import { connect } from "react-redux";
 import * as detailActions from "../../actions/detailsAction";
-import * as currencyActions from "../../actions/currenciesAction";
+import { error } from "jquery";
 
 const initialFieldValues = {
     branch: '',
@@ -11,26 +10,32 @@ const initialFieldValues = {
     project: '',
     reason: '',
     account: '',
-    accountType: '',
+    accountTypeName: '',
     sum: '',
     currencyId: '',
     sumBGN: '',
+    exchangeRate: '',
     orderOrTemplateRefNum: ''
 }
 
-const DetailsForm = ({ detailsList, currenciesList, orderOrTemplateRefNum, ...props }) => {
+const DetailsForm = ({ detailsList, currenciesList, system, orderOrTemplateRefNum, ...props }) => {
     const validate = (fieldValues = values) => {
-        let temp = { ...errors }
-        if ('reason' in fieldValues)
-            temp.reason = fieldValues.reason ? "" : "This field is required."
-        if ('account' in fieldValues)
-            temp.account = fieldValues.account ? "" : "This field is required."
-        setErrors({
-            ...temp
-        })
+        if (errors.formReset == true) {
+            setErrors({})
+        }
+        else {
+            let temp = { ...errors }
+            if ('reason' in fieldValues)
+                temp.reason = fieldValues.reason ? "" : "Reason field is required."
+            if ('account' in fieldValues)
+                temp.account = values.account.length == 12 ? "" : "Account must have 12 characters."
+            setErrors({
+                ...temp
+            })
 
-        if (fieldValues == values)
-            return Object.values(temp).every(x => x == "")
+            if (fieldValues == values)
+                return Object.values(temp).every(x => x == "")
+        }
     }
 
     const {
@@ -42,31 +47,64 @@ const DetailsForm = ({ detailsList, currenciesList, orderOrTemplateRefNum, ...pr
         resetForm
     } = useForm(initialFieldValues, validate, props.setCurrentId)
 
-    //console.log(props)
+
+    const handleCurrencyChange = e => {
+        let currencyId;
+        let sum;
+        let exchangeRate;
+
+        if (e.target.name === "sum") {
+            currencyId = values.currencyId;
+            sum = e.target.value;
+            exchangeRate = currencyId ? currenciesList.find(c => c.id == currencyId).exchangeRate : 1
+        }
+        else {
+            currencyId = e.target.value;
+            exchangeRate = currencyId ? currenciesList.find(c => c.id == currencyId).exchangeRate : 1
+            sum = values.sum
+        }
+
+        const fieldValue = {
+            "currencyId": currencyId,
+            "sum": sum,
+            "sumBGN": Number(sum * exchangeRate).toFixed(2),
+            "exchangeRate": exchangeRate
+        }
+        setValues({
+            ...values,
+            ...fieldValue
+        })
+    }
 
     const handleSubmit = e => {
         e.preventDefault()
 
         if (validate()) {
-            // props.createCurrency(values, () => {window.alert('inserted.')})
-
             const onSuccess = () => {
                 resetForm()
             }
             if (props.currentId == 0) {
-                props.createDetail(values, onSuccess)
+                setValues({
+                    ...values
+                })
+
+                let detailData = values;
+                detailData.orderOrTemplateRefNum = orderOrTemplateRefNum
+
+                props.createDetail(detailData, onSuccess)
             }
             else {
                 props.updateDetail(props.currentId, values, onSuccess)
             }
+            resetForm()
         }
     }
 
     useEffect(() => {
-        //props.fetchAllCurrencies()
         if (props.currentId != 0) {
             setValues({
-                ...detailsList.find(x => x.id == props.currentId)
+                ...detailsList.find(x => x.id == props.currentId),
+                exchangeRate: currenciesList.find(c => c.id == detailsList.find(x => x.id == props.currentId).currencyId).exchangeRate
             })
             setErrors({})
         }
@@ -77,23 +115,49 @@ const DetailsForm = ({ detailsList, currenciesList, orderOrTemplateRefNum, ...pr
             <div className="custom-box-bg-body">
                 <form id="search-form" onSubmit={handleSubmit}>
                     <label className="control-label"><strong>{props.currentId != 0 ? "Edit" : "Add"} a detail:</strong></label>
+                    {
+                        errors &&
+                        Object.keys(errors).map(key => {
+                            if (errors[key].length > 0) {
+                                return (
+                                    <div key={key} className="alert alert-danger" role="alert">{errors[key]}</div>
+                                );
+                            }
+                        })
+                    }
                     <div className="form-row mr-auto">
                         <div className="form-group col-md-2">
                             <input
+                                type="number"
                                 className="form-control"
                                 id="branch"
                                 name="branch"
                                 value={values.branch == undefined ? "" : values.branch}
                                 onChange={handleInputChange}
-                                placeholder="branch" />
+                                placeholder="Branch" />
                             <br />
-                            <input
-                                className="form-control"
-                                id="costCenter"
-                                name="costCenter"
-                                value={values.costCenter == undefined ? "" : values.costCenter}
-                                onChange={handleInputChange}
-                                placeholder="costCenter" />
+                            {
+                                system === "Internal" &&
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    id="costCenter"
+                                    name="costCenter"
+                                    value={values.costCenter == undefined ? "" : values.costCenter}
+                                    onChange={handleInputChange}
+                                    placeholder="Cost Center" />
+                            }
+                            {
+                                system === "External" &&
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    id="project"
+                                    name="project"
+                                    value={values.project == undefined ? "" : values.project}
+                                    onChange={handleInputChange}
+                                    placeholder="Project" />
+                            }
                         </div>
                         <div className="form-group col-md-3">
                             <textarea
@@ -102,19 +166,9 @@ const DetailsForm = ({ detailsList, currenciesList, orderOrTemplateRefNum, ...pr
                                 name="reason"
                                 value={values.reason == undefined ? "" : values.reason}
                                 onChange={handleInputChange}
-                                placeholder="reason" />
+                                placeholder="Reason" />
                         </div>
                         <div className="form-group col-md-3">
-                            <select
-                                className="form-control"
-                                id="accountType"
-                                name="accountType"
-                                value={values.accountType == undefined ? "" : values.accountType}
-                                onChange={handleInputChange}>
-                                <option>Debit (DT)</option>
-                                <option>Credit (KT)</option>
-                            </select>
-                            <br />
                             <input
                                 type="text"
                                 className="form-control"
@@ -122,47 +176,62 @@ const DetailsForm = ({ detailsList, currenciesList, orderOrTemplateRefNum, ...pr
                                 name="account"
                                 value={values.account == undefined ? "" : values.account}
                                 onChange={handleInputChange}
-                                placeholder="account" />
+                                placeholder="Account" />
+                            <br />
+                            <select
+                                className="form-control"
+                                id="accountTypeName"
+                                name="accountTypeName"
+                                value={values.accountTypeName == undefined ? "" : values.accountTypeName}
+                                onChange={handleInputChange}>
+                                <option value="" defaultChecked disabled>Account Type:</option>
+                                <option value="DT">Debit (DT)</option>
+                                <option value="KT">Credit (KT)</option>
+                            </select>
                         </div>
                         <div className="form-group col-md-2">
+                            <input
+                                type="number"
+                                className="form-control"
+                                id="sum"
+                                name="sum"
+                                value={values.sum == undefined ? "" : values.sum}
+                                onChange={handleCurrencyChange}
+                                placeholder="Sum" />
+                            <br />
                             <select
                                 className="form-control"
                                 id="currencyId"
                                 name="currencyId"
                                 value={values.currencyId == undefined ? "" : values.currencyId}
-                                onChange={handleInputChange}>
+                                onChange={handleCurrencyChange}>
+                                <option value="" defaultChecked disabled>Currency:</option>
                                 {
                                     currenciesList.map(c => {
                                         return (
-                                            <option>Debit (DT)</option>
+                                            <option key={c.id} value={c.id}>{c.code}</option>
                                         );
                                     })
                                 }
                             </select>
-                            <br />
-                            <input
-                                className="form-control"
-                                id="sum"
-                                name="sum"
-                                value={values.sum == undefined ? "0" : values.sum}
-                                onChange={handleInputChange}
-                                placeholder="sum" />
                         </div>
                         <div className="form-group col-md-2">
                             <input
                                 className="form-control"
                                 id="exchangeRate"
-                                value="1.00000"
+                                value={values.exchangeRate == undefined ? "" : values.exchangeRate}
                                 onChange={handleInputChange}
+                                placeholder="Exchange Rate"
                                 readOnly />
                             <br />
                             <input
                                 className="form-control"
                                 id="sumBGN"
                                 name="sumBGN"
-                                value={values.sumBGN == undefined ? "0" : values.sumBGN}
+                                value={values.sumBGN == undefined ? "" : Number(values.sumBGN).toFixed(2)}
                                 onChange={handleInputChange}
-                                placeholder="sumBGN" />
+                                placeholder="Sum in BGN"
+                                readOnly />
                         </div>
                     </div>
                     <div className="form-group">
@@ -178,15 +247,11 @@ const DetailsForm = ({ detailsList, currenciesList, orderOrTemplateRefNum, ...pr
 }
 
 
-const mapStateToProps = state => ({
-    //detailsList: state.detailsReducer.detailsList,
-    //currenciesList: state.currenciesReducer.list
-})
+const mapStateToProps = state => ({})
 
 const mapActionToProps = {
     createDetail: detailActions.create,
-    updateDetail: detailActions.update,
-    //fetchAllCurrencies: currencyActions.fetchAll
+    updateDetail: detailActions.update
 }
 
 export default connect(mapStateToProps, mapActionToProps)(DetailsForm);
