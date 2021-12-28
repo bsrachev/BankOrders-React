@@ -117,7 +117,7 @@ const Templates = ({ ...props }) => {
 
 const mapStateToProps = state => {
     return {
-        templatesList: state.templatesReducer.list
+        templatesList: state.templatesReducer.templatesList
     }
 }
 

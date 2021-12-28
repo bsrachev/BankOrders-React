@@ -1,8 +1,8 @@
 ﻿import { ACTION_TYPES } from "../actions/detailsAction";
 
 const initialState = {
-    list: [],
-    singleRecord: {}
+    detailsList: [],
+    singleDetail: {}
 }
 
 export const detailsReducer = (state = initialState, action) => {
@@ -10,31 +10,31 @@ export const detailsReducer = (state = initialState, action) => {
         case ACTION_TYPES.FETCH_ALL:
             return {
                 ...state,
-                list: [ ...action.payload ]
+                detailsList: [ ...action.payload ]
             }
 
         case ACTION_TYPES.FETCH_BY_ID:
             return {
                 ...state,
-                singleRecord: { ...action.payload }
+                singleDetail: { ...action.payload }
             }
 
         case ACTION_TYPES.CREATE:
             return {
                 ...state,
-                list: [...state.list, action.payload]
+                detailsList: [...state.detailsList, action.payload]
             }
 
         case ACTION_TYPES.UPDATE:
             return {
                 ...state,
-                list: state.list.map(x => x.id == action.payload.id ? action.payload : x)
+                detailsList: state.detailsList.map(x => x.id == action.payload.id ? action.payload : x)
             }
 
         case ACTION_TYPES.DELETE:
             return {
                 ...state,
-                list: state.list.filter(x => x.id != action.payload)
+                detailsList: state.detailsList.filter(x => x.id != action.payload)
             }
 
         default:

@@ -1,55 +1,55 @@
 ﻿import { ACTION_TYPES } from "../actions/templatesAction";
 
 const initialState = {
-    list: [],
-    singleRecord: {}
+    templatesList: [],
+    singleTemplate: {}
 }
 
 export const templatesReducer = (state = initialState, action) => {
     switch (action.type) {
         case ACTION_TYPES.FETCH_ALL:
-            let listWithFilter = [...action.payload];
+            let templatesListWithFilter = [...action.payload];
 
             if (action.name != "") {
-                listWithFilter = listWithFilter.filter(x => x.name && x.name.includes(action.name));
+                templatesListWithFilter = templatesListWithFilter.filter(x => x.name && x.name.includes(action.name));
             }
             if (action.refNumber != "") {
-                listWithFilter = listWithFilter.filter(x => x.refNumber == action.refNumber);
+                templatesListWithFilter = templatesListWithFilter.filter(x => x.refNumber == action.refNumber);
             }
             if (action.createdBy != "") {
-                listWithFilter = listWithFilter.filter(x => x.userCreate == action.createdBy);
+                templatesListWithFilter = templatesListWithFilter.filter(x => x.userCreate == action.createdBy);
             }
             if (action.system != "") {
-                listWithFilter = listWithFilter.filter(x => x.system == action.system);
+                templatesListWithFilter = templatesListWithFilter.filter(x => x.system == action.system);
             }
 
             return {
                 ...state,
-                list: listWithFilter
+                templatesList: templatesListWithFilter
             }
 
         case ACTION_TYPES.FETCH_BY_ID:
             return {
                 ...state,
-                singleRecord: { ...action.payload }
+                singleTemplate: { ...action.payload }
             }
 
         case ACTION_TYPES.CREATE:
             return {
                 ...state,
-                list: [...state.list, action.payload]
+                templatesList: [...state.templatesList, action.payload]
             }
 
         case ACTION_TYPES.UPDATE:
             return {
                 ...state,
-                list: state.list.map(x => x.id == action.payload.id ? action.payload : x)
+                templatesList: state.templatesList.map(x => x.id == action.payload.id ? action.payload : x)
             }
 
         case ACTION_TYPES.DELETE:
             return {
                 ...state,
-                list: state.list.filter(x => x.id != action.payload)
+                templatesList: state.templatesList.filter(x => x.id != action.payload)
             }
 
         default:

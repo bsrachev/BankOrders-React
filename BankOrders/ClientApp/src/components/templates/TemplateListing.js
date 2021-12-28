@@ -24,8 +24,8 @@ const TemplateListing = ({ ...props }) => {
 
 const mapStateToProps = state => {
     return {
-        templatesList: state.templatesReducer.list,
-        templateSingle: state.templatesReducer.singleRecord
+        templatesList: state.templatesReducer.templatesList,
+        templateSingle: state.templatesReducer.singleTemplate
     }
 }
 

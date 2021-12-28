@@ -71,6 +71,7 @@ const OrdersDetails = ({ ...props }) => {
         else {
             props.fetchCurrentOrder(id);
             props.fetchAllDetails();
+            props.fetchAllCurrencies();
 
             if (props.currentOrder) {
                 setValues({
@@ -192,9 +193,9 @@ const OrdersDetails = ({ ...props }) => {
 const mapStateToProps = state => {
     return {
         user: state.usersReducer.user,
-        currentOrder: state.ordersReducer.singleRecord,
-        detailsList: state.detailsReducer.list,
-        currenciesList: state.currenciesReducer.list
+        currentOrder: state.ordersReducer.singleOrder,
+        detailsList: state.detailsReducer.detailsList,
+        currenciesList: state.currenciesReducer.currenciesList
     }
 }
 

@@ -24,7 +24,12 @@ const DetailsTable = ({ detailsList, currenciesList, orderOrTemplateRefNum, ...p
 
     return (
         <>
-            <DetailsForm {...(orderOrTemplateRefNum, currenciesList, { currentId, setCurrentId })} />
+            <DetailsForm
+                detailsList={detailsList}
+                currenciesList={currenciesList}
+                orderOrTemplateRefNum={orderOrTemplateRefNum}
+                props={({ currentId, setCurrentId })}
+            />
 
             <section className="custom-box-bg">
                 <div className="custom-box-bg-body">

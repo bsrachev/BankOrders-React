@@ -18,7 +18,7 @@ const initialFieldValues = {
     orderOrTemplateRefNum: ''
 }
 
-const DetailsForm = ({ ...props }) => {
+const DetailsForm = ({ detailsList, currenciesList, orderOrTemplateRefNum, ...props }) => {
     const validate = (fieldValues = values) => {
         let temp = { ...errors }
         if ('reason' in fieldValues)
@@ -66,7 +66,7 @@ const DetailsForm = ({ ...props }) => {
         //props.fetchAllCurrencies()
         if (props.currentId != 0) {
             setValues({
-                ...props.detailsList.find(x => x.id == props.currentId)
+                ...detailsList.find(x => x.id == props.currentId)
             })
             setErrors({})
         }
@@ -83,7 +83,7 @@ const DetailsForm = ({ ...props }) => {
                                 className="form-control"
                                 id="branch"
                                 name="branch"
-                                value={values.branch}
+                                value={values.branch == undefined ? "" : values.branch}
                                 onChange={handleInputChange}
                                 placeholder="branch" />
                             <br />
@@ -91,7 +91,7 @@ const DetailsForm = ({ ...props }) => {
                                 className="form-control"
                                 id="costCenter"
                                 name="costCenter"
-                                value={values.costCenter}
+                                value={values.costCenter == undefined ? "" : values.costCenter}
                                 onChange={handleInputChange}
                                 placeholder="costCenter" />
                         </div>
@@ -100,7 +100,7 @@ const DetailsForm = ({ ...props }) => {
                                 className="form-control h-100"
                                 id="reason"
                                 name="reason"
-                                value={values.reason}
+                                value={values.reason == undefined ? "" : values.reason}
                                 onChange={handleInputChange}
                                 placeholder="reason" />
                         </div>
@@ -109,7 +109,7 @@ const DetailsForm = ({ ...props }) => {
                                 className="form-control"
                                 id="accountType"
                                 name="accountType"
-                                value={values.accountType}
+                                value={values.accountType == undefined ? "" : values.accountType}
                                 onChange={handleInputChange}>
                                 <option>Debit (DT)</option>
                                 <option>Credit (KT)</option>
@@ -120,41 +120,47 @@ const DetailsForm = ({ ...props }) => {
                                 className="form-control"
                                 id="account"
                                 name="account"
-                                value={values.account}
+                                value={values.account == undefined ? "" : values.account}
                                 onChange={handleInputChange}
                                 placeholder="account" />
                         </div>
                         <div className="form-group col-md-2">
-                            <input
+                            <select
                                 className="form-control"
                                 id="currencyId"
                                 name="currencyId"
-                                value={values.currencyId}
-                                onChange={handleInputChange}
-                                placeholder="currencyId" />
+                                value={values.currencyId == undefined ? "" : values.currencyId}
+                                onChange={handleInputChange}>
+                                {
+                                    currenciesList.map(c => {
+                                        return (
+                                            <option>Debit (DT)</option>
+                                        );
+                                    })
+                                }
+                            </select>
                             <br />
                             <input
                                 className="form-control"
                                 id="sum"
                                 name="sum"
-                                value={values.sum}
+                                value={values.sum == undefined ? "0" : values.sum}
                                 onChange={handleInputChange}
                                 placeholder="sum" />
                         </div>
                         <div className="form-group col-md-2">
                             <input
                                 className="form-control"
-                                id="currencyId"
-                                name="currencyId"
-                                value={values.currencyId}
+                                id="exchangeRate"
+                                value="1.00000"
                                 onChange={handleInputChange}
-                                placeholder="currencyId" />
+                                readOnly />
                             <br />
                             <input
                                 className="form-control"
                                 id="sumBGN"
                                 name="sumBGN"
-                                value={values.sumBGN}
+                                value={values.sumBGN == undefined ? "0" : values.sumBGN}
                                 onChange={handleInputChange}
                                 placeholder="sumBGN" />
                         </div>
@@ -173,7 +179,7 @@ const DetailsForm = ({ ...props }) => {
 
 
 const mapStateToProps = state => ({
-    detailsList: state.detailsReducer.list,
+    //detailsList: state.detailsReducer.detailsList,
     //currenciesList: state.currenciesReducer.list
 })
 

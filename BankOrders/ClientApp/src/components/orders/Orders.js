@@ -206,7 +206,7 @@ const Orders = ({ ...props }) => {
 
 const mapStateToProps = state => {
     return {
-        ordersList: state.ordersReducer.list
+        ordersList: state.ordersReducer.ordersList
     }
 }
 

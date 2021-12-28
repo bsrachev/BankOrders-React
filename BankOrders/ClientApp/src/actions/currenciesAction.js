@@ -12,7 +12,7 @@ export const fetchAll = () => dispatch => {
         .fetchAll()
         .then(
             response => {
-                console.log(response.data)
+                //console.log(response.data)
                 dispatch({
                     type: ACTION_TYPES.FETCH_ALL,
                     payload: response.data

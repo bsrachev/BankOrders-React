@@ -86,7 +86,7 @@ const Currencies = ({ ...props }) => {
 
 const mapStateToProps = state => {
     return {
-        currenciesList: state.currenciesReducer.list
+        currenciesList: state.currenciesReducer.currenciesList
     }
 }
 

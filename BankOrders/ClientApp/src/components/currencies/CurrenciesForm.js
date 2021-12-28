@@ -101,7 +101,7 @@ const CurrenciesForm = ({ ...props }) => {
 
 
 const mapStateToProps = state => ({
-    currenciesList: state.currenciesReducer.list
+    currenciesList: state.currenciesReducer.currenciesList
 })
 
 const mapActionToProps = {
