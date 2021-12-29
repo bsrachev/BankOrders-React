@@ -12,7 +12,7 @@ import { login } from "../../actions/usersAction";
 const required = (value) => {
     if (!value) {
         return (
-            <div className="alert alert-danger" role="alert">
+            <div className="alert alert-info" role="alert">
                 This field is required!
             </div>
         );
@@ -135,7 +135,7 @@ class Login extends Component {
 
                                             {message && (
                                                 <div className="form-group">
-                                                    <div className="alert alert-danger" role="alert">
+                                                    <div className="alert alert-info" role="alert">
                                                         {message}
                                                     </div>
                                                 </div>

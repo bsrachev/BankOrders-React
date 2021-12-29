@@ -25,6 +25,7 @@ export function TemplatesTable({ templatesList }) {
                         {
                             templatesList.map(template => {
                                 return (
+                                    template &&
                                     <tr key={template.id}>
                                         <td>&#8470;{template.refNumber}</td>
                                         <td>{template.name}</td>

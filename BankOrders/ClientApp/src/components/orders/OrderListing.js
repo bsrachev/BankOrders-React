@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useHistory, Link } from 'react-router-dom';
 import * as orderActions from "../../actions/ordersAction";
 import * as detailActions from "../../actions/detailsAction";
 import * as currencyActions from "../../actions/currenciesAction";
@@ -22,6 +22,7 @@ const OrderListing = ({ ...props }) => {
     const [errors, setErrors] = useState({});
     const params = useParams();
     const { id } = params;
+    const history = useHistory();
 
     const validate = (fieldValues = values) => {
         let err = { ...errors }
@@ -57,6 +58,16 @@ const OrderListing = ({ ...props }) => {
 
         if (validate()) {
             props.createOrder(values);
+            setValues({
+                accountingDate: initialFieldValues.accountingDate,
+                userCreate: props.user.employeeNumber,
+                system: initialFieldValues.system
+            })
+            setErrors({
+                ...errors,
+                success: "Order created successfully."
+            })
+            //history.push("/orders");
         }
     }
 
@@ -84,7 +95,7 @@ const OrderListing = ({ ...props }) => {
         setErrors({});
     }, [props.currentOrder.id])
 
-    //console.log(props.currenciesList)
+    //console.log(props)
 
     return (
         <>
@@ -94,6 +105,9 @@ const OrderListing = ({ ...props }) => {
                         <div className="col-lg-12">
                             <section className="custom-box-bg">
                                 <div className="custom-box-bg-body text-center">
+                                    {
+                                        errors.success && <div className="alert alert-success" role="alert">{errors.success} <a href="/orders">Back to Orders.</a></div>
+                                    }
                                     <form autoComplete="off" noValidate onSubmit={onCreateOrder}>
                                         <div className="form-row mr-auto">
                                             <div className={id ? "form-group col-md-3" : "form-group col-md-4"}>
@@ -108,7 +122,7 @@ const OrderListing = ({ ...props }) => {
                                                     onChange={handleInputChange}
                                                 />
                                                 {
-                                                    errors.accountingDate && <div className="alert alert-danger" role="alert">{errors.accountingDate}</div>
+                                                    errors.accountingDate && <div className="alert alert-info" role="alert">{errors.accountingDate}</div>
                                                 }
                                             </div>
                                             <div className={id ? "form-group col-md-3" : "form-group col-md-4"}>
@@ -134,7 +148,7 @@ const OrderListing = ({ ...props }) => {
                                                     <option>External</option>
                                                 </select>
                                                 {
-                                                    errors.system && <div className="alert alert-danger" role="alert">{errors.system}</div>
+                                                    errors.system && <div className="alert alert-info" role="alert">{errors.system}</div>
                                                 }
                                             </div>
                                             {
@@ -178,11 +192,11 @@ const OrderListing = ({ ...props }) => {
                                         currenciesList={
                                             props.currenciesList
                                         }
-                                        system={
-                                            props.currentOrder.system
+                                        currentDoc={
+                                            props.currentOrder
                                         }
-                                        orderOrTemplateRefNum={
-                                            props.currentOrder.refNumber
+                                        currentUser={
+                                            props.user
                                         }
                                     />
                                 </div>

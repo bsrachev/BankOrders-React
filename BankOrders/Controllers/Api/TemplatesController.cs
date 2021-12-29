@@ -100,8 +100,17 @@ namespace BankOrders.Controllers.Api
         // POST: api/Templates
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Template>> PostTemplate(Template template)
+        public async Task<ActionResult<Template>> PostTemplate(TemplateApiModel templateModel)
         {
+            var userCreateId = _users.GetUserIdByEmployeeNumber(templateModel.UserCreate);
+
+            var template = new Template
+            {
+                Name = templateModel.Name,
+                System = (OrderSystem)Enum.Parse(typeof(OrderSystem), templateModel.System, true),
+                UserCreateId = userCreateId
+            };
+
             _context.Templates.Add(template);
             await _context.SaveChangesAsync();
 

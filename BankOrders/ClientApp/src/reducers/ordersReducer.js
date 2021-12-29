@@ -7,7 +7,7 @@ const initialState = {
 
 export const ordersReducer = (state = initialState, action) => {
     switch (action.type) {
-        case ACTION_TYPES.FETCH_ALL:
+        case ACTION_TYPES.FETCH_ALL_O:
             let ordersListWithFilter = [...action.payload];
 
             if (action.refNumber != "") {
@@ -46,25 +46,25 @@ export const ordersReducer = (state = initialState, action) => {
                 ordersList: ordersListWithFilter
             }
 
-        case ACTION_TYPES.FETCH_BY_ID:
+        case ACTION_TYPES.FETCH_BY_ID_O:
             return {
                 ...state,
                 singleOrder: { ...action.payload }
             }
 
-        case ACTION_TYPES.CREATE:
+        case ACTION_TYPES.CREATE_O:
             return {
                 ...state,
                 ordersList: [...state.ordersList, action.payload]
             }
 
-        case ACTION_TYPES.UPDATE:
+        case ACTION_TYPES.UPDATE_O:
             return {
                 ...state,
                 ordersList: state.ordersList.map(x => x.id == action.payload.id ? action.payload : x)
             }
 
-        case ACTION_TYPES.DELETE:
+        case ACTION_TYPES.DELETE_O:
             return {
                 ...state,
                 ordersList: state.ordersList.filter(x => x.id != action.payload)

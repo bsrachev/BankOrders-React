@@ -44,6 +44,8 @@ const Templates = ({ ...props }) => {
         props.fetchAllTemplates(values)
     }
 
+    console.log(props.templatesList)
+
     useEffect(() => {
         props.fetchAllTemplates(values)
     }, [])

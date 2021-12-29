@@ -13,7 +13,7 @@ import { register } from "../../actions/usersAction";
 const required = (value) => {
     if (!value) {
         return (
-            <div className="alert alert-danger" role="alert">
+            <div className="alert alert-info" role="alert">
                 This field is required!
             </div>
         );
@@ -23,7 +23,7 @@ const required = (value) => {
 const email = (value) => {
     if (!isEmail(value)) {
         return (
-            <div className="alert alert-danger" role="alert">
+            <div className="alert alert-info" role="alert">
                 This is not a valid email.
             </div>
         );
@@ -33,7 +33,7 @@ const email = (value) => {
 const vusername = (value) => {
     if (value.length < 3 || value.length > 20) {
         return (
-            <div className="alert alert-danger" role="alert">
+            <div className="alert alert-info" role="alert">
                 The username must be between 3 and 20 characters.
             </div>
         );
@@ -43,7 +43,7 @@ const vusername = (value) => {
 const vpassword = (value) => {
     if (value.length < 6 || value.length > 40) {
         return (
-            <div className="alert alert-danger" role="alert">
+            <div className="alert alert-info" role="alert">
                 The password must be between 6 and 40 characters.
             </div>
         );
@@ -220,7 +220,7 @@ class Register extends Component {
 
                                             {message && (
                                                 <div className="form-group">
-                                                    <div className={this.state.successful ? "alert alert-success" : "alert alert-danger"} role="alert">
+                                                    <div className={this.state.successful ? "alert alert-success" : "alert alert-info"} role="alert">
                                                         {message}
                                                     </div>
                                                 </div>

@@ -74,7 +74,7 @@ const CurrenciesForm = ({ ...props }) => {
                             onChange={handleInputChange}
                         />
                         {
-                            errors.code && <div className="alert alert-danger" role="alert">{errors.code}</div>
+                            errors.code && <div className="alert alert-info" role="alert">{errors.code}</div>
                         }
                     </div>
                     <div className="form-group">
@@ -86,7 +86,7 @@ const CurrenciesForm = ({ ...props }) => {
                             onChange={handleInputChange}
                         />
                         {
-                            errors.exchangeRate && <div className="alert alert-danger" role="alert">{errors.exchangeRate}</div>
+                            errors.exchangeRate && <div className="alert alert-info" role="alert">{errors.exchangeRate}</div>
                         }
                     </div>
                     <div>

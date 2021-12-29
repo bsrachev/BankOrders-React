@@ -7,7 +7,7 @@ const initialState = {
 
 export const templatesReducer = (state = initialState, action) => {
     switch (action.type) {
-        case ACTION_TYPES.FETCH_ALL:
+        case ACTION_TYPES.FETCH_ALL_T:
             let templatesListWithFilter = [...action.payload];
 
             if (action.name != "") {
@@ -28,25 +28,25 @@ export const templatesReducer = (state = initialState, action) => {
                 templatesList: templatesListWithFilter
             }
 
-        case ACTION_TYPES.FETCH_BY_ID:
+        case ACTION_TYPES.FETCH_BY_ID_T:
             return {
                 ...state,
                 singleTemplate: { ...action.payload }
             }
 
-        case ACTION_TYPES.CREATE:
+        case ACTION_TYPES.CREATE_T:
             return {
                 ...state,
                 templatesList: [...state.templatesList, action.payload]
             }
 
-        case ACTION_TYPES.UPDATE:
+        case ACTION_TYPES.UPDATE_T:
             return {
                 ...state,
                 templatesList: state.templatesList.map(x => x.id == action.payload.id ? action.payload : x)
             }
 
-        case ACTION_TYPES.DELETE:
+        case ACTION_TYPES.DELETE_T:
             return {
                 ...state,
                 templatesList: state.templatesList.filter(x => x.id != action.payload)

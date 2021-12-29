@@ -13,7 +13,8 @@ import { OrdersPage } from './components/OrdersPage';
 import { OrderDetailsPage } from './components/OrderDetailsPage';
 import { OrderCreatePage } from './components/OrderCreatePage';
 import { TemplatesPage } from './components/TemplatesPage';
-import TemplateListing from './components/templates/TemplateListing';
+import { TemplateDetailsPage } from './components/TemplateDetailsPage';
+import { TemplateCreatePage } from './components/TemplateCreatePage';
 import Login from "./components/users/Login";
 import Profile from "./components/users/Profile";
 import Register from "./components/users/Register";
@@ -84,8 +85,8 @@ class App extends Component {
                         <Route path="/orders/create" exact component={OrderCreatePage} />
                         <Route path="/orders/:id" exact component={OrderDetailsPage} />
                         <Route path="/templates" exact component={TemplatesPage} />
-
-                        <Route path="/templates/:id" exact component={TemplateListing} />
+                        <Route path="/templates/create" exact component={TemplateCreatePage} />
+                        <Route path="/templates/:id" exact component={TemplateDetailsPage} />
                         <Route path="/login" exact component={Login} />
                         <Route path="/register" exact component={Register} />
                         <Route path="/profile" exact component={Profile} />

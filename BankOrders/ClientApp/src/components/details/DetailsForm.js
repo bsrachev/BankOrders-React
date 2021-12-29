@@ -25,10 +25,31 @@ const DetailsForm = ({ detailsList, currenciesList, system, orderOrTemplateRefNu
         }
         else {
             let temp = { ...errors }
-            if ('reason' in fieldValues)
-                temp.reason = fieldValues.reason ? "" : "Reason field is required."
-            if ('account' in fieldValues)
+            if ('branch' in fieldValues) {
+                temp.branch = fieldValues.branch ? "" : "Branch is required."
+            }
+            if ('costCenter' in fieldValues && system == "Internal") {
+                temp.costCenter = fieldValues.costCenter ? "" : "Cost Center is required."
+            }
+            if ('project' in fieldValues && system == "External") {
+                temp.project = fieldValues.project ? "" : "Project is required."
+            }
+            if ('reason' in fieldValues) {
+                temp.reason = fieldValues.reason ? "" : "Reason is required."
+            }
+            if ('account' in fieldValues) {
                 temp.account = values.account.length == 12 ? "" : "Account must have 12 characters."
+            }
+            if ('accountTypeName' in fieldValues) {
+                temp.accountTypeName = fieldValues.accountTypeName ? "" : "Account Type is required."
+            }
+            if ('sum' in fieldValues) {
+                temp.sum = fieldValues.sum ? "" : "Sum is required."
+            }
+            if ('currencyId' in fieldValues) {
+                temp.currencyId = fieldValues.currencyId ? "" : "Currency is required."
+            }
+
             setErrors({
                 ...temp
             })
@@ -117,13 +138,19 @@ const DetailsForm = ({ detailsList, currenciesList, system, orderOrTemplateRefNu
                     <label className="control-label"><strong>{props.currentId != 0 ? "Edit" : "Add"} a detail:</strong></label>
                     {
                         errors &&
-                        Object.keys(errors).map(key => {
-                            if (errors[key].length > 0) {
-                                return (
-                                    <div key={key} className="alert alert-danger" role="alert">{errors[key]}</div>
-                                );
+                        Object.values(errors).join("").length > 0 &&
+                        <div className="alert alert-info" role="alert">
+                            <div>Errors:</div>
+                            {
+                                Object.keys(errors).map(key => {
+                                    if (errors[key].length > 0) {
+                                        return (
+                                            <div key={key}>{errors[key]}</div>
+                                        );
+                                    }
+                                })
                             }
-                        })
+                        </div>
                     }
                     <div className="form-row mr-auto">
                         <div className="form-group col-md-2">

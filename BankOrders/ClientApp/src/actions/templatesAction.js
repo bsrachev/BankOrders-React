@@ -1,11 +1,11 @@
 ﻿import api from "./api";
 
 export const ACTION_TYPES = {
-    CREATE: 'CREATE',
-    UPDATE: 'UPDATE',
-    DELETE: 'DELETE',
-    FETCH_ALL: 'FETCH_ALL',
-    FETCH_BY_ID: 'FETCH_BY_ID'
+    CREATE_T: 'CREATE_T',
+    UPDATE_T: 'UPDATE_T',
+    DELETE_T: 'DELETE_T',
+    FETCH_ALL_T: 'FETCH_ALL_T',
+    FETCH_BY_ID_T: 'FETCH_BY_ID_T'
 }
 
 /*const formateData = data => ({
@@ -15,11 +15,11 @@ export const ACTION_TYPES = {
 
 export const fetchAll = (criteria) => dispatch => {
     api.templates()
-        .fetchAll(criteria)
+        .fetchAllT(criteria)
         .then(
             response => {
                 dispatch({
-                    type: ACTION_TYPES.FETCH_ALL,
+                    type: ACTION_TYPES.FETCH_ALL_T,
                     payload: response.data,
                     name: criteria.name,
                     refNumber: criteria.refNumber,
@@ -33,11 +33,11 @@ export const fetchAll = (criteria) => dispatch => {
 export const fetchById = (id) => dispatch => {
     return new Promise((resolve, reject) => {
         api.templates()
-            .fetchById(id)
+            .fetchByIdT(id)
             .then(
                 response => {
                     dispatch({
-                        type: ACTION_TYPES.FETCH_BY_ID,
+                        type: ACTION_TYPES.FETCH_BY_ID_T,
                         payload: response.data
                     });
                     resolve(response);
@@ -49,43 +49,42 @@ export const fetchById = (id) => dispatch => {
     });
 }
 
-export const create = (data, onSuccess) => dispatch => {
+export const create = (data) => dispatch => {
     api.templates()
-        .create(data)
+        .createT(data)
         .then(
             response => {
                 dispatch({
-                    type: ACTION_TYPES.CREATE,
+                    type: ACTION_TYPES.CREATE_T,
                     payload: response.data
                 })
-                onSuccess()
             })
         .catch(err => console.log(err))
 }
 
-export const update = (id, data, onSuccess) => dispatch => {
+export const update = (id, data) => dispatch => {
     //data = formateData(data)
-    api.templates().update(id, data)
+    api.templates()
+        .updateT(id, data)
         .then(
             response => {
                 dispatch({
-                    type: ACTION_TYPES.UPDATE,
+                    type: ACTION_TYPES.UPDATE_T,
                     payload: { id, ...data }
                 })
-                onSuccess()
             })
         .catch(err => console.log(err))
 }
 
-export const Delete = (id, onSuccess) => dispatch => {
-    api.templates().delete(id)
+export const Delete = (id) => dispatch => {
+    api.templates()
+        .deleteT(id)
         .then(
             response => {
                 dispatch({
-                    type: ACTION_TYPES.DELETE,
+                    type: ACTION_TYPES.DELETE_T,
                     payload: id
                 })
-                onSuccess()
             })
         .catch(err => console.log(err))
 }

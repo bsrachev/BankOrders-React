@@ -1,20 +1,20 @@
 ﻿import api from "./api";
 
 export const ACTION_TYPES = {
-    CREATE: 'CREATE',
-    UPDATE: 'UPDATE',
-    DELETE: 'DELETE',
-    FETCH_ALL: 'FETCH_ALL',
-    FETCH_BY_ID: 'FETCH_BY_ID'
+    CREATE_O: 'CREATE_O',
+    UPDATE_O: 'UPDATE_O',
+    DELETE_O: 'DELETE_O',
+    FETCH_ALL_O: 'FETCH_ALL_O',
+    FETCH_BY_ID_O: 'FETCH_BY_ID_O'
 }
 
 export const fetchAll = (criteria) => dispatch => {
     api.orders()
-        .fetchAll(criteria)
+        .fetchAllO(criteria)
         .then(
             response => {
                 dispatch({
-                    type: ACTION_TYPES.FETCH_ALL,
+                    type: ACTION_TYPES.FETCH_ALL_O,
                     payload: response.data,
                     refNumber: criteria.refNumber,
                     accountingDateFrom: criteria.accountingDateFrom,
@@ -34,11 +34,11 @@ export const fetchAll = (criteria) => dispatch => {
 export const fetchById = (id) => dispatch => {
     return new Promise((resolve, reject) => {
         api.orders()
-            .fetchById(id)
+            .fetchByIdO(id)
             .then(
                 response => {
                     dispatch({
-                        type: ACTION_TYPES.FETCH_BY_ID,
+                        type: ACTION_TYPES.FETCH_BY_ID_O,
                         payload: response.data
                     });
                     resolve(response);
@@ -52,11 +52,11 @@ export const fetchById = (id) => dispatch => {
 
 export const create = (data) => dispatch => {
     api.orders()
-        .create(data)
+        .createO(data)
         .then(
             response => {
                 dispatch({
-                    type: ACTION_TYPES.CREATE,
+                    type: ACTION_TYPES.CREATE_O,
                     payload: response.data
             })
         })
@@ -64,11 +64,12 @@ export const create = (data) => dispatch => {
 }
 
 export const update = (id, data) => dispatch => {
-    api.orders().update(id, data)
+    api.orders()
+        .updateO(id, data)
         .then(
             response => {
             dispatch({
-                type: ACTION_TYPES.UPDATE,
+                type: ACTION_TYPES.UPDATE_O,
                 payload: { id, ...data }
             })
         })
@@ -76,11 +77,12 @@ export const update = (id, data) => dispatch => {
 }
 
 export const Delete = (id) => dispatch => {
-    api.orders().delete(id)
+    api.orders()
+        .deleteO(id)
         .then(
             response => {
             dispatch({
-                type: ACTION_TYPES.DELETE,
+                type: ACTION_TYPES.DELETE_O,
                 payload: id
             })
         })
