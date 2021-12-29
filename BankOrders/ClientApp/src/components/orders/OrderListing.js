@@ -95,7 +95,7 @@ const OrderListing = ({ ...props }) => {
         setErrors({});
     }, [props.currentOrder.id])
 
-    //console.log(props)
+    //console.log(props.currentOrder)
 
     return (
         <>

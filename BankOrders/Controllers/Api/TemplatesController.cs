@@ -11,6 +11,8 @@ using BankOrders.Models.Orders;
 using BankOrders.Models.Templates;
 using BankOrders.Services.Users;
 using BankOrders.Data.Models.Enums;
+using BankOrders.Services.Templates;
+using BankOrders.Services.Details;
 
 namespace BankOrders.Controllers.Api
 {
@@ -20,12 +22,19 @@ namespace BankOrders.Controllers.Api
     {
         private readonly BankOrdersDbContext _context;
         private readonly IUserService _users;
+        private readonly ITemplateService _templates; 
+        private readonly IDetailService _details;
 
-        public TemplatesController(BankOrdersDbContext context, IUserService userService)
+        public TemplatesController(
+            BankOrdersDbContext context, 
+            IUserService userService, 
+            ITemplateService templateService,
+            IDetailService detailService)
         {
             _context = context;
             _users = userService;
-
+            _templates = templateService;
+            _details = detailService;
         }
 
         // GET: api/Templates
@@ -54,14 +63,26 @@ namespace BankOrders.Controllers.Api
 
         // GET: api/Templates/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Template>> GetTemplate(int id)
+        public async Task<ActionResult<TemplateApiModel>> GetTemplate(int id)
         {
-            var template = await _context.Templates.FindAsync(id);
+            var templateData = await _context.Templates.FindAsync(id);
 
-            if (template == null)
+            if (templateData == null)
             {
                 return NotFound();
             }
+
+            var userCreate = _users.GetUserInfo(templateData.UserCreateId).EmployeeNumber;
+
+            var template = new TemplateApiModel
+            {
+                Id = templateData.Id,
+                Name = templateData.Name,
+                RefNumber = templateData.RefNumber,
+                System = Enum.GetName(typeof(OrderSystem), templateData.System),
+                TimesUsed = templateData.TimesUsed,
+                UserCreate = userCreate
+            };
 
             return template;
         }
@@ -69,14 +90,14 @@ namespace BankOrders.Controllers.Api
         // PUT: api/Templates/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTemplate(int id, Template template)
+        public async Task<IActionResult> CopyDetails(int id, TemplateApiModel template)
         {
-            if (id != template.Id)
+            if (template.Id == 0)
             {
                 return BadRequest();
             }
 
-            _context.Entry(template).State = EntityState.Modified;
+            _details.CopyFromTemplate(id, template.Id);
 
             try
             {

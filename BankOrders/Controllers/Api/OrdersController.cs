@@ -91,20 +91,32 @@ namespace BankOrders.Controllers.Api
                 Status = Enum.GetName(typeof(OrderStatus), orderData.Status)
             };
 
+            if (order.Status == "For posting")
+            {
+                order.Status = "Approved";
+            }
+
             return order;
         }
 
         // PUT: api/Orders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> ChangeOrderStatus(int id, Order order)
+        public async Task<IActionResult> ChangeOrderStatus(int id, OrderApiChangeStatusModel orderModel)
         {
-            if (id != order.Id)
+            var orderData = await _context.Orders.FindAsync(id);
+
+            if (orderData == null)
+            {
+                return NotFound();
+            }
+
+            var changeStatus = _orders.ChangeStatus(id, orderModel.UserId, (OrderStatus)orderModel.Status);
+
+            if (!changeStatus)
             {
                 return BadRequest();
             }
-
-            _context.Entry(order).State = EntityState.Modified;
 
             try
             {

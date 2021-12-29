@@ -10,6 +10,8 @@ import '../shared/custom-table.css';
 import '../shared/bg-custom-row-highlight.css';
 import './custom-table-details.css';
 import DetailsForm from "./DetailsForm";
+import CopyDetails from "./CopyDetails";
+import DocButtons from "./DocButtons";
 
 const DetailsTable = ({ detailsList, currenciesList, currentDoc, currentUser, ...props }) => {
     const [currentId, setCurrentId] = useState(0)
@@ -24,12 +26,21 @@ const DetailsTable = ({ detailsList, currenciesList, currentDoc, currentUser, ..
         );
     }
 
-    console.log(currentDoc.refNumber)
-
     return (
         <>
             {
                 (currentDoc.status == "Draft" || currentDoc.status == "For correction") &&
+                currentDoc.userCreate == currentUser.employeeNumber &&
+                <CopyDetails
+                    detailsList={detailsList}
+                    currenciesList={currenciesList}
+                    currentDoc={currentDoc}
+                    {...({ currentId, setCurrentId })}
+                />
+            }
+
+            {
+                (currentDoc.status == "Draft" || currentDoc.status == "For correction" || currentDoc.refNumber > 90000000) &&
                 currentDoc.userCreate == currentUser.employeeNumber &&
                 <DetailsForm
                     detailsList={detailsList}
@@ -108,6 +119,22 @@ const DetailsTable = ({ detailsList, currenciesList, currentDoc, currentUser, ..
                     }
                 </div>
             </section>
+
+            {
+                (currentDoc.status == "Draft" || currentDoc.status == "For correction") &&
+                currentDoc.userCreate == currentUser.employeeNumber &&
+                <>
+                    <div className="text-center">
+                        <h2>Actions</h2>
+                    </div>
+                    <DocButtons
+                        detailsList={detailsList}
+                        currenciesList={currenciesList}
+                        currentDoc={currentDoc}
+                        {...({ currentId, setCurrentId })}
+                    />
+                </>
+            }
         </>
     );
 }

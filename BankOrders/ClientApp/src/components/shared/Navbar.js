@@ -38,7 +38,7 @@ const Navbar = ({ ...props }) => {
                                 }
                                 <li>
                                     <p>
-                                        <Link onClick={props.logOut} to="/logout" className="btn btn-default navbar-btn">Log Out</Link>
+                                        <Link onClick={props.logOut} to="/login" className="btn btn-default navbar-btn">Log Out</Link>
                                     </p>
                                 </li>
                             </>
