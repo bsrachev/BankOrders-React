@@ -12,8 +12,6 @@ class Profile extends Component {
             return <Redirect to="/login" />;
         }
 
-        console.log(currentUser);
-
         return (
             <>
                 <PageHeader title={"Employee " + currentUser.employeeNumber} subtitle="Bank Orders" />

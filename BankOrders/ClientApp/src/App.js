@@ -4,6 +4,7 @@ import { Route, Switch, Redirect, Link } from 'react-router-dom';
 import { store } from "./actions/store";
 import { Provider } from "react-redux";
 
+import PrivateRoute from './components/common/PrivateRoute';
 import { Footer } from './components/shared/Footer';
 import Navbar from './components/shared/Navbar';
 import Header from './components/home/HomeHeader';
@@ -79,17 +80,17 @@ class App extends Component {
                     </header>
 
                     <Switch>
-                        <Route path="/" exact component={HomePage} />
-                        <Route path="/currencies" exact component={CurrenciesPage} />
-                        <Route path="/orders" exact component={OrdersPage} />
-                        <Route path="/orders/create" exact component={OrderCreatePage} />
-                        <Route path="/orders/:id" exact component={OrderDetailsPage} />
-                        <Route path="/templates" exact component={TemplatesPage} />
-                        <Route path="/templates/create" exact component={TemplateCreatePage} />
-                        <Route path="/templates/:id" exact component={TemplateDetailsPage} />
-                        <Route path="/login" exact component={Login} />
-                        <Route path="/register" exact component={Register} />
-                        <Route path="/profile" exact component={Profile} />
+                        <Route exact path="/" component={HomePage} />
+                        <PrivateRoute exact path="/currencies" component={<CurrenciesPage />} />
+                        <Route exact path="/orders" component={OrdersPage} />
+                        <PrivateRoute exact path="/orders/create" component={<OrderCreatePage />} />
+                        <Route path="/orders/:id" component={OrderDetailsPage} />
+                        <Route exact path="/templates" component={TemplatesPage} />
+                        <PrivateRoute exact path="/templates/create" component={<TemplateCreatePage />} />
+                        <Route path="/templates/:id" component={TemplateDetailsPage} />
+                        <Route path="/login" component={Login} />
+                        <Route path="/register" component={Register} />
+                        <PrivateRoute path="/profile" component={<Profile />} />
                     </Switch>
 
                     <footer className="footer-container white-text-container">

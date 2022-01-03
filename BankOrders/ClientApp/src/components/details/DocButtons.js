@@ -19,8 +19,6 @@ const DocButtons = ({ detailsList, currenciesList, currentDoc, ...props }) => {
             status: 1
         }
 
-        console.log(model)
-
         props.statusChangeOrder(currentDoc.id, model);
         history.push("/orders");
     }
@@ -32,8 +30,6 @@ const DocButtons = ({ detailsList, currenciesList, currentDoc, ...props }) => {
             userId: props.user.id,
             status: 2
         }
-
-        console.log(model)
 
         props.statusChangeOrder(currentDoc.id, model);
         history.push("/orders");
@@ -47,13 +43,9 @@ const DocButtons = ({ detailsList, currenciesList, currentDoc, ...props }) => {
             status: 5
         }
 
-        console.log(model)
-
         props.statusChangeOrder(currentDoc.id, model);
         history.push("/orders");
     }
-
-    console.log(currentDoc)
 
     return (
         <section className="custom-box-bg">
