@@ -24,7 +24,7 @@ const Currencies = ({ ...props }) => {
 
     return (
         <div className="container text-center">
-            <div className="row section-container-spacer">
+            <div className="row section-container-spacer justify-content-md-center">
                 <div className="col-xs-12 col-md-12">
                     <div className="row">
                         <div className="col-lg-7 ml-auto">

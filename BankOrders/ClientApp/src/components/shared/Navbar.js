@@ -36,6 +36,7 @@ const Navbar = ({ ...props }) => {
                                 {props.currentUser.user.isAdmin &&
                                     <li><Link href="/currencies" to="/currencies">Currencies</Link></li>
                                 }
+                                <li><Link to="/profile">{props.currentUser.user.employeeNumber}</Link></li>
                                 <li>
                                     <p>
                                         <Link onClick={props.logOut} to="/login" className="btn btn-default navbar-btn">Log Out</Link>

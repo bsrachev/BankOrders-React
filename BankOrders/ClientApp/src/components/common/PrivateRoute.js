@@ -1,17 +1,13 @@
 ﻿import React from 'react';
 import { connect } from "react-redux";
-import { Navigate } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 const PrivateRoute = ({ component, ...props }) => {
-    //const history = useHistory();
-
-    console.log(props.user.isLoggedIn);
-    return props.user.isLoggedIn ? component : <Navigate to="/" />;
-    //return props.user.isLoggedIn ? component : <div>abc</div>;
+    return props.currentUser.isLoggedIn ? component : <Redirect to="/login" />;
 };
 
 const mapStateToProps = state => ({
-    user: state.usersReducer
+    currentUser: state.usersReducer
 })
 
 export default connect(mapStateToProps)(PrivateRoute);

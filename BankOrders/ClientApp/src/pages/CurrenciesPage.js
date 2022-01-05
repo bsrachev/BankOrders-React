@@ -1,6 +1,6 @@
 import React from "react";
-import PageHeader from "./shared/PageHeader";
-import Currencies from "./currencies/Currencies";
+import PageHeader from "../components/shared/PageHeader";
+import Currencies from "../components/currencies/Currencies";
 
 export function CurrenciesPage() {
     return (

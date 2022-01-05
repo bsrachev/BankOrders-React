@@ -1,6 +1,6 @@
 import React from "react";
-import PageHeader from "./shared/PageHeader";
-import TemplateListing from "./templates/TemplateListing";
+import PageHeader from "../components/shared/PageHeader";
+import TemplateListing from "../components/templates/TemplateListing";
 
 export function TemplateDetailsPage() {
     return (

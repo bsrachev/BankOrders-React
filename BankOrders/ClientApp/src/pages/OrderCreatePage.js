@@ -1,6 +1,6 @@
 import React from "react";
-import PageHeader from "./shared/PageHeader";
-import OrderListing from "./orders/OrderListing";
+import PageHeader from "../components/shared/PageHeader";
+import OrderListing from "../components/orders/OrderListing";
 
 export function OrderCreatePage() {
     return (

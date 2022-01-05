@@ -1,24 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Route, Switch, Redirect, Link } from 'react-router-dom';
-import { store } from "./actions/store";
-import { Provider } from "react-redux";
 
+import AdminRoute from './components/common/AdminRoute';
 import PrivateRoute from './components/common/PrivateRoute';
 import { Footer } from './components/shared/Footer';
 import Navbar from './components/shared/Navbar';
-import Header from './components/home/HomeHeader';
-import { HomePage } from './components/HomePage';
-import { CurrenciesPage } from './components/CurrenciesPage';
-import { OrdersPage } from './components/OrdersPage';
-import { OrderDetailsPage } from './components/OrderDetailsPage';
-import { OrderCreatePage } from './components/OrderCreatePage';
-import { TemplatesPage } from './components/TemplatesPage';
-import { TemplateDetailsPage } from './components/TemplateDetailsPage';
-import { TemplateCreatePage } from './components/TemplateCreatePage';
-import Login from "./components/users/Login";
-import Profile from "./components/users/Profile";
-import Register from "./components/users/Register";
+
+import { HomePage } from './pages/HomePage';
+import { CurrenciesPage } from './pages/CurrenciesPage';
+import { OrdersPage } from './pages/OrdersPage';
+import { OrderDetailsPage } from './pages/OrderDetailsPage';
+import { OrderCreatePage } from './pages/OrderCreatePage';
+import { TemplatesPage } from './pages/TemplatesPage';
+import { TemplateDetailsPage } from './pages/TemplateDetailsPage';
+import { TemplateCreatePage } from './pages/TemplateCreatePage';
+import { LoginPage } from './pages/LoginPage';
+import { RegisterPage } from './pages/RegisterPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { NotFoundPage } from './pages/NotFoundPage';
+import { UnauthorizedPage } from './pages/UnauthorizedPage';
+
 import { ToastProvider } from "react-toast-notifications";
 
 import EventBus from "./common/EventBus";
@@ -69,7 +71,7 @@ class App extends Component {
     }
 
     render() {
-        const { currentUser } = this.state;
+        const user = this.props.user;
 
         return (
             <>
@@ -86,11 +88,14 @@ class App extends Component {
                         <PrivateRoute exact path="/orders/create" component={<OrderCreatePage />} />
                         <Route path="/orders/:id" component={OrderDetailsPage} />
                         <Route exact path="/templates" component={TemplatesPage} />
-                        <PrivateRoute exact path="/templates/create" component={<TemplateCreatePage />} />
+                        <AdminRoute exact path="/templates/create" component={<TemplateCreatePage />} />
                         <Route path="/templates/:id" component={TemplateDetailsPage} />
-                        <Route path="/login" component={Login} />
-                        <Route path="/register" component={Register} />
-                        <PrivateRoute path="/profile" component={<Profile />} />
+                        <Route path="/login" component={LoginPage} />
+                        <Route path="/register" component={RegisterPage} />
+                        <PrivateRoute exact path="/profile" component={<ProfilePage currentUser={user} />} />
+                        <Route path='/unauthorized' component={UnauthorizedPage} />
+                        <Route path='/404' component={NotFoundPage} />
+                        <Redirect from='*' to='/404' />
                     </Switch>
 
                     <footer className="footer-container white-text-container">

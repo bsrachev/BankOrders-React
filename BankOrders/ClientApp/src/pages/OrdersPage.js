@@ -1,6 +1,6 @@
 import React from "react";
-import PageHeader from "./shared/PageHeader";
-import Orders from "./orders/Orders";
+import PageHeader from "../components/shared/PageHeader";
+import Orders from "../components/orders/Orders";
 
 export function OrdersPage() {
     return (
